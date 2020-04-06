@@ -22,7 +22,7 @@ import static util.MapUtil.createMap;
 public class ClassificationServiceTest {
     private static final String THE_ROAD_AUTHOR = "Cormac McCarthy";
     private static final String THE_ROAD_ISBN = "0-307-26543-9";
-    private static final String THE_ROAD_TITLE = "The road";
+    private static final String THE_ROAD_TITLE = "The Road";
     private static final String THE_ROAD_YEAR = "2006";
     private static final String THE_ROAD_CLASSIFICATION = "PS3563.C337 R63 2006";
 
@@ -46,7 +46,6 @@ public class ClassificationServiceTest {
     }
 
     @Category(Slow.class)
-    @Ignore
     @Test
     public void liveRetrieve() {
         ClassificationService liveService = new ClassificationService();
