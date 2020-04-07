@@ -1,3 +1,4 @@
 rootProject.name='library2020'
 
-include ':acceptanceTests', ':library'
+include 'acceptanceTests'
+include 'library'
