@@ -1,1 +1,3 @@
-include ':library', ':library_customer_tests'
+rootProject.name='library2020'
+
+include ':acceptanceTests', ':library'

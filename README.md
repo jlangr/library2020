@@ -26,3 +26,7 @@ IntelliJ IDEA Instructions
 * In the project tool window, expand library_full -> library -> src -> test -> junit.
 * Select AllFastTests. Right-click and select Run `AllFastTests`.
 * You should see at least 200 green unit tests, and they should run in a second or so at most.
+
+Caveats
+---
+In IntelliJ, if you get an error about not being able to mock a non-public or static method, make sure that the Gradle runner is also version 1.8. Check out the gradle settings.
