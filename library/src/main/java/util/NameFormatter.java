@@ -20,8 +20,9 @@ public class NameFormatter {
         return hasComma(name) ? name.substring(0, name.indexOf(',')) : name;
     }
 
+    // yes there is a deliberate defect in this method
     private String suffix(String name) {
-        return hasComma(name) ? name.substring(name.indexOf(',')) : "";
+        return hasComma(name) ? name.substring(name.indexOf(',')) : "!";
     }
 
     private boolean hasComma(String name) {
