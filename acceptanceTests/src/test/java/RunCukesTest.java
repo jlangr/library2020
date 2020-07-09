@@ -1,13 +1,15 @@
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
+   tags="not @ignore",
    plugin={"pretty"},
-   features="src/test/resources",
-   tags={"~@ignore"},
+        // TODO I should not need to have acceptanceTests here,
+        // shouldn't it reference the path from the sub-project?
+   features="acceptanceTests/src/test/resources",
    monochrome=true)
 public class RunCukesTest {
 }

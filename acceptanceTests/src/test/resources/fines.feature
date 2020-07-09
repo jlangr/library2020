@@ -5,15 +5,17 @@ Feature: Fines
    
 Background:
    Given a clean library system
-   And a branch named "Rockrimmon" with the following holdings: Catch-22, The Trial
+   And a branch named "Rockrimmon" with the following holdings:
+      | Catch-22 |
+      | The Trial |
 
 Scenario: Due date for book is 21 days after checkout
-   When a patron checks out "Catch-22" on 2017/3/1
-   Then the due date for "Catch-22" is 2017/3/22
+   When a patron checks out "Catch-22" on 2017/03/01
+   Then the due date for "Catch-22" is 2017/03/22
    
 Scenario: Patron incurs no fine when returned on due date
-   Given a patron checks out "Catch-22" on 2017/4/1
-   When "Catch-22" is returned on 2017/4/22
+   Given a patron checks out "Catch-22" on 2017/04/01
+   When "Catch-22" is returned on 2017/04/22
    Then the patron's fine balance is 0
    
 # NB: Outline must be uppercase!
@@ -29,6 +31,6 @@ Scenario Outline: Book incurs fine when returned after due date
    | 2017/05/01      | 2017/05/25   | 30 |
 
 Scenario: Late book fine balance is multiple of days
-   Given a patron checks out "Catch-22" on 2017/5/1
-   When "Catch-22" is returned on 2017/5/25
+   Given a patron checks out "Catch-22" on 2017/05/01
+   When "Catch-22" is returned on 2017/05/25
    Then the patron's fine balance is 30

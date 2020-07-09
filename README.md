@@ -30,3 +30,25 @@ IntelliJ IDEA Instructions
 Caveats
 ---
 In IntelliJ, if you get an error about not being able to mock a non-public or static method, make sure that the Gradle runner is also version 1.8. Check out the gradle settings.
+
+Running the Application
+---
+./gradlew bootRun
+
+Running the Cucumber Tests
+---
+
+
+Cucumber Notes
+---
+A test with a missing stepdef will still run and maybe pass??
+  - ALWAYS watch a test fail
+
+Take advantage of the code it gives you.
+
+
+Q:
+  - how to format test run output to be colored better?
+  - is there a better cucumber runner within IDEA? Plugin?
+
+  - multiple stepdefs files--recommended?

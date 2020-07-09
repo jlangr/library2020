@@ -4,13 +4,16 @@ Feature: checkouts and checkins
 
 Background:
    Given a clean library system
-   And a branch named "Rockrimmon" with the following holdings: Catch-22, 1984
+   Given a branch named "Rockrimmon" with the following holdings:
+      | Catch-22 |
+      | 1984   |
 
 Scenario: Errors when attempting to check out book twice
-   Given a patron checks out "Catch-22" on 2017/3/1
-   When a patron checks out "Catch-22" on 2017/3/2
+   Given a patron checks out "Catch-22" on 2017/03/01
+   When a patron checks out "Catch-22" on 2017/03/02
    Then the client is informed of a conflict
 
+@ignore
 Scenario: Checked out book is not available
    When a patron checks out "1984" on 2017/5/31 
    Then "1984" is not available
@@ -18,6 +21,7 @@ Scenario: Checked out book is not available
 @ignore
 Scenario: Checked out book added to patron
 
+@ignore
 Scenario: Book is available after checkin
    Given a patron checks out "Catch-22" on 2017/4/15
    When "Catch-22" is returned on 2017/4/16 to "Rockrimmon"
