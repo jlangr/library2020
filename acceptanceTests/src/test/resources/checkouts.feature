@@ -13,16 +13,14 @@ Scenario: Errors when attempting to check out book twice
    When a patron checks out "Catch-22" on 2017/03/02
    Then the client is informed of a conflict
 
-@ignore
 Scenario: Checked out book is not available
-   When a patron checks out "1984" on 2017/5/31 
+   When a patron checks out "1984" on 2017/05/31
    Then "1984" is not available
    
 @ignore
 Scenario: Checked out book added to patron
 
-@ignore
 Scenario: Book is available after checkin
-   Given a patron checks out "Catch-22" on 2017/4/15
-   When "Catch-22" is returned on 2017/4/16 to "Rockrimmon"
+   Given a patron checks out "Catch-22" on 2017/04/15
+   When "Catch-22" is returned on 2017/04/16 to "Rockrimmon"
    Then "Catch-22" is available
