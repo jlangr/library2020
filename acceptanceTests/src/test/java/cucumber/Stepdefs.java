@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 // TODO [x] use PicoContainer and injection between stepdefs?
 public class Stepdefs {
-    public static final String YMD = "yyyy/MM/dd";
     private LibraryClient libraryClient = new LibraryClient();
     private int checkoutResponse;
 
@@ -34,6 +33,7 @@ public class Stepdefs {
     }
 
     @ParameterType("\\d+/\\d+/\\d+")
+    // TODO demonstrate pushing this sort of thing into production, making sure it's tested
     public LocalDate date(String date) {
         var formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         return LocalDate.parse(date, formatter);
@@ -66,19 +66,17 @@ public class Stepdefs {
         libraryClient.addHoldingsWithTitles(titles, branchName);
     }
 
-    // TODO hmm how else can this be done
-//   @When("{string} adds? a branch named \"(.*)\"")
+    // non-capture variants, option 1
     @When("{word} add a branch named {word}")
     @When("{word} adds a branch named {word}")
     public void addBranch(String user, String name) {
         libraryClient.addBranch(name);
     }
 
-    // @Given("a (?:color|colour) named (.*)")
-    // TODO hmm
-    @Given("a color named {word}")
-    public void x(String color) {
-        System.out.println("color => " + color);
+    // Option 2:
+    @When("XXX \"(.*)\" adds? a branch named \"(.*)\"")
+    public void addBranch2(String user, String name) {
+        libraryClient.addBranch(name);
     }
 
     @When("{word} requests a list of all branches")
@@ -152,28 +150,26 @@ public class Stepdefs {
     @Given("Xa local classification service with:")
     public void roteClassificationServiceData(List<List<String>> books) {
         libraryClient.useLocalClassificationService();
-        List<MaterialRequest> bookRequests =
-                books.stream()
-                        .skip(1)
-                        .map(book -> {
-                            MaterialRequest request = new MaterialRequest();
-                            request.setSourceId(book.get(0));
-                            request.setClassification(book.get(1));
-                            request.setFormat(book.get(2));
-                            return request;
-                        })
-                        .collect(toList());
-        libraryClient.addBooks(bookRequests);
+        libraryClient.addBooks(toMaterialRequestList(books));
+    }
+
+    private List<MaterialRequest> toMaterialRequestList(List<List<String>> books) {
+        return books.stream()
+                .skip(1) // the header
+                .map(book -> new MaterialRequestBuilder()
+                        .sourceId(book.get(0))
+                        .classification(book.get(1))
+                        .format(book.get(2)).build())
+                .collect(toList());
     }
 
     @DataTableType
     public MaterialRequest createMaterialRequest(Map<String, String> tableEntry) {
-        MaterialRequest request = new MaterialRequest();
-        request.setSourceId(tableEntry.get("source id")); // note the space!
-        request.setClassification(tableEntry.get("classification"));
-        request.setFormat(tableEntry.get("format"));
-        System.out.println("created request " + request);
-        return request;
+        return new MaterialRequestBuilder()
+            .sourceId(tableEntry.get("source id")) // note the space!
+            .classification(tableEntry.get("classification"))
+            .format(tableEntry.get("format"))
+            .build();
     }
 
     @Given("a local classification service with:")
