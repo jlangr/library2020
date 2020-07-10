@@ -55,4 +55,16 @@ public class MaterialRequest {
     public void setFormat(String format) {
         this.format = format;
     }
+
+    @Override
+    public String toString() {
+        return "MaterialRequest{" +
+                "sourceId='" + sourceId + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", year='" + year + '\'' +
+                ", classification='" + classification + '\'' +
+                ", format='" + format + '\'' +
+                '}';
+    }
 }

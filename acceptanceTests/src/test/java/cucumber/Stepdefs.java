@@ -2,6 +2,7 @@ package cucumber;
 
 import controller.MaterialRequest;
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -12,17 +13,13 @@ import util.Calculator;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.assertj.core.api.Assertions.*;
-
-// TODO use AssertJ
+import static org.assertj.core.api.Assertions.assertThat;
 
 // TODO [x] use PicoContainer and injection between stepdefs?
 public class Stepdefs {
@@ -30,21 +27,15 @@ public class Stepdefs {
     private LibraryClient libraryClient = new LibraryClient();
     private int checkoutResponse;
 
-    //                "(-?[0-9]+(,\\s*-?[0-9]+)*)",
     // TODO is this really necessary or does this already exist
-//    @ParameterType("[A-Za-z'-]+(,\\s*\\[A-Za-z0-9'-]+)*")
     @ParameterType("[A-Z]+(,\\s*[A-Za-z])*")
     public List<String> wordList(String... commaSeparatedText) {
-        System.out.println("input: " + Arrays.toString(commaSeparatedText));
-//        List<String> words = Arrays.asList(commaSeparatedText.split(","));
-//        return words;
-        return Collections.EMPTY_LIST;
+        return asList(commaSeparatedText);
     }
 
-    // TODO make MM optional to have leading 0, also dd
     @ParameterType("\\d+/\\d+/\\d+")
     public LocalDate date(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        var formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         return LocalDate.parse(date, formatter);
     }
 
@@ -70,15 +61,9 @@ public class Stepdefs {
 //   public void createBranchWithHoldings(String branchName, List<String> titles) {
     @Given("a branch named {string} with the following holdings:")
     public void createBranchWithHoldings(String branchName, List<String> titles) {
-        System.out.println("titles:" + titles);
         libraryClient.addBranch(branchName);
         libraryClient.useLocalClassificationService();
         libraryClient.addHoldingsWithTitles(titles, branchName);
-    }
-
-    @Given("the following holdings:")
-    public void XcreateBranchWithHoldings(List<String> titles) {
-        System.out.println("titles:" + titles);
     }
 
     // TODO hmm how else can this be done
@@ -115,19 +100,10 @@ public class Stepdefs {
         checkoutResponse = libraryClient.checkOut(title, checkoutDate);
     }
 
-    // TODO
-//   @Then("^\"(.*)\" (is|is not) available")
-//   public void assertAvailable(String title, String isOrIsNot) {
-//      assertThat(libraryClient.retrieveHoldingWithTitle(title).getIsAvailable(), is(isOrIsNot.equals("is")));
-//   }
-    @Then("{string} is available")
-    public void assertAvailable(String title) {
-        assertThat(libraryClient.retrieveHoldingWithTitle(title).getIsAvailable()).isTrue();
-    }
-
-    @Then("{string} is not available")
-    public void assertNotAvailable(String title) {
-        assertThat(libraryClient.retrieveHoldingWithTitle(title).getIsAvailable()).isFalse();
+    @Then("^\"(.*)\" (is|is not) available")
+    public void assertAvailable(String title, String isOrIsNot) {
+        assertThat(libraryClient.retrieveHoldingWithTitle(title).getIsAvailable())
+                .isEqualTo(isOrIsNot.equals("is"));
     }
 
     @Then("the client is informed of a conflict")
@@ -141,12 +117,10 @@ public class Stepdefs {
                 .isEqualTo(dueDate);
     }
 
-//   // TODO what about enclosing string in quotes if multiple words
-//   @When("{string} is returned on {oldSchoolDate} to \"{string}\"")
-//   public void bookReturnedOnTo(String title, Date checkinDate, String branchName) {
-//      libraryClient.checkIn(title, branchName, checkinDate);
-//   }
-//
+    @When("{string} is returned on {oldSchoolDate} to {string}")
+    public void bookReturnedOnTo(String title, Date checkinDate, String branchName) {
+        libraryClient.checkIn(title, branchName, checkinDate);
+    }
 
     @When("{string} is returned on {oldSchoolDate}")
     public void bookReturnedOn(String title, Date checkinDate) {
@@ -174,16 +148,10 @@ public class Stepdefs {
 //      expectedPatrons.unorderedDiff(libraryClient.retrievedPatrons());
     }
 
-    //    @Given("a local classification service with:")
-//    public void classificationServiceData(DataTable books) {
-//        libraryClient.useLocalClassificationService();
-//        libraryClient.addBooks(books.asList(MaterialRequest.class));
-//    }
-    @Given("a local classification service with:")
-    public void classificationServiceData(List<List<String>> books) {
-        System.out.println("books in: " + books);
+    // see https://www.baeldung.com/cucumber-data-tables
+    @Given("Xa local classification service with:")
+    public void roteClassificationServiceData(List<List<String>> books) {
         libraryClient.useLocalClassificationService();
-        // there's an automated way to do this
         List<MaterialRequest> bookRequests =
                 books.stream()
                         .skip(1)
@@ -196,6 +164,22 @@ public class Stepdefs {
                         })
                         .collect(toList());
         libraryClient.addBooks(bookRequests);
+    }
+
+    @DataTableType
+    public MaterialRequest createMaterialRequest(Map<String, String> tableEntry) {
+        MaterialRequest request = new MaterialRequest();
+        request.setSourceId(tableEntry.get("source id")); // note the space!
+        request.setClassification(tableEntry.get("classification"));
+        request.setFormat(tableEntry.get("format"));
+        System.out.println("created request " + request);
+        return request;
+    }
+
+    @Given("a local classification service with:")
+    public void classificationServiceData(List<MaterialRequest> books) {
+        libraryClient.useLocalClassificationService();
+        libraryClient.addBooks(books);
     }
 
     @When("a librarian adds a book holding with source id {word} at branch {string}")
