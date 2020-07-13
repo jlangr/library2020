@@ -1,18 +1,15 @@
 package cucumber;
 
 import controller.BranchRequest;
+import controller.HoldingResponse;
 import controller.MaterialRequest;
 import controller.PatronRequest;
-import io.cucumber.datatable.DataTable;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import library.BranchRequestBuilder;
-import library.LibraryClient;
-import library.MaterialRequestBuilder;
-import library.PatronRequestBuilder;
+import library.*;
 import util.Calculator;
 
 import java.time.LocalDate;
@@ -25,6 +22,7 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static utils.ArrayUtils.*;
 
 // TODO [x] use PicoContainer and injection between stepdefs?
 public class Stepdefs {
@@ -149,11 +147,7 @@ public class Stepdefs {
     public void assertPatrons(List<PatronRequest> expectedPatrons) {
         assertThat(libraryClient.retrievedPatrons())
                 .usingElementComparatorIgnoringFields("id") // TODO add in as exercise
-                .containsExactlyInAnyOrder(asArray(expectedPatrons));
-    }
-
-    private PatronRequest[] asArray(List<PatronRequest> expectedPatrons) {
-        return expectedPatrons.toArray(new PatronRequest[expectedPatrons.size()]);
+                .containsExactlyInAnyOrder(asArray(expectedPatrons, PatronRequest.class));
     }
 
     // see https://www.baeldung.com/cucumber-data-tables
@@ -199,6 +193,13 @@ public class Stepdefs {
                 .build();
     }
 
+    @DataTableType
+    public HoldingResponse holdingResponse(Map<String, String> tableEntry) {
+        return new HoldingResponseBuilder()
+                .barcode(tableEntry.get("barcode"))
+                .build();
+    }
+
     @Given("a local classification service with:")
     public void classificationServiceData(List<MaterialRequest> books) {
         libraryClient.useLocalClassificationService();
@@ -211,9 +212,10 @@ public class Stepdefs {
     }
 
     @Then("the {string} branch contains the following holdings:")
-    public void assertBranchContains(String branchName, DataTable holdings) {
-// TODO       holdings.unorderedDiff(libraryClient.retrieveHoldingsAtBranch(branchName));
-
+    public void assertBranchContains(String branchName, List<HoldingResponse> expectedHoldings) {
+        assertThat(libraryClient.retrieveHoldingsAtBranch(branchName))
+                .usingElementComparatorOnFields("barcode") // TODO add in as exercise
+                .containsExactlyInAnyOrder(asArray(expectedHoldings, HoldingResponse.class));
     }
 
     // ===
