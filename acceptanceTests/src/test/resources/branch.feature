@@ -8,7 +8,6 @@ Scenario: Add a branch
    And they add a branch named "West"
    When user requests a list of all branches
    Then the system returns the following branches:
-      | name |
       | East |
       | West |
       

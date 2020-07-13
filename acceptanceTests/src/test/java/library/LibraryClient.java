@@ -44,7 +44,9 @@ public class LibraryClient {
    public void retrieveBranches(String user) {
       ResponseEntity<BranchRequest[]> response = template.getForEntity(url("/branches"),
          BranchRequest[].class);
-      retrievedBranches = asList(response.getBody());
+      var responseBody = response.getBody();
+      System.out.println("response for retrieve branches: " + responseBody);
+      retrievedBranches = asList(responseBody);
    }
 
    // -- patrons --

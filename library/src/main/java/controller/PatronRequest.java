@@ -39,4 +39,13 @@ public class PatronRequest {
     public int getFineBalance() {
         return fineBalance;
     }
+
+    @Override
+    public String toString() {
+        return "PatronRequest{" +
+                "name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                ", fineBalance=" + fineBalance +
+                '}';
+    }
 }

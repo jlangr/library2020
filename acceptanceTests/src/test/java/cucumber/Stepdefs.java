@@ -1,13 +1,18 @@
 package cucumber;
 
+import controller.BranchRequest;
 import controller.MaterialRequest;
+import controller.PatronRequest;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import library.BranchRequestBuilder;
 import library.LibraryClient;
+import library.MaterialRequestBuilder;
+import library.PatronRequestBuilder;
 import util.Calculator;
 
 import java.time.LocalDate;
@@ -67,8 +72,8 @@ public class Stepdefs {
     }
 
     // non-capture variants, option 1
-    @When("{word} add a branch named {word}")
-    @When("{word} adds a branch named {word}")
+    @When("{word} add a branch named {string}")
+    @When("{word} adds a branch named {string}")
     public void addBranch(String user, String name) {
         libraryClient.addBranch(name);
     }
@@ -84,14 +89,14 @@ public class Stepdefs {
         libraryClient.retrieveBranches(user);
     }
 
-    // TODO optional colon @Then("the system returns the following branches:?")
-    @Then("the system returns the following branches:")
-    public void assertBranches(DataTable expectedBranches) {
-// TODO      expectedBranches.unorderedDiff(libraryClient.retrievedBranches());
+    @Then("^the system returns the following branches:?$")
+    public void assertBranches(List<String> branchNames) {
+        var expected = branchNames.toArray(new String[branchNames.size()]);
+        assertThat(libraryClient.retrievedBranches())
+                .extracting(branchRequest -> branchRequest.getName())
+                .containsExactlyInAnyOrder(expected);
     }
 
-    // TODO cannot mix and match cucumber expressions & regex
-    // TODO but what about anchors ^ and $
     @Given("a patron checks out {string} on {oldSchoolDate}")
     public void patronChecksOutHolding(String title, Date checkoutDate) {
         libraryClient.addPatron("");
@@ -141,9 +146,14 @@ public class Stepdefs {
     }
 
     @Then("the client shows the following patrons:")
-    public void assertPatrons(DataTable expectedPatrons) {
-        // TODO
-//      expectedPatrons.unorderedDiff(libraryClient.retrievedPatrons());
+    public void assertPatrons(List<PatronRequest> expectedPatrons) {
+        assertThat(libraryClient.retrievedPatrons())
+                .usingElementComparatorIgnoringFields("id") // TODO add in as exercise
+                .containsExactlyInAnyOrder(asArray(expectedPatrons));
+    }
+
+    private PatronRequest[] asArray(List<PatronRequest> expectedPatrons) {
+        return expectedPatrons.toArray(new PatronRequest[expectedPatrons.size()]);
     }
 
     // see https://www.baeldung.com/cucumber-data-tables
@@ -164,12 +174,29 @@ public class Stepdefs {
     }
 
     @DataTableType
-    public MaterialRequest createMaterialRequest(Map<String, String> tableEntry) {
+    public BranchRequest branchRequest(Map<String, String> tableEntry) {
+        return new BranchRequestBuilder()
+                .id(tableEntry.get("id")) // note the space!
+                .name(tableEntry.get("name"))
+                .build();
+    }
+
+    @DataTableType
+    public MaterialRequest materialRequest(Map<String, String> tableEntry) {
         return new MaterialRequestBuilder()
             .sourceId(tableEntry.get("source id")) // note the space!
             .classification(tableEntry.get("classification"))
             .format(tableEntry.get("format"))
             .build();
+    }
+
+    @DataTableType
+    public PatronRequest patronRequest(Map<String, String> tableEntry) {
+        return new PatronRequestBuilder()
+                .id(tableEntry.get("id"))
+                .name(tableEntry.get("name"))
+                .fineBalance((Integer.parseInt(tableEntry.get("fine balance"))))
+                .build();
     }
 
     @Given("a local classification service with:")
@@ -186,6 +213,7 @@ public class Stepdefs {
     @Then("the {string} branch contains the following holdings:")
     public void assertBranchContains(String branchName, DataTable holdings) {
 // TODO       holdings.unorderedDiff(libraryClient.retrieveHoldingsAtBranch(branchName));
+
     }
 
     // ===
