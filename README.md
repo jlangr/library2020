@@ -1,6 +1,6 @@
 # library_full
 
-This source base requires JDK 8.
+This source base requires JDK 11 or later.
 
 Please don't hesitate to contact me at jeff @ langrsoft.com if you have any problems.
 
