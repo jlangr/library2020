@@ -34,3 +34,7 @@ Scenario: Late book fine balance is multiple of days
    Given a patron checks out "Catch-22" on 2017/05/01
    When "Catch-22" is returned on 2017/05/25
    Then the patron's fine balance is 30
+
+Scenario: Can request fine amounts by material type
+   Given a request for the daily fine for a microfiche
+   Then the fine amount is 200

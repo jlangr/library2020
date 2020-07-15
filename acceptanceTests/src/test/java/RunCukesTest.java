@@ -7,9 +7,9 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
    tags="not @ignore",
    plugin={"pretty"},
-        // TODO I should not need to have acceptanceTests here,
-        // shouldn't it reference the path from the sub-project?
-   features="acceptanceTests/src/test/resources",
+   features="classpath:.",
+//   features="./src/test/resources", // works for root gradle but not within IDEA
+//   features="acceptanceTests/src/test/resources", // works within IDEA but not using root gradle
    monochrome=true)
 public class RunCukesTest {
 }

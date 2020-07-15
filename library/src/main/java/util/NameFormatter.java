@@ -3,6 +3,7 @@ package util;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 
+// This implementation is used for the Cucumber exercise
 public class NameFormatter {
     public String format(String name) {
         throwWhenContainsTooManyCommas(name);

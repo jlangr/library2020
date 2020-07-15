@@ -1,5 +1,6 @@
 package cucumber;
 
+import com.loc.material.api.MaterialType;
 import controller.BranchRequest;
 import controller.HoldingResponse;
 import controller.MaterialRequest;
@@ -13,11 +14,10 @@ import library.*;
 import util.Calculator;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
@@ -47,6 +47,17 @@ public class Stepdefs {
         return Date.from(date(dateString).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
+    // TODO let coders build this for exercise--delete from here
+    // They should do a simple match on any string,
+    // then convert it to a MaterialType. Note that
+    // the case of the materialtype could be anything.
+    @ParameterType(".*")
+    public MaterialType materialType(String materialType) {
+        return Arrays.stream(MaterialType.values())
+                .filter(type -> type.name().toLowerCase().equals(materialType.toLowerCase()))
+                .findFirst().get();
+    }
+
     // ===
 
     @Given("a clean library system")
@@ -69,16 +80,8 @@ public class Stepdefs {
         libraryClient.addHoldingsWithTitles(titles, branchName);
     }
 
-    // non-capture variants, option 1
-    @When("{word} add a branch named {string}")
-    @When("{word} adds a branch named {string}")
-    public void addBranch(String user, String name) {
-        libraryClient.addBranch(name);
-    }
-
-    // Option 2:
-    @When("XXX \"(.*)\" adds? a branch named \"(.*)\"")
-    public void addBranch2(String user, String name) {
+    @When("{word} add(s) a branch named {string}")
+    public void addBranch3(String user, String name) {
         libraryClient.addBranch(name);
     }
 
@@ -116,6 +119,18 @@ public class Stepdefs {
     public void assertDueDate(String title, Date dueDate) {
         assertThat(libraryClient.retrieveHoldingWithTitle(title).getDateDue())
                 .isEqualTo(dueDate);
+    }
+
+
+    @ParameterType("\\d{2}:\\d{2}")
+    public LocalTime time(String time) {
+        var formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return LocalTime.parse(time, formatter);
+    }
+
+    @Then("the time your reservation ends is {time}")
+    public void the_time_your_reservation_ends_is(LocalTime time) {
+        System.out.println("TIME: " + time);
     }
 
     @When("{string} is returned on {oldSchoolDate} to {string}")
@@ -178,10 +193,10 @@ public class Stepdefs {
     @DataTableType
     public MaterialRequest materialRequest(Map<String, String> tableEntry) {
         return new MaterialRequestBuilder()
-            .sourceId(tableEntry.get("source id")) // note the space!
-            .classification(tableEntry.get("classification"))
-            .format(tableEntry.get("format"))
-            .build();
+                .sourceId(tableEntry.get("source id")) // note the space!
+                .classification(tableEntry.get("classification"))
+                .format(tableEntry.get("format"))
+                .build();
     }
 
     @DataTableType
@@ -200,6 +215,11 @@ public class Stepdefs {
                 .build();
     }
 
+    //    @Given("a local classification service with:")
+//    public void classificationServiceData(List<MaterialRequest> books) {
+//        libraryClient.useLocalClassificationService();
+//        libraryClient.addBooks(books);
+//    }
     @Given("a local classification service with:")
     public void classificationServiceData(List<MaterialRequest> books) {
         libraryClient.useLocalClassificationService();
@@ -216,6 +236,16 @@ public class Stepdefs {
         assertThat(libraryClient.retrieveHoldingsAtBranch(branchName))
                 .usingElementComparatorOnFields("barcode") // TODO add in as exercise
                 .containsExactlyInAnyOrder(asArray(expectedHoldings, HoldingResponse.class));
+    }
+
+    @Given("a request for the daily fine for a {materialType}")
+    public void getDailyFine(MaterialType materialType) {
+        libraryClient.getFineAmount(materialType);
+    }
+
+    @Then("the fine amount is {int}")
+    public void assertDailyFineAmount(int expected) {
+        assertThat(libraryClient.currentDailyFineAmount()).isEqualTo(expected);
     }
 
     // ===
