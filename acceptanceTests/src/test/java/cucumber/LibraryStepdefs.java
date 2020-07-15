@@ -6,59 +6,24 @@ import controller.HoldingResponse;
 import controller.MaterialRequest;
 import controller.PatronRequest;
 import io.cucumber.java.DataTableType;
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import library.*;
-import util.Calculator;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static utils.ArrayUtils.*;
+import static utils.ArrayUtils.asArray;
 
 // TODO [x] use PicoContainer and injection between stepdefs?
-public class Stepdefs {
+public class LibraryStepdefs {
     private LibraryClient libraryClient = new LibraryClient();
     private int checkoutResponse;
-
-    // TODO is this really necessary or does this already exist
-    @ParameterType("[A-Z]+(,\\s*[A-Za-z])*")
-    public List<String> wordList(String... commaSeparatedText) {
-        return asList(commaSeparatedText);
-    }
-
-    @ParameterType("\\d+/\\d+/\\d+")
-    // TODO demonstrate pushing this sort of thing into production, making sure it's tested
-    public LocalDate date(String date) {
-        var formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        return LocalDate.parse(date, formatter);
-    }
-
-    @ParameterType("\\d+/\\d+/\\d+")
-    public java.util.Date oldSchoolDate(String dateString) {
-        return Date.from(date(dateString).atStartOfDay(ZoneId.systemDefault()).toInstant());
-    }
-
-    // TODO let coders build this for exercise--delete from here
-    // They should do a simple match on any string,
-    // then convert it to a MaterialType. Note that
-    // the case of the materialtype could be anything.
-    @ParameterType(".*")
-    public MaterialType materialType(String materialType) {
-        return Arrays.stream(MaterialType.values())
-                .filter(type -> type.name().toLowerCase().equals(materialType.toLowerCase()))
-                .findFirst().get();
-    }
-
-    // ===
 
     @Given("a clean library system")
     public void clear() {
@@ -71,8 +36,6 @@ public class Stepdefs {
         libraryClient.addBranch(name);
     }
 
-    //   @Given("a branch named {string} with the following holdings: (.*)$")
-//   public void createBranchWithHoldings(String branchName, List<String> titles) {
     @Given("a branch named {string} with the following holdings:")
     public void createBranchWithHoldings(String branchName, List<String> titles) {
         libraryClient.addBranch(branchName);
@@ -121,16 +84,9 @@ public class Stepdefs {
                 .isEqualTo(dueDate);
     }
 
-
-    @ParameterType("\\d{2}:\\d{2}")
-    public LocalTime time(String time) {
-        var formatter = DateTimeFormatter.ofPattern("HH:mm");
-        return LocalTime.parse(time, formatter);
-    }
-
     @Then("the time your reservation ends is {time}")
     public void the_time_your_reservation_ends_is(LocalTime time) {
-        System.out.println("TIME: " + time);
+        // ?
     }
 
     @When("{string} is returned on {oldSchoolDate} to {string}")
@@ -182,39 +138,6 @@ public class Stepdefs {
                 .collect(toList());
     }
 
-    @DataTableType
-    public BranchRequest branchRequest(Map<String, String> tableEntry) {
-        return new BranchRequestBuilder()
-                .id(tableEntry.get("id")) // note the space!
-                .name(tableEntry.get("name"))
-                .build();
-    }
-
-    @DataTableType
-    public MaterialRequest materialRequest(Map<String, String> tableEntry) {
-        return new MaterialRequestBuilder()
-                .sourceId(tableEntry.get("source id")) // note the space!
-                .classification(tableEntry.get("classification"))
-                .format(tableEntry.get("format"))
-                .build();
-    }
-
-    @DataTableType
-    public PatronRequest patronRequest(Map<String, String> tableEntry) {
-        return new PatronRequestBuilder()
-                .id(tableEntry.get("id"))
-                .name(tableEntry.get("name"))
-                .fineBalance((Integer.parseInt(tableEntry.get("fine balance"))))
-                .build();
-    }
-
-    @DataTableType
-    public HoldingResponse holdingResponse(Map<String, String> tableEntry) {
-        return new HoldingResponseBuilder()
-                .barcode(tableEntry.get("barcode"))
-                .build();
-    }
-
     //    @Given("a local classification service with:")
 //    public void classificationServiceData(List<MaterialRequest> books) {
 //        libraryClient.useLocalClassificationService();
@@ -246,36 +169,5 @@ public class Stepdefs {
     @Then("the fine amount is {int}")
     public void assertDailyFineAmount(int expected) {
         assertThat(libraryClient.currentDailyFineAmount()).isEqualTo(expected);
-    }
-
-    // ===
-
-    Calculator calculator;
-
-    @Given("entry of the number {int}")
-    public void entry_of_the_number(int number) {
-        calculator = new Calculator();
-        calculator.enter(number);
-    }
-
-    // TODO both should work
-//   @When("^add is pressed with a value (\\d+)$")
-//   public void add_is_pressed_with_a_value(int number) {
-//      calculator.add(number);
-//   }
-
-    @When("add is pressed with a value {int}")
-    public void add_pressed_with(int number) {
-        calculator.add(number);
-    }
-
-    @When("square is pressed")
-    public void square_is_pressed() {
-        calculator.square();
-    }
-
-    @Then("the calculator has the value {int}")
-    public void the_calculator_has_the_value(int expectedNumber) {
-        assertThat(calculator.value()).isEqualTo(expectedNumber);
     }
 }
