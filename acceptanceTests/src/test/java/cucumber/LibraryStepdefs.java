@@ -1,20 +1,17 @@
 package cucumber;
 
 import com.loc.material.api.MaterialType;
-import controller.BranchRequest;
 import controller.HoldingResponse;
 import controller.MaterialRequest;
 import controller.PatronRequest;
-import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import library.*;
+import library.LibraryClient;
+import library.MaterialRequestBuilder;
 
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +41,7 @@ public class LibraryStepdefs {
     }
 
     @When("{word} add(s) a branch named {string}")
-    public void addBranch3(String user, String name) {
+    public void addBranch(String user, String name) {
         libraryClient.addBranch(name);
     }
 
@@ -82,11 +79,6 @@ public class LibraryStepdefs {
     public void assertDueDate(String title, Date dueDate) {
         assertThat(libraryClient.retrieveHoldingWithTitle(title).getDateDue())
                 .isEqualTo(dueDate);
-    }
-
-    @Then("the time your reservation ends is {time}")
-    public void the_time_your_reservation_ends_is(LocalTime time) {
-        // ?
     }
 
     @When("{string} is returned on {oldSchoolDate} to {string}")
@@ -138,11 +130,6 @@ public class LibraryStepdefs {
                 .collect(toList());
     }
 
-    //    @Given("a local classification service with:")
-//    public void classificationServiceData(List<MaterialRequest> books) {
-//        libraryClient.useLocalClassificationService();
-//        libraryClient.addBooks(books);
-//    }
     @Given("a local classification service with:")
     public void classificationServiceData(List<MaterialRequest> books) {
         libraryClient.useLocalClassificationService();
