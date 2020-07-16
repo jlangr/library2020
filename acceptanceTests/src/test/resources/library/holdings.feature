@@ -9,7 +9,6 @@ Background:
     | 123 | QA-111 | Book |
     | 999 | EF-333 | Book |
 
-@only
 Scenario: Add holdings to the library system generates incremented barcodes
   * a librarian adds a book holding with source id 123 at branch "East"
   * a librarian adds a book holding with source id 123 at branch "East"
