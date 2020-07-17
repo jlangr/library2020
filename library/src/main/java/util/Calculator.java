@@ -3,6 +3,10 @@ package util;
 public class Calculator {
     private int value;
 
+    public Calculator() {
+//        System.out.println("creating a new instance");
+    }
+
     public void clear() {
         value = 0;
     }

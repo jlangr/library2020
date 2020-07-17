@@ -50,7 +50,6 @@ public class LibraryClient {
         ResponseEntity<BranchRequest[]> response = template.getForEntity(url("/branches"),
                 BranchRequest[].class);
         var responseBody = response.getBody();
-        System.out.println("response for retrieve branches: " + responseBody);
         retrievedBranches = asList(responseBody);
     }
 
