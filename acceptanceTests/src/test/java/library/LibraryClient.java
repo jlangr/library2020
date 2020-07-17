@@ -37,6 +37,7 @@ public class LibraryClient {
 
     public void addBranch(String name) {
         branchScanCodes.put(name, postBranch(name));
+        System.out.println("added " + name + " as " + branchScanCode(name));
     }
 
     public String postBranch(String name) {

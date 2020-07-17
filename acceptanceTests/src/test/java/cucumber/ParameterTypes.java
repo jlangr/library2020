@@ -15,12 +15,6 @@ import static java.util.Arrays.asList;
 
 public class ParameterTypes {
 
-    // TODO is this really necessary or does this already exist
-    @ParameterType("[A-Z]+(,\\s*[A-Za-z])*")
-    public List<String> wordList(String... commaSeparatedText) {
-        return asList(commaSeparatedText);
-    }
-
     @ParameterType("\\d+/\\d+/\\d+")
     // TODO demonstrate pushing this sort of thing into production, making sure it's tested
     public LocalDate date(String date) {
