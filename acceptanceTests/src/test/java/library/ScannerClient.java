@@ -6,7 +6,12 @@ import com.nssi.devices.model1801c.ScanDisplayListener;
 public class ScannerClient implements ScanDisplayListener {
 
     private ScanDisplayListener display = this;
-    ScanStation scanner = new ScanStation(display);
+    public ScanStation scanner = new ScanStation(display);
+    private LibraryClient libraryClient;
+
+    public ScannerClient(LibraryClient libraryClient) {
+        this.libraryClient = libraryClient;
+    }
 
     @Override
     public void showMessage(String text) {
@@ -17,7 +22,7 @@ public class ScannerClient implements ScanDisplayListener {
         scanner.scan(barcodeForBranch);
     }
 
-    public String barcodeForBranch(String branchName) {
-        return "";
+    public String branchScanCode() {
+        return scanner.getBranchId();
     }
 }

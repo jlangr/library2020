@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
         // TODO I should not need to have acceptanceTests here,
         // shouldn't it reference the path from the sub-project?
         features = "acceptanceTests/src/test/resources",
-//        features = "acceptanceTests/src/test/resources/library/checkouts.feature",
+//        features = "acceptanceTests/src/test/resources/library/scanstation.feature",
         monochrome = true)
 public class RunCukesTest {
 }

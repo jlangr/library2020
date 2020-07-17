@@ -31,7 +31,7 @@ public class LibraryClient {
         return retrievedBranches;
     }
 
-    private String branchScanCode(String name) {
+    public String branchScanCode(String name) {
         return branchScanCodes.get(name);
     }
 

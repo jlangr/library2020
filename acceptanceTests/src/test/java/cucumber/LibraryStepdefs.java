@@ -20,7 +20,6 @@ import static utils.ArrayUtils.asArray;
 public class LibraryStepdefs {
     private World world;
 
-
     @Inject
     public LibraryStepdefs(World world) {
         this.world = world;
@@ -66,7 +65,6 @@ public class LibraryStepdefs {
     public void patronChecksOutHolding(String title, Date checkoutDate) {
         world.libraryClient.addPatron("");
         world.checkoutResponse = world.libraryClient.checkOut(title, checkoutDate);
-        System.out.println("response: " + world.checkoutResponse);
     }
 
     @Then("^\"(.*)\" (is|is not) available")
