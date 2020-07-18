@@ -5,8 +5,8 @@ import java.util.Objects;
 import static java.lang.Math.*;
 
 public class Point {
-    double x;
-    double y;
+    final double x;
+    final double y;
     public static final double EQUALS_TOLERANCE = 0.0005;
 
     public Point(double x, double y) {
@@ -18,7 +18,7 @@ public class Point {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Point point = (Point) o;
+        var point = (Point) o;
         var xWithinTolerance = abs(point.x - x) <= EQUALS_TOLERANCE;
         var yWithinTolerance = abs(point.y - y) <= EQUALS_TOLERANCE;
         return xWithinTolerance && yWithinTolerance;
@@ -35,9 +35,9 @@ public class Point {
     }
 
     public Point move(int distance, int degrees) {
-        double radians = toRadians(degrees);
-        double x = distance * cos(radians) + this.x;
-        double y = distance * sin(radians) + this.y;
+        var radians = toRadians(degrees);
+        var x = distance * cos(radians) + this.x;
+        var y = distance * sin(radians) + this.y;
         return new Point(x, y);
     }
 }
