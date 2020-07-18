@@ -1,6 +1,5 @@
 package cucumber;
 
-import com.google.inject.Inject;
 import com.loc.material.api.MaterialType;
 import controller.HoldingResponse;
 import controller.MaterialRequest;
@@ -18,12 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static utils.ArrayUtils.asArray;
 
 public class LibraryStepdefs {
-    private World world;
+    private World world = new World();
 
-    @Inject
-    public LibraryStepdefs(World world) {
-        this.world = world;
-    }
+//    @Inject
+//    public LibraryStepdefs(World world) {
+//        this.world = world;
+//    }
 
     @Given("a clean library system")
     public void clear() {
