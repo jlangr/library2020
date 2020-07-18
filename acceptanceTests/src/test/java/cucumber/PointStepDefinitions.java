@@ -10,9 +10,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PointStepDefinitions {
     private Point point;
 
-    @Given("a point with x of {double} and y of {double}")
-    public void a_point_with_x_of_and_y_of(double x, double y) {
-        point = new Point(x, y);
+    @Given("a point {point}")
+    public void a_point(Point point) {
+        System.out.println("-> " + ParameterTypes.POINT_REGEX);
+        this.point = point;
     }
 
     @When("moving {double} with an angle of {double} degrees")
