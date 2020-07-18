@@ -34,7 +34,7 @@ public class Point {
         return "(" + x + ", " + y + ")";
     }
 
-    public Point move(int distance, int degrees) {
+    public Point move(double distance, double degrees) {
         var radians = toRadians(degrees);
         var x = distance * cos(radians) + this.x;
         var y = distance * sin(radians) + this.y;

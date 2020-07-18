@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static util.Point.EQUALS_TOLERANCE;
 
-public class PointCalculatorTest {
+public class PointTest {
 
     @Test
     public void canMove() {
@@ -29,7 +29,7 @@ public class PointCalculatorTest {
 
     @Test
     public void pointsAreUnequalWhenDifferingByMoreThanTolerance() {
-        var pointA = new Point (10, 20);
+        var pointA = new Point(10, 20);
         var pointB = new Point( 10 + (EQUALS_TOLERANCE + 0.0001), 20);
 
         assertThat(pointA, is(not(equalTo(pointB))));
