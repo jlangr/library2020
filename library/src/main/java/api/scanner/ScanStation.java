@@ -24,7 +24,6 @@ public class ScanStation implements ScanListener {
     private Patron patron;
 
     public ScanStation(ScanDisplayListener display) {
-        System.out.println("creating new scan station");
         this.display = display;
     }
 

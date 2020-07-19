@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         tags = "not @ignore",
         plugin = {"pretty"},
+        snippets = CucumberOptions.SnippetType.CAMELCASE,
         features = "acceptanceTests/src/test/resources",
-//        features = "acceptanceTests/src/test/resources/library/scanstation.feature",
         monochrome = true)
 public class RunCukesTest {
 }
