@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        tags = "not @ignore",
+        tags = "@thisOnly",
         plugin = {"pretty"},
         snippets = CucumberOptions.SnippetType.CAMELCASE,
         features = "acceptanceTests/src/test/resources",
