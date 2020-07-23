@@ -1,14 +1,13 @@
 Feature:
   calculate
 
-@ignore
 Scenario: add numbers
-  Given entry of the number ?
-  When add is pressed with a value ?
-  Then the calculator has the value 1
+  Given entry of the number 7
+  When add is pressed with a value 12
+  Then the calculator has the value 19
 
-@ignore
 Scenario: square numbers
+  Given entry of the number 7
+  When square is pressed
+  Then the calculator has the value 49
 
-@ignore
-Scenario: square numbers again

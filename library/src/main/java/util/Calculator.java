@@ -32,7 +32,7 @@ public class Calculator {
     }
 
     public void square() {
-        value = value * 2;
+        value = value * value;
     }
 
     public int value() {
