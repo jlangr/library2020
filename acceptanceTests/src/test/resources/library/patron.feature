@@ -1,4 +1,3 @@
-
 Feature: Patrons
   As a librarian,
   I want to add new patrons,
@@ -7,7 +6,6 @@ Feature: Patrons
 Background:
   Given a clean library system
 
-@thisOnly
 Scenario: Add new patron
   Given a librarian adds a patron named "Anastasius"
   When a librarian requests a list of all patrons
