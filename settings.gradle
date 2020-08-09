@@ -1,4 +1,3 @@
-rootProject.name='library2020'
+rootProject.name='mob-demo'
 
-include 'acceptanceTests'
-include 'library'
+include 'app'

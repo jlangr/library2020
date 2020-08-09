@@ -1,13 +1,12 @@
 plugins {
-  id 'org.springframework.boot' version '2.2.6.RELEASE' apply false
   id 'java'
 }
 
 allprojects {
   apply plugin: 'java'
 
-  targetCompatibility = 1.11
-  sourceCompatibility = 1.11
+  targetCompatibility = 1.13
+  sourceCompatibility = 1.13
 
   repositories {
     mavenCentral()
