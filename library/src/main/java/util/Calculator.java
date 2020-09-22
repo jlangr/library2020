@@ -1,5 +1,7 @@
 package util;
+import io.cucumber.guice.ScenarioScoped;
 
+@ScenarioScoped
 public class Calculator {
     private int value;
 
