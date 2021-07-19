@@ -4,33 +4,37 @@ import com.loc.material.api.MaterialType;
 import domain.core.Catalog;
 import domain.core.Holding;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class InventoryReport {
-    private static final String NEWLINE = System.getProperty("line.separator");
+    static final String NEWLINE = System.getProperty("line.separator");
     private static final int SPACING = 2;
     private static final int TITLE_LENGTH = 20;
     private static final int BRANCH_LENGTH = 20;
     private static final int AUTHOR_LENGTH = 30;
     private static final int YEAR_LENGTH = 6;
     private static final int ISBN_LENGTH = 10;
-    private static final String OUTPUT_FILENAME = "./InventoryReport.txt";
+    static final String OUTPUT_FILENAME = "./InventoryReport.txt";
     private Catalog catalog;
     private LibraryOfCongress congress;
     private static final int RECORD_LIMIT = 100;
 
+    ReportWriter reportWriter = new ReportWriter();
+
     public InventoryReport(Catalog catalog) {
+        this(catalog, new LibraryOfCongress());
+    }
+
+    public InventoryReport(Catalog catalog, LibraryOfCongress congress) {
         this.catalog = catalog;
-        this.congress = new LibraryOfCongress();
+        this.congress = congress;
     }
 
     public void allBooks() throws IOException {
-        List<Record> records = new ArrayList<Record>();
+        List<Record> records = new ArrayList<>();
         for (Holding holding : catalog) {
             if (holding.getMaterial().getFormat() == MaterialType.Book) {
                 records.add(new Record(holding));
@@ -84,15 +88,7 @@ public class InventoryReport {
 
         String result = buffer.toString();
 
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(OUTPUT_FILENAME));
-            writer.write("Inventory Report");
-            writer.write(NEWLINE);
-            writer.write(result, 0, result.length());
-        } finally {
-            writer.close();
-        }
+        reportWriter.writeReport(result, OUTPUT_FILENAME);
     }
 
     class Record implements Comparable<Record> {
