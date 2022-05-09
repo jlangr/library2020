@@ -20,6 +20,12 @@ dependencies {
     }
     implementation('org.springframework.boot:spring-boot-starter-jetty:2.2.6.RELEASE')
     implementation('org.springframework.boot:spring-boot-starter-actuator:2.2.6.RELEASE')
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 }
 
 //sourceSets {
