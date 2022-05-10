@@ -17,12 +17,12 @@ import static org.hamcrest.Matchers.equalTo;
 // Note that the test classes and methods should be package-level, not public,
 // when using JUnit 5. You will see a warning if you make them public.
 
-class AWorkingJUnit5TestClass {
+class AFailingJUnit5TestClass_YOU_CAN_DELETE {
     String something;
 
     @BeforeEach
     void should_employ_BeforeEach_instead_of_Before() {
-        something = "something";
+        something = "something else";
     }
 
     @Test
