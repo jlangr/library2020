@@ -19,9 +19,27 @@ class APortfolio {
         @ParameterizedTest
         @ValueSource(ints = {0, -1})
         void whenBuyingNonPositiveShares(int shares) {
-            var thrown = assertThrows(InvalidBuyException.class,
+            var thrown = assertThrows(InvalidTransactionException.class,
                     () -> portfolio.buy(ZEBRA, shares));
             assertThat(thrown.getMessage(), equalTo(Portfolio.MSG_INVALID_SHARES));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, -42})
+        void whenSellingNonPositiveShares(int shares) {
+            var thrown = assertThrows(InvalidTransactionException.class,
+                    () -> portfolio.sell(ZEBRA, shares));
+            assertThat(thrown.getMessage(), equalTo(Portfolio.MSG_INVALID_SHARES));
+        }
+
+        @Test
+        void onOversell() {
+            var shares = 40;
+            portfolio.buy(ZEBRA, shares);
+
+            var thrown = assertThrows(InvalidTransactionException.class,
+                    () -> portfolio.sell(ZEBRA, shares + 1));
+            assertThat(thrown.getMessage(), equalTo(Portfolio.MSG_OVERSELL));
         }
     }
 
@@ -33,9 +51,16 @@ class APortfolio {
         }
 
         @Test
-        void isFalseWhenPurchasesMade() {
+        void isFalseAfterPurchasesMade() {
             portfolio.buy(ZEBRA, 42);
             assertThat(portfolio.isEmpty(), equalTo(false));
+        }
+
+        @Test
+        void isTrueOnCompleteSelloff() {
+            portfolio.buy(ZEBRA, 42);
+            portfolio.sell(ZEBRA, 42);
+            assertThat(portfolio.isEmpty(), equalTo(true));
         }
     }
 
@@ -68,6 +93,13 @@ class APortfolio {
 
             assertThat(portfolio.uniqueSymbolCount(), equalTo(1));
         }
+
+        @Test
+        void is0OnCompleteSelloff() {
+            portfolio.buy(ZEBRA, 42);
+            portfolio.sell(ZEBRA, 42);
+            assertThat(portfolio.uniqueSymbolCount(), equalTo(0));
+        }
     }
 
     @Nested
@@ -98,6 +130,14 @@ class APortfolio {
             portfolio.buy(ZEBRA, 100);
 
             assertThat(portfolio.shares(ZEBRA), equalTo(150));
+        }
+
+        @Test
+        void areReducedOnSell() {
+            portfolio.buy(ZEBRA, 50);
+            portfolio.sell(ZEBRA, 20);
+
+            assertThat(portfolio.shares(ZEBRA), equalTo(30));
         }
     }
 }
