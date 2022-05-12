@@ -25,4 +25,8 @@ public class Portfolio {
 
         return holdings.get(symbol);
     }
+
+    public boolean isEmpty() {
+        return holdings.isEmpty();
+    }
 }

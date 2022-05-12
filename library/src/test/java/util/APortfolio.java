@@ -23,6 +23,20 @@ class APortfolio {
     }
 
     @Nested
+    class IsEmpty {
+        @Test
+        void isTrueWhenNoPurchasesMade() {
+            assertThat(portfolio.isEmpty(), equalTo(true));
+        }
+
+        @Test
+        void isFalseWhenPurchasesMade() {
+            portfolio.buy(ZEBRA, 42);
+            assertThat(portfolio.isEmpty(), equalTo(false));
+        }
+    }
+
+    @Nested
     class UniqueSymbolCount {
         @Test
         void isZeroWhenNoPurchasesMode() {
