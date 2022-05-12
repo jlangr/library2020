@@ -17,7 +17,7 @@ public class Portfolio {
     }
 
     private void throwOnInvalidShares(int shares) {
-        if (shares == 0) throw new InvalidBuyException(MSG_INVALID_SHARES);
+        if (shares <= 0) throw new InvalidBuyException(MSG_INVALID_SHARES);
     }
 
     public int shares(String symbol) {
