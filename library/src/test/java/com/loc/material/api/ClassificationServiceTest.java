@@ -16,7 +16,6 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
-import static util.MapUtil.createMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ClassificationServiceTest {
@@ -33,11 +32,11 @@ public class ClassificationServiceTest {
 
     @Test
     public void retrieveMaterialPopulatesFromResponse() {
-        Map<Object, Object> responseMap = createMap(service.isbnKey(THE_ROAD_ISBN),
-                createMap("title", THE_ROAD_TITLE,
+        var responseMap = Map.of(service.isbnKey(THE_ROAD_ISBN),
+                Map.of("title", THE_ROAD_TITLE,
                         "publish_date", THE_ROAD_YEAR,
-                        "classifications", createMap("lc_classifications", asList(THE_ROAD_CLASSIFICATION)),
-                        "authors", asList(createMap("name", THE_ROAD_AUTHOR))));
+                        "classifications", Map.of("lc_classifications", asList(THE_ROAD_CLASSIFICATION)),
+                        "authors", asList(Map.of("name", THE_ROAD_AUTHOR))));
         when(restTemplate.getForObject(contains(THE_ROAD_ISBN), eq(Map.class))).thenReturn(responseMap);
 
         Material material = service.retrieveMaterial(THE_ROAD_ISBN);

@@ -1,6 +1,7 @@
 package util;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -10,8 +11,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static java.util.Calendar.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static util.DateUtil.*;
 
 public class DateUtilTest {

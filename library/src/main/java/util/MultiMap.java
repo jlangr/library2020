@@ -3,7 +3,7 @@ package util;
 import java.util.*;
 
 public class MultiMap<K, V> {
-    private Map<K, List<V>> data = new HashMap<K, List<V>>();
+    private Map<K, List<V>> data = new HashMap<>();
 
     public boolean isEmpty() {
         return size() == 0;
@@ -20,9 +20,9 @@ public class MultiMap<K, V> {
     public void put(K key, V value) {
         if (key == null)
             throw new NullPointerException();
-        List<V> list = get(key);
+        var list = get(key);
         if (list == null) {
-            list = new ArrayList<V>();
+            list = new ArrayList<>();
             data.put(key, list);
         }
         list.add(value);
@@ -33,7 +33,7 @@ public class MultiMap<K, V> {
     }
 
     public Collection<V> values() {
-        List<V> results = new ArrayList<V>();
+        List<V> results = new ArrayList<>();
         for (Iterator<List<V>> it = data.values().iterator(); it.hasNext(); ) {
             List<V> list = it.next();
             results.addAll(list);

@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class HoldingStore implements Iterable<Holding> {
-    private static MultiMap<String, Holding> holdings = new MultiMap<String, Holding>();
+    private static MultiMap<String, Holding> holdings = new MultiMap<>();
 
     public static void deleteAll() {
         holdings.clear();
@@ -26,7 +26,7 @@ public class HoldingStore implements Iterable<Holding> {
     public List<Holding> findByClassification(String classification) {
         List<Holding> results = holdings.get(classification);
         if (results == null)
-            return new ArrayList<Holding>();
+            return new ArrayList<>();
         return results;
     }
 
