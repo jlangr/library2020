@@ -51,12 +51,6 @@ class APortfolio {
         }
 
         @Test
-        void isFalseAfterPurchasesMade() {
-            portfolio.buy(ZEBRA, 42);
-            assertThat(portfolio.isEmpty(), equalTo(false));
-        }
-
-        @Test
         void isTrueOnCompleteSelloff() {
             portfolio.buy(ZEBRA, 42);
             portfolio.sell(ZEBRA, 42);
@@ -67,7 +61,7 @@ class APortfolio {
     @Nested
     class UniqueSymbolCount {
         @Test
-        void isZeroWhenNoPurchasesMode() {
+        void isZeroWhenNothingBought() {
             assertThat(portfolio.uniqueSymbolCount(), equalTo(0));
         }
 
@@ -95,7 +89,7 @@ class APortfolio {
         }
 
         @Test
-        void is0OnCompleteSelloff() {
+        void isZeroOnCompleteSelloff() {
             portfolio.buy(ZEBRA, 42);
             portfolio.sell(ZEBRA, 42);
             assertThat(portfolio.uniqueSymbolCount(), equalTo(0));
@@ -110,10 +104,19 @@ class APortfolio {
         }
 
         @Test
-        void representsSharesPurchased() {
+        void singleBuyReturnsShare() {
             portfolio.buy(ZEBRA, 42);
 
             assertThat(portfolio.shares(ZEBRA), equalTo(42));
+        }
+
+
+        @Test
+        void accumulate() {
+            portfolio.buy(ZEBRA, 42);
+            portfolio.buy(ZEBRA, 42);
+
+            assertThat(portfolio.shares(ZEBRA), equalTo(84));
         }
 
         @Test
@@ -129,7 +132,7 @@ class APortfolio {
             portfolio.buy(ZEBRA, 50);
             portfolio.buy(ZEBRA, 100);
 
-            assertThat(portfolio.shares(ZEBRA), equalTo(150));
+            assertThat(portfolio.shares(ZEBRA), equalTo(100 + 50));
         }
 
         @Test
