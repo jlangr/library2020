@@ -1,13 +1,12 @@
 package com.loc.material.api;
 
-import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
-import testutil.Slow;
 import util.RestUtil;
 
 import java.util.Map;
@@ -59,8 +58,7 @@ class OpenLibraryApiClientTest {
                 openLibraryApiClient.retrieveBookData(THE_ROAD_ISBN));
     }
 
-    // TODO JUnit categories in JUnit 5!!!
-    @Category(Slow.class)
+    @Tag("slow")
     @Test
     void liveRetrieve() {
         var client = new OpenLibraryApiClient(RestUtil.createRestTemplate());

@@ -29,9 +29,7 @@ class ProxyTest {
             ActionContext.getContext().setLocale(Locale.US);
             proxy.execute();
             assertThat((proxy.getAction()).hasFieldErrors(), equalTo(true));
-            Map<String, List<String>> errors =
-                    (proxy.getAction()).getFieldErrors();
-            System.out.println("field errors: " + errors);
+            Map<String, List<String>> errors = (proxy.getAction()).getFieldErrors();
             List<String> fooErrors = errors.get("foo");
             assertThat(fooErrors.size(), equalTo(1));
             String errorMessage = fooErrors.get(0);

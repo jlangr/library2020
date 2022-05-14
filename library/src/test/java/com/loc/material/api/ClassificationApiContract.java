@@ -1,16 +1,15 @@
 package com.loc.material.api;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.experimental.categories.Category;
-import testutil.Slow;
 
 import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-@Category(Slow.class)
+@Tag("slow")
 abstract class ClassificationApiContract {
     private Material material;
 
