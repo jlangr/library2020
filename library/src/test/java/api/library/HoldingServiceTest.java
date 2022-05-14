@@ -4,7 +4,6 @@ import com.loc.material.api.ClassificationApi;
 import com.loc.material.api.Material;
 import domain.core.BranchNotFoundException;
 import domain.core.ClassificationApiFactory;
-import domain.core.Holding;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,20 +13,20 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class HoldingServiceTest {
-    private HoldingService service = new HoldingService();
-    private ClassificationApi classificationApi = mock(ClassificationApi.class);
-    private String branchScanCode;
+class HoldingServiceTest {
+    HoldingService service = new HoldingService();
+    ClassificationApi classificationApi = mock(ClassificationApi.class);
+    String branchScanCode;
 
     @BeforeEach
-    public void initialize() {
+    void initialize() {
         LibraryData.deleteAll();
         ClassificationApiFactory.setService(classificationApi);
         branchScanCode = new BranchService().add("");
     }
 
     @Test
-    public void usesClassificationServiceToRetrieveBookDetails() {
+    void usesClassificationServiceToRetrieveBookDetails() {
         var isbn = "9780141439594";
         var material = new Material(isbn, "", "", "", "");
         when(classificationApi.retrieveMaterial(isbn)).thenReturn(material);
@@ -39,7 +38,7 @@ public class HoldingServiceTest {
     }
 
     @Test
-    public void throwsExceptionWhenBranchNotFound() {
+    void throwsExceptionWhenBranchNotFound() {
         var thrown = assertThrows(BranchNotFoundException.class, () ->
                     service.add("", "badBranchId"));
         assertThat(thrown.getMessage(), equalTo("Branch not found: badBranchId"));

@@ -6,4 +6,8 @@ public class ValueStack {
     public ActionContext getContext() {
         return context;
     }
+
+    public void setContext(ActionContext context) {
+        this.context = context;
+    }
 }

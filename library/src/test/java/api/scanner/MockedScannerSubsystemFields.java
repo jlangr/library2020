@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import static org.mockito.Mockito.mock;
 
-public class MockedScannerSubsystemFields {
+class MockedScannerSubsystemFields {
     protected ScanStation scanner;
     protected ScanStationState state;
     protected ScanDisplayListener display;
@@ -18,7 +18,7 @@ public class MockedScannerSubsystemFields {
     protected BranchService branchService;
 
     @BeforeEach
-    public void createScanner() {
+    void createScanner() {
         display = mock(ScanDisplayListener.class);
         scanner = new ScanStation(display);
 

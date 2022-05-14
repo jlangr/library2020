@@ -6,7 +6,7 @@ import persistence.BranchStore;
 import java.util.List;
 
 public class BranchService {
-    private BranchStore store = new BranchStore();
+    final private BranchStore store = new BranchStore();
 
     public List<Branch> allBranches() {
         return store.getAll();

@@ -12,7 +12,7 @@ import java.util.HashSet;
 import static java.util.Arrays.asList;
 
 public class HasExactlyItemsInAnyOrder<T> extends TypeSafeMatcher<Collection<T>> {
-    private Collection<T> rhsItems;
+    final private Collection<T> rhsItems;
 
     public HasExactlyItemsInAnyOrder(Collection<T> rhsItems) {
         this.rhsItems = rhsItems;
@@ -57,6 +57,6 @@ public class HasExactlyItemsInAnyOrder<T> extends TypeSafeMatcher<Collection<T>>
     @SafeVarargs
     @Factory
     public static <T> Matcher<Collection<T>> hasExactlyItemsInAnyOrder(T... items) {
-        return new HasExactlyItemsInAnyOrder<T>(new HashSet<>(asList(items)));
+        return new HasExactlyItemsInAnyOrder<>(new HashSet<>(asList(items)));
     }
 }

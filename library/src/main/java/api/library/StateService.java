@@ -8,14 +8,14 @@ import java.util.List;
 // no unit tests--tested directly by fitnesse
 public class StateService {
     public List<State> findNameStartingWith(String startingWith) {
-        List<State> filtered = new ArrayList<State>();
+        List<State> filtered = new ArrayList<>();
         for (State each : allStates)
             if (each.name.startsWith(startingWith))
                 filtered.add(each);
         return filtered;
     }
 
-    private State[] allStates = {
+    private final State[] allStates = {
             new State("Alabama", "Montgomery"),
             new State("Alaska", "Juneau"),
             new State("Arizona", "Phoenix"),

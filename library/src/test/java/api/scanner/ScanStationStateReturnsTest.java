@@ -7,7 +7,6 @@ import util.DateUtil;
 import util.TimestampSource;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -15,9 +14,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ScanStationStateReturnsTest extends ScanStationStateTestBase {
-    public static final String PATRON_JANE_ID = "p222";
-    public static final Patron PATRON_JANE = new Patron(PATRON_JANE_ID, "Jane");
-
     @Override
     protected ScanStationState createStateObject() {
         return new ScanStationStateReturns(scanner);

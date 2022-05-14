@@ -1,5 +1,5 @@
-package api.library;
-
-public interface CreditVerifier {
-    boolean isValid(String cardNumber);
-}
+//package api.library;
+//
+//public interface CreditVerifier {
+//    boolean isValid(String cardNumber);
+//}

@@ -6,10 +6,9 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 
-public class FileReportTest {
+class FileReportTest {
     @Test
-    public void canLoadInputStreamIntoTitleAndContentArray() {
-        // TODO
+    void canLoadInputStreamIntoTitleAndContentArray() {
         // First try instantiating FileReport
         // Then use Expose Static Method to directly test the load method
         // Test:
@@ -18,7 +17,6 @@ public class FileReportTest {
         // Then it should be a 2-element array with first line + rest of lines
     }
 
-    // TODO turn this into a useful utility!
     private BufferedReader bufferedReaderOn(String... lines) {
         return toBufferedReader(withEOLs(lines));
     }

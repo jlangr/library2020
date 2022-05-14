@@ -8,22 +8,22 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
-public class MultiMapTest {
+class MultiMapTest {
     private MultiMap<Object, Object> map;
 
     @BeforeEach
-    public void initialize() {
+    void initialize() {
         map = new MultiMap<>();
     }
 
     @Test
-    public void isEmptyOnCreation() {
+    void isEmptyOnCreation() {
         assertThat(map.size(), equalTo(0));
         assertThat(map.valuesSize(), equalTo(0));
     }
 
     @Test
-    public void returnsValuesAssociatedWithKeyAsList() {
+    void returnsValuesAssociatedWithKeyAsList() {
         map.put("a", "alpha");
 
         var values = map.get("a");
@@ -32,7 +32,7 @@ public class MultiMapTest {
     }
 
     @Test
-    public void incrementsSizeForMultipleKeys() {
+    void incrementsSizeForMultipleKeys() {
         map.put("a", "");
         map.put("b", "");
 
@@ -40,7 +40,7 @@ public class MultiMapTest {
     }
 
     @Test
-    public void allowsMultipleElementsSameKey() {
+    void allowsMultipleElementsSameKey() {
         map.put("a", "alpha1");
         map.put("a", "alpha2");
 
@@ -50,7 +50,7 @@ public class MultiMapTest {
     }
 
     @Test
-    public void valuesSizeRepresentsTotalCountOfValues() {
+    void valuesSizeRepresentsTotalCountOfValues() {
         map.put("a", "alpha");
         map.put("b", "beta1");
         map.put("b", "beta2");
@@ -59,7 +59,7 @@ public class MultiMapTest {
     }
 
     @Test
-    public void returnsOnlyValuesAssociatedWithKey() {
+    void returnsOnlyValuesAssociatedWithKey() {
         map.put("a", "alpha");
         map.put("b", "beta");
 
@@ -69,13 +69,13 @@ public class MultiMapTest {
     }
 
     @Test
-    public void throwsOnPutOfNullKey() {
+    void throwsOnPutOfNullKey() {
         assertThrows(NullPointerException.class, () ->
                 map.put(null, ""));
     }
 
     @Test
-    public void clearEliminatesAllData() {
+    void clearEliminatesAllData() {
         map.put("a", "");
         map.put("b", "");
 
@@ -86,7 +86,7 @@ public class MultiMapTest {
     }
 
     @Test
-    public void returnsCombinedCollectionOfAllValues() {
+    void returnsCombinedCollectionOfAllValues() {
         map.put("a", "alpha");
         map.put("b", "beta");
 

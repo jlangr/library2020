@@ -10,16 +10,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CollectionsUtilTest {
+class CollectionsUtilTest {
     private Collection<Object> collection;
 
     @BeforeEach
-    public void initialize() {
+    void initialize() {
         collection = new ArrayList<>();
     }
 
     @Test
-    public void soleElementRetrievesFirstAndOnlyElement() {
+    void soleElementRetrievesFirstAndOnlyElement() {
         collection.add("a");
 
         var soleElement = CollectionsUtil.soleElement(collection);
@@ -27,9 +27,8 @@ public class CollectionsUtilTest {
         assertThat(soleElement, equalTo("a"));
     }
 
-    // TODO think there's a replacement for this in Java now
     @Test
-    public void soleElementThrowsWhenNoElementsExist() {
+    void soleElementThrowsWhenNoElementsExist() {
         var thrown = assertThrows(AssertionError.class, () ->
                 CollectionsUtil.soleElement(collection));
 
@@ -37,7 +36,7 @@ public class CollectionsUtilTest {
     }
 
     @Test
-    public void soleElementThrowsWhenMoreThanOneElement() {
+    void soleElementThrowsWhenMoreThanOneElement() {
         collection.add("a");
         collection.add("b");
 

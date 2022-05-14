@@ -3,7 +3,9 @@ package api.library;
 import com.loc.material.api.ClassificationApi;
 import com.loc.material.api.Material;
 import com.loc.material.api.MaterialType;
-import domain.core.*;
+import domain.core.ClassificationApiFactory;
+import domain.core.HoldingAlreadyCheckedOutException;
+import domain.core.HoldingNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.DateUtil;
@@ -12,6 +14,7 @@ import java.util.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,7 +29,7 @@ class HoldingService_CheckInCheckOutTest {
     String bookHoldingBarcode;
 
     @BeforeEach
-    public void initialize() {
+    void initialize() {
         LibraryData.deleteAll();
         ClassificationApiFactory.setService(classificationApi);
         branchScanCode = new BranchService().add("a branch name");
@@ -49,16 +52,18 @@ class HoldingService_CheckInCheckOutTest {
 
     @Test
     void checkoutThrowsWhenHoldingIdNotFound() {
+        var date = new Date();
         assertThrows(HoldingNotFoundException.class, () ->
-                service.checkOut(patronId, "999:1", new Date()));
+                service.checkOut(patronId, "999:1", date));
     }
 
     @Test
     void checkoutThrowsWhenUnavailable() {
-        service.checkOut(patronId, bookHoldingBarcode, new Date());
+        var date = new Date();
+        service.checkOut(patronId, bookHoldingBarcode, date);
 
         assertThrows(HoldingAlreadyCheckedOutException.class, () ->
-                service.checkOut(patronId, bookHoldingBarcode, new Date()));
+                service.checkOut(patronId, bookHoldingBarcode, date));
     }
 
     @Test
@@ -86,7 +91,7 @@ class HoldingService_CheckInCheckOutTest {
 
         service.checkIn(bookHoldingBarcode, DateUtil.tomorrow(), branchScanCode);
 
-        assertThat(patronService.find(patronId).holdingMap().isEmpty(), equalTo(true)); // TODO hamcrest?
+        assertThat(patronService.find(patronId).holdingMap().isEmpty(), is(true));
     }
 
     @Test
@@ -95,7 +100,7 @@ class HoldingService_CheckInCheckOutTest {
 
         var due = service.dateDue(bookHoldingBarcode);
 
-        Holding holding = service.find(bookHoldingBarcode);
+        var holding = service.find(bookHoldingBarcode);
         assertThat(due, equalTo(holding.dateDue()));
     }
 

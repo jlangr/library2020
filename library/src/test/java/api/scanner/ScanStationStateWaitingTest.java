@@ -8,14 +8,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
 
-public class ScanStationStateWaitingTest extends ScanStationStateTestBase {
+class ScanStationStateWaitingTest extends ScanStationStateTestBase {
     @Override
     protected ScanStationState createStateObject() {
         return new ScanStationStateWaiting(scanner);
     }
 
     @Test
-    public void storesBranchIdWhenBranchCardScanned() {
+    void storesBranchIdWhenBranchCardScanned() {
         var westBranch = new Branch("b123", "west");
         when(branchService.find("b123")).thenReturn(westBranch);
         scanner.setBranch(new Branch("b999", "other"));
@@ -28,7 +28,7 @@ public class ScanStationStateWaitingTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysWarningMessageOnWhenHoldingScanned() {
+    void displaysWarningMessageOnWhenHoldingScanned() {
         state.scanHolding("");
 
         assertStateUnchanged();
@@ -36,7 +36,7 @@ public class ScanStationStateWaitingTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysWarningMessageOnWhenInventoryCardScanned() {
+    void displaysWarningMessageOnWhenInventoryCardScanned() {
         state.scanInventoryCard();
 
         assertStateUnchanged();
@@ -44,7 +44,7 @@ public class ScanStationStateWaitingTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysWarningMessageOnWhenPatronScanned() {
+    void displaysWarningMessageOnWhenPatronScanned() {
         state.scanPatron("");
 
         assertStateUnchanged();
@@ -52,7 +52,7 @@ public class ScanStationStateWaitingTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysWarningMessageOnWhenCompletePressed() {
+    void displaysWarningMessageOnWhenCompletePressed() {
         state.pressComplete();
 
         assertStateUnchanged();

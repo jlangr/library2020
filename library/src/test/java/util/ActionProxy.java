@@ -19,8 +19,8 @@ public class ActionProxy {
 
     public void execute() {
         validationAware = new ValidationAware();
-        Map<String, Object> parms = (Map<String, Object>) extraContext.get(ActionContext.PARAMETERS);
-        for (Map.Entry<String, Object> entry : parms.entrySet())
+        var parms = (Map<String, Object>) extraContext.get(ActionContext.PARAMETERS);
+        for (var entry : parms.entrySet())
             validationAware.addFieldError(entry.getKey(), propertyValue(entry.getKey()));
     }
 

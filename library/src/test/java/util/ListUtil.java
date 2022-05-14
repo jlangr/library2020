@@ -21,7 +21,7 @@ public class ListUtil {
         try {
             return toTypeClass.cast(method.invoke(receiver));
         } catch (Exception e) {
-            throw new RuntimeException("unable to invoked " + method);
+            throw new RuntimeException("unable to invoke " + method);
         }
     }
 

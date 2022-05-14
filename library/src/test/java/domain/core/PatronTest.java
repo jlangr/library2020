@@ -8,31 +8,31 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
-public class PatronTest {
+class PatronTest {
     private Patron jane;
 
     @BeforeEach
-    public void initialize() {
+    void initialize() {
         jane = new Patron("Jane");
     }
 
     @Test
-    public void defaultsIdToEmpty() {
+    void defaultsIdToEmpty() {
         assertThat(jane.getId(), equalTo(""));
     }
 
     @Test
-    public void fineBalanceIsZeroOnCreation() {
+    void fineBalanceIsZeroOnCreation() {
         assertThat(jane.fineBalance(), equalTo(0));
     }
 
     @Test
-    public void holdingsAreEmptyOnCreation() {
+    void holdingsAreEmptyOnCreation() {
         assertThat(jane.holdingMap().isEmpty(), equalTo(true));
     }
 
     @Test
-    public void returnsHoldingsAdded() {
+    void returnsHoldingsAdded() {
         var holding = new HoldingBuilder().create();
 
         jane.add(holding);
@@ -41,7 +41,7 @@ public class PatronTest {
     }
 
     @Test
-    public void removesHoldingFromPatron() {
+    void removesHoldingFromPatron() {
         var holding = new HoldingBuilder().create();
         jane.add(holding);
 
@@ -51,14 +51,14 @@ public class PatronTest {
     }
 
     @Test
-    public void storesFines() {
+    void storesFines() {
         jane.addFine(10);
 
         assertThat(jane.fineBalance(), equalTo(10));
     }
 
     @Test
-    public void increasesBalanceOnAdditionalFines() {
+    void increasesBalanceOnAdditionalFines() {
         jane.addFine(10);
 
         jane.addFine(30);
@@ -67,7 +67,7 @@ public class PatronTest {
     }
 
     @Test
-    public void decreasesBalanceWhenPatronRemitsAmount() {
+    void decreasesBalanceWhenPatronRemitsAmount() {
         jane.addFine(40);
 
         jane.remit(25);
@@ -76,7 +76,7 @@ public class PatronTest {
     }
 
     @Test
-    public void supportsEqualityComparison() {
+    void supportsEqualityComparison() {
         var patron1 = new Patron("p1", "Joe");
         var patron1Copy1 = new Patron("p1", "");
         var patron1Copy2 = new Patron("p1", "");

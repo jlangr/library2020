@@ -4,20 +4,24 @@ import domain.core.Holding;
 import domain.core.Patron;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import util.DateUtilTest;
 import util.TimestampSource;
 
+import java.util.Date;
+
 import static api.scanner.ScanStationStateCheckout.*;
+import static java.util.Calendar.JANUARY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
+import static util.DateUtil.create;
 
 class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
-    public static final String PATRON_JOE_ID = "p111";
-    public static final Patron PATRON_JOE = new Patron(PATRON_JOE_ID, "Joe");
+    static final String PATRON_JOE_ID = "p111";
+    static final Patron PATRON_JOE = new Patron(PATRON_JOE_ID, "Joe");
+    static final Date NEW_YEARS_DAY = create(2011, JANUARY, 1);
 
-    private Holding holdingWithAvailability;
-    private Holding holdingWithUnavailability;
+    Holding holdingWithAvailability;
+    Holding holdingWithUnavailability;
 
     @Override
     protected ScanStationState createStateObject() {
@@ -30,7 +34,7 @@ class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
         holdingWithUnavailability = createHoldingWithAvailability(false);
     }
 
-    private Holding createHoldingWithAvailability(boolean isAvailable) {
+    Holding createHoldingWithAvailability(boolean isAvailable) {
         Holding holding = mock(Holding.class);
         when(holding.isAvailable()).thenReturn(isAvailable);
         return holding;
@@ -72,11 +76,11 @@ class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     void checksOutHoldingWhenHoldingIdScanned() {
         scanner.scanPatronId(PATRON_JOE_ID);
         when(holdingService.find("123:1")).thenReturn(holdingWithAvailability);
-        TimestampSource.queueNextTime(DateUtilTest.NEW_YEARS_DAY);
+        TimestampSource.queueNextTime(NEW_YEARS_DAY);
 
         state.scanHolding("123:1");
 
-        verify(holdingService).checkOut(PATRON_JOE_ID, "123:1", DateUtilTest.NEW_YEARS_DAY);
+        verify(holdingService).checkOut(PATRON_JOE_ID, "123:1", NEW_YEARS_DAY);
         assertMessageDisplayed(String.format(MSG_CHECKED_OUT, "123:1"));
         assertStateUnchanged();
     }

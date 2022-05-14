@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ValidationAware {
-    private Map<String, List<String>> fieldErrors = new HashMap<>();
+    Map<String, List<String>> fieldErrors = new HashMap<>();
 
     public boolean hasFieldErrors() {
         return !fieldErrors.isEmpty();

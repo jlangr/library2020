@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.verify;
@@ -33,7 +32,7 @@ public abstract class ScanStationStateTestBase extends MockedScannerSubsystemFie
     }
 
     @Test
-    public void toStringSpecifiesStateName() {
+    void toStringSpecifiesStateName() {
         var className = state.getClass().getSimpleName();
         assertThat(state.toString(), equalTo("state: " + className));
     }

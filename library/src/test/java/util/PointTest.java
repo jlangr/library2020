@@ -6,10 +6,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static util.Point.EQUALS_TOLERANCE;
 
-public class PointTest {
-
+ class PointTest {
     @Test
-    public void canMove() {
+    void canMove() {
         assertThat(new Point(0, 0).move(10, 0),
                 is(equalTo(new Point(10, 0))));
 
@@ -18,7 +17,7 @@ public class PointTest {
     }
 
     @Test
-    public void pointsAreEqualWhenWithinTolerance() {
+    void pointsAreEqualWhenWithinTolerance() {
         var pointA = new Point (10, 20);
         var pointB = new Point(
                 10 + (EQUALS_TOLERANCE - 0.0001),
@@ -28,7 +27,7 @@ public class PointTest {
     }
 
     @Test
-    public void pointsAreUnequalWhenDifferingByMoreThanTolerance() {
+    void pointsAreUnequalWhenDifferingByMoreThanTolerance() {
         var pointA = new Point(10, 20);
         var pointB = new Point( 10 + (EQUALS_TOLERANCE + 0.0001), 20);
 

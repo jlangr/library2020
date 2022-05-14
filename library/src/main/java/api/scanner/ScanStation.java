@@ -19,7 +19,7 @@ public class ScanStation implements ScanListener {
     private PatronService patronService = new PatronService();
     private BranchService branchService = new BranchService();
     private ScanStationState state = new ScanStationStateWaiting(this);
-    private ScanDisplayListener display;
+    private final ScanDisplayListener display;
     private Branch branch = Branch.CHECKED_OUT;
     private Patron patron;
 
@@ -30,19 +30,19 @@ public class ScanStation implements ScanListener {
     @Override
     public void scan(String barcode) {
         switch (BarcodeInterpreter.typeOf(barcode)) {
-            case Branch:
+            case BRANCH:
                 state.scanBranchId(barcode);
                 break;
-            case Inventory:
+            case INVENTORY:
                 state.scanInventoryCard();
                 break;
-            case Holding:
+            case HOLDING:
                 state.scanHolding(barcode);
                 break;
-            case Patron:
+            case PATRON:
                 state.scanPatron(barcode);
                 break;
-            case Unrecognized:
+            case UNRECOGNIZED:
                 showMessage(MSG_BAR_CODE_NOT_RECOGNIZED);
                 break;
         }
@@ -111,10 +111,6 @@ public class ScanStation implements ScanListener {
         return patron;
     }
 
-    void setPatron(Patron patron) {
-        this.patron = patron;
-    }
-
     public void setBranch(Branch branch) {
         this.branch = branch;
     }
@@ -124,15 +120,14 @@ public class ScanStation implements ScanListener {
     }
 
     public void scanBranchId(String branchId) {
-        Branch branch = branchService.find(branchId);
-        if (branch == null) {
-            showMessage(String
-                    .format(ScanStation.MSG_NONEXISTENT_BRANCH, branchId));
+        var foundBranch = branchService.find(branchId);
+        if (foundBranch == null) {
+            showMessage(String.format(ScanStation.MSG_NONEXISTENT_BRANCH, branchId));
             return;
         }
-        this.branch = branch;
+        this.branch = foundBranch;
         showMessage(String
-                .format(ScanStation.MSG_BRANCH_SET_TO, branch.getName()));
+                .format(ScanStation.MSG_BRANCH_SET_TO, foundBranch.getName()));
     }
 
     public Branch getBranch() {

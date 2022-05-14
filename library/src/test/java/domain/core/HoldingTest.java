@@ -30,14 +30,14 @@ This test class is a mess. Some opportunities for cleanup:
  */
 
 class HoldingTest {
-    private static final Material THE_TRIAL = new Material("10", "", "10", "", "");
-    private static final Material DR_STRANGELOVE = new Material("12", "", "11", "", MaterialType.DVD, "");
-    private static final Material THE_REVENANT = new Material("12", "", "11", "", MaterialType.NewReleaseDVD, "");
-    private Holding h;
-    private static final Date TODAY = new Date();
-    private static final int COPY_NUMBER_1 = 1;
-    private Branch eastBranch = new Branch("East");
-    private Branch westBranch = new Branch("West");
+    static final Material THE_TRIAL = new Material("10", "", "10", "", "");
+    static final Material DR_STRANGELOVE = new Material("12", "", "11", "", MaterialType.DVD, "");
+    static final Material THE_REVENANT = new Material("12", "", "11", "", MaterialType.NewReleaseDVD, "");
+    Holding h;
+    static final Date TODAY = new Date();
+    static final int COPY_NUMBER_1 = 1;
+    Branch eastBranch = new Branch("East");
+    Branch westBranch = new Branch("West");
 
     @BeforeEach
     void setUp() {

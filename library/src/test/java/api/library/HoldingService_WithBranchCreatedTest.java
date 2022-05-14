@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class HoldingService_WithBranchCreatedTest {
-    private HoldingService service = new HoldingService();
-    private ClassificationApi classificationApi = mock(ClassificationApi.class);
-    private String branchScanCode;
+class HoldingService_WithBranchCreatedTest {
+    HoldingService service = new HoldingService();
+    ClassificationApi classificationApi = mock(ClassificationApi.class);
+    String branchScanCode;
 
     @BeforeEach
-    public void initialize() {
+    void initialize() {
         LibraryData.deleteAll();
         ClassificationApiFactory.setService(classificationApi);
         branchScanCode = new BranchService().add("a branch name");
@@ -35,7 +35,7 @@ public class HoldingService_WithBranchCreatedTest {
     }
 
     @Test
-    public void returnsEntireInventoryOfHoldings() {
+    void returnsEntireInventoryOfHoldings() {
         for (int i = 0; i < 3; i++)
             addHolding();
 
@@ -45,19 +45,19 @@ public class HoldingService_WithBranchCreatedTest {
     }
 
     @Test
-    public void storesNewHoldingAtBranch() {
+    void storesNewHoldingAtBranch() {
         var barcode = addHolding();
 
         assertThat(service.find(barcode).getBranch().getScanCode(), equalTo(branchScanCode));
     }
 
     @Test
-    public void findByBarCodeReturnsNullWhenNotFound() {
+    void findByBarCodeReturnsNullWhenNotFound() {
         assertThat(service.find("999:1"), nullValue());
     }
 
     @Test
-    public void updatesBranchOnHoldingTransfer() {
+    void updatesBranchOnHoldingTransfer() {
         var barcode = addHolding();
 
         service.transfer(barcode, branchScanCode);
@@ -67,26 +67,26 @@ public class HoldingService_WithBranchCreatedTest {
     }
 
     @Test
-    public void throwsOnTransferOfNonexistentHolding() {
+    void throwsOnTransferOfNonexistentHolding() {
         assertThrows(HoldingNotFoundException.class, () ->
                 service.transfer("XXX:1", branchScanCode));
     }
 
     @Test
-    public void holdingIsAvailableWhenNotCheckedOut() {
+    void holdingIsAvailableWhenNotCheckedOut() {
         var barcode = addHolding();
 
         assertThat(service.isAvailable(barcode), equalTo(true));
     }
 
     @Test
-    public void availabilityCheckThrowsWhenHoldingNotFound() {
+    void availabilityCheckThrowsWhenHoldingNotFound() {
         assertThrows(HoldingNotFoundException.class, () ->
                 service.isAvailable("345:1"));
     }
 
     @Test
-    public void checkinThrowsWhenHoldingIdNotFound() {
+    void checkinThrowsWhenHoldingIdNotFound() {
         assertThrows(HoldingNotFoundException.class, () ->
                 service.checkIn("999:1", new Date(), branchScanCode));
     }

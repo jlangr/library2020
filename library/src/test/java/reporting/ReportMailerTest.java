@@ -2,9 +2,8 @@ package reporting;
 
 import org.junit.jupiter.api.Test;
 
-public class ReportMailerTest {
+class ReportMailerTest {
     @Test
-    public void stub() {
-
+    void stub() {
     }
 }

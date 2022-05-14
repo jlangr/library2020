@@ -76,7 +76,7 @@ class HoldingMapTest {
 
         map.remove(holding);
 
-        assertThat(map.contains(holding), equalTo(false)); // TODO way to do this with hamcrest?
+        assertThat(map.contains(holding), equalTo(false));
     }
 
     @Test

@@ -5,8 +5,6 @@ import domain.core.Patron;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,7 +25,7 @@ class PatronStoreTest {
     void persistsAddedPatron() {
         store.add(patronSmith);
 
-        Collection<Patron> patrons = store.getAll();
+        var patrons = store.getAll();
 
         assertThat(soleElement(patrons), equalTo(patronSmith));
     }

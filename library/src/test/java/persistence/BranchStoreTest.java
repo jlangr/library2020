@@ -8,18 +8,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
-public class BranchStoreTest {
+class BranchStoreTest {
     private BranchStore store;
     private static final Branch EAST_BRANCH = new Branch("East");
 
     @BeforeEach
-    public void initialize() {
+    void initialize() {
         BranchStore.deleteAll();
         store = new BranchStore();
     }
 
     @Test
-    public void assignsIdToBranch() {
+    void assignsIdToBranch() {
         var branch = new Branch("name");
 
         store.save(branch);
@@ -28,7 +28,7 @@ public class BranchStoreTest {
     }
 
     @Test
-    public void assignedIdIsUnique() {
+    void assignedIdIsUnique() {
         var branchA = new Branch("a");
         store.save(branchA);
         var branchB = new Branch("b");
@@ -39,7 +39,7 @@ public class BranchStoreTest {
     }
 
     @Test
-    public void doesNotChangeIdIfAlreadyAssigned() {
+    void doesNotChangeIdIfAlreadyAssigned() {
         var branch = new Branch("b1964", "");
 
         store.save(branch);
@@ -48,7 +48,7 @@ public class BranchStoreTest {
     }
 
     @Test
-    public void returnsSavedBranches() {
+    void returnsSavedBranches() {
         store.save(new Branch("name"));
 
         var retrieved = store.findByName("name");
@@ -57,7 +57,7 @@ public class BranchStoreTest {
     }
 
     @Test
-    public void returnsNewInstanceOfPersistedBranch() {
+    void returnsNewInstanceOfPersistedBranch() {
         var branch = new Branch("name");
         store.save(branch);
         store = new BranchStore();
@@ -68,7 +68,7 @@ public class BranchStoreTest {
     }
 
     @Test
-    public void returnsListOfAllBranches() {
+    void returnsListOfAllBranches() {
         var branch = new Branch("b123", "");
         store.save(branch);
 
@@ -78,7 +78,7 @@ public class BranchStoreTest {
     }
 
     @Test
-    public void findsBranchByScanCode() {
+    void findsBranchByScanCode() {
         store.save(EAST_BRANCH);
 
         var retrieved = store.findByScanCode(EAST_BRANCH.getScanCode());
@@ -87,13 +87,13 @@ public class BranchStoreTest {
     }
 
     @Test
-    public void findsCheckedOutBranch() {
+    void findsCheckedOutBranch() {
         assertThat(store.findByScanCode(Branch.CHECKED_OUT.getScanCode()),
                 is(sameInstance(Branch.CHECKED_OUT)));
     }
 
     @Test
-    public void findsBranchByScanCodeReturnsNullWhenNotFound() {
+    void findsBranchByScanCodeReturnsNullWhenNotFound() {
         assertThat(store.findByScanCode(""), nullValue());
     }
 }

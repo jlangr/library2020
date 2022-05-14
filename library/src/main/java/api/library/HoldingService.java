@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public class HoldingService {
-    private Catalog catalog = new Catalog();
+    final private Catalog catalog = new Catalog();
 
     public String add(String sourceId, String branchId) {
         Branch branch = findBranch(branchId);

@@ -10,7 +10,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 public class LessThan extends TypeSafeMatcher<Number> {
-    private Number rhs;
+    Number rhs;
 
     public LessThan(Number rhs) {
         this.rhs = rhs;
@@ -27,7 +27,7 @@ public class LessThan extends TypeSafeMatcher<Number> {
     }
 
     @Factory
-    public static <T> Matcher<Number> lessThan(Number number) {
+    public static Matcher<Number> lessThan(Number number) {
         return new LessThan(number);
     }
 }

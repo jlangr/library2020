@@ -2,64 +2,66 @@ package util.matchers;
 
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static java.util.Collections.singletonList;
 
-public class HasExactlyItemsInAnyOrder_MatchesSafelyTest {
+class HasExactlyItemsInAnyOrder_MatchesSafelyTest {
     @Test
-    public void falseWhenArgIsNull() {
-        assertFalse(createMatcher(asList("a")).matchesSafely(null));
+    void falseWhenArgIsNull() {
+        assertThat(createMatcher(singletonList("a")).matchesSafely(null), is(false));
     }
 
     @Test
-    public void falseWhenReceiverListIsNull() {
-        assertFalse(createMatcher(null).matchesSafely(asList("a")));
+    void falseWhenReceiverListIsNull() {
+        assertThat(createMatcher(null).matchesSafely(singletonList("a")), is(false));
     }
 
     @Test
-    public void trueWhenBothAreNull() {
-        assertTrue(createMatcher(null).matchesSafely(null));
+    void trueWhenBothAreNull() {
+        assertThat(createMatcher(null).matchesSafely(null), is(true));
     }
 
     @Test
-    public void falseWhenSizesDiffer() {
-        assertFalse(createMatcher(asList("a")).matchesSafely(asList("a", "b")));
+    void falseWhenSizesDiffer() {
+        assertThat(createMatcher(singletonList("a")).matchesSafely(asList("a", "b")), is(false));
     }
 
     @Test
-    public void trueWhenBothContainSingleSameItem() {
-        assertTrue(createMatcher(asList("a")).matchesSafely(asList("a")));
+    void trueWhenBothContainSingleSameItem() {
+        assertThat(createMatcher(singletonList("a")).matchesSafely(singletonList("a")), is(true));
     }
 
     @Test
-    public void trueWhenBothContainSameItemsInSameOrder() {
-        assertTrue(createMatcher(asList("a", "b")).matchesSafely(asList("a", "b")));
+    void trueWhenBothContainSameItemsInSameOrder() {
+        assertThat(createMatcher(asList("a", "b")).matchesSafely(asList("a", "b")), is(true));
     }
 
     @Test
-    public void trueWhenBothContainSameItemsDifferentOrder() {
-        assertTrue(createMatcher(asList("a", "b")).matchesSafely(asList("b", "a")));
+    void trueWhenBothContainSameItemsDifferentOrder() {
+        assertThat(createMatcher(asList("a", "b")).matchesSafely(asList("b", "a")), is(true));
     }
 
     @Test
-    public void falseWhenBothHaveDifferingDuplicatesButSetsMatch() {
-        assertFalse(createMatcher(asList("a", "b", "b")).matchesSafely(asList("b", "a", "a")));
+    void falseWhenBothHaveDifferingDuplicatesButSetsMatch() {
+        assertThat(createMatcher(asList("a", "b", "b")).matchesSafely(asList("b", "a", "a")), is(false));
     }
 
     @Test
-    public void falseWhenOneIsSubsetOfOther() {
-        assertFalse(createMatcher(asList("a", "b", "b")).matchesSafely(asList("b", "a", "c")));
+    void falseWhenOneIsSubsetOfOther() {
+        assertThat(createMatcher(asList("a", "b", "b")).matchesSafely(asList("b", "a", "c")), is(false));
     }
 
     @Test
-    public void falseWhenItemsDontMatch() {
-        assertFalse(createMatcher(asList("a", "b", "c")).matchesSafely(asList("a", "b", "d")));
+    void falseWhenItemsDontMatch() {
+        assertThat(createMatcher(asList("a", "b", "c")).matchesSafely(asList("a", "b", "d")), is(false));
     }
 
     private HasExactlyItemsInAnyOrder<String> createMatcher(List<String> arg) {
-        return new HasExactlyItemsInAnyOrder<String>(arg);
+        return new HasExactlyItemsInAnyOrder<>(arg);
     }
 }

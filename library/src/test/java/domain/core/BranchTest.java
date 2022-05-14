@@ -6,15 +6,14 @@ import testutil.EqualityTester;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class BranchTest {
-
+class BranchTest {
     @Test
-    public void defaultsIdToEmpty() {
+    void defaultsIdToEmpty() {
         assertThat(new Branch("alpha").getScanCode(), equalTo(""));
     }
 
     @Test
-    public void supportsEquality() {
+    void supportsEquality() {
         var branch1 = new Branch("b111", "east");
         var branch1Copy1 = new Branch("b111", "east");
         var branch1Copy2 = new Branch("b111", "east");

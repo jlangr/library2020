@@ -1,17 +1,18 @@
 package api.scanner;
 
 public class BarcodeInterpreter {
+    private BarcodeInterpreter() {}
 
     public static BarcodeType typeOf(String barcode) {
         if (isBranchId(barcode))
-            return BarcodeType.Branch;
+            return BarcodeType.BRANCH;
         if (isInventoryId(barcode))
-            return BarcodeType.Inventory;
+            return BarcodeType.INVENTORY;
         if (isHoldingId(barcode))
-            return BarcodeType.Holding;
+            return BarcodeType.HOLDING;
         if (isPatronId(barcode))
-            return BarcodeType.Patron;
-        return BarcodeType.Unrecognized;
+            return BarcodeType.PATRON;
+        return BarcodeType.UNRECOGNIZED;
     }
 
     private static boolean isPatronId(String barcode) {

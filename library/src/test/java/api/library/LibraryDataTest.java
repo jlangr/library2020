@@ -29,7 +29,7 @@ class LibraryDataTest {
     void deleteAllRemovesAllPatrons() {
         patronService.patronAccess.add(new Patron("", "1"));
         branchService.add("2");
-        Material material = new Material("3", "", "", "", "");
+        var material = new Material("3", "", "", "", "");
         when(classificationApi.retrieveMaterial("3")).thenReturn(material);
         holdingService.add(material.getSourceId(), Branch.CHECKED_OUT.getScanCode());
 

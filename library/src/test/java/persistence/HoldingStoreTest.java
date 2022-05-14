@@ -9,12 +9,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static testutil.CollectionsUtil.soleElement;
 
-public class HoldingStoreTest {
+class HoldingStoreTest {
     private HoldingStore store;
     private Holding savedHolding;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         HoldingStore.deleteAll();
         store = new HoldingStore();
         savedHolding = new HoldingBuilder().create();
@@ -22,7 +22,7 @@ public class HoldingStoreTest {
     }
 
     @Test
-    public void returnsAddedHoldings() {
+    void returnsAddedHoldings() {
         var retrieved = store.findByClassification(classification(savedHolding));
 
         assertThat(soleElement(retrieved).getMaterial(), equalTo(savedHolding.getMaterial()));
@@ -33,7 +33,7 @@ public class HoldingStoreTest {
     }
 
     @Test
-    public void returnsNewInstanceOnRetrieval() {
+    void returnsNewInstanceOnRetrieval() {
         store = new HoldingStore();
 
         var retrieved = store.findByClassification(classification(savedHolding));
@@ -42,14 +42,14 @@ public class HoldingStoreTest {
     }
 
     @Test
-    public void findByBarCodeReturnsMatchingHolding() {
+    void findByBarCodeReturnsMatchingHolding() {
         var holding = store.findByBarcode(savedHolding.getBarcode());
 
         assertThat(holding.getBarcode(), equalTo(savedHolding.getBarcode()));
     }
 
     @Test
-    public void findBarCodeNotFound() {
+    void findBarCodeNotFound() {
         assertThat(store.findByBarcode("nonexistent barcode:1"), nullValue());
     }
 }

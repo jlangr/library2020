@@ -6,7 +6,7 @@ import persistence.PatronStore;
 import java.util.Collection;
 
 public class PatronService {
-    public PatronStore patronAccess = new PatronStore();
+    public final PatronStore patronAccess = new PatronStore();
 
     public String add(String name) {
         return save(new Patron(name));

@@ -10,14 +10,14 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ScanStationStateInventoryTest extends ScanStationStateTestBase {
+class ScanStationStateInventoryTest extends ScanStationStateTestBase {
     @Override
     protected ScanStationStateInventory createStateObject() {
         return new ScanStationStateInventory(scanner);
     }
 
     @Test
-    public void displaysWarningWhenInventoryCardScanned() {
+    void displaysWarningWhenInventoryCardScanned() {
         state.scanInventoryCard();
 
         assertStateRetainedWithMessage(MSG_COMPLETE_INVENTORY_FIRST);
@@ -29,7 +29,7 @@ public class ScanStationStateInventoryTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void changesBranchWhenBranchIdScanned() {
+    void changesBranchWhenBranchIdScanned() {
         when(branchService.find("b222")).thenReturn(new Branch("b222", "West"));
 
         state.scanBranchId("b222");
@@ -40,7 +40,7 @@ public class ScanStationStateInventoryTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void addsNewHoldingToLibraryWhenSourceIdScanned() {
+    void addsNewHoldingToLibraryWhenSourceIdScanned() {
         var sourceId = "1234567890123";
         scanner.setBranch(new Branch("b123", ""));
 
@@ -52,14 +52,14 @@ public class ScanStationStateInventoryTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysWarningWhenPatronCardScanned() {
+    void displaysWarningWhenPatronCardScanned() {
         state.scanPatron("p123");
 
         assertStateRetainedWithMessage(MSG_COMPLETE_INVENTORY_FIRST);
     }
 
     @Test
-    public void changesStateToReturnsWhenCompletePressed() {
+    void changesStateToReturnsWhenCompletePressed() {
         state.pressComplete();
 
         assertThat(scanner.getCurrentState(), is(instanceOf(ScanStationStateReturns.class)));
