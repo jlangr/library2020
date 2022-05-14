@@ -2,17 +2,17 @@ package api.scanner;
 
 import domain.core.Holding;
 import domain.core.Patron;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import util.DateUtilTest;
 import util.TimestampSource;
 
 import static api.scanner.ScanStationStateCheckout.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
+class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     public static final String PATRON_JOE_ID = "p111";
     public static final Patron PATRON_JOE = new Patron(PATRON_JOE_ID, "Joe");
 
@@ -24,8 +24,8 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
         return new ScanStationStateCheckout(scanner);
     }
 
-    @Before
-    public void initialize() {
+    @BeforeEach
+    void initialize() {
         holdingWithAvailability = createHoldingWithAvailability(true);
         holdingWithUnavailability = createHoldingWithAvailability(false);
     }
@@ -36,13 +36,13 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
         return holding;
     }
 
-    @Before
-    public void addPatronJoe() {
+    @BeforeEach
+    void addPatronJoe() {
         when(patronService.find(PATRON_JOE_ID)).thenReturn(PATRON_JOE);
     }
 
     @Test
-    public void displaysWarningWhenPatronCardScanned() {
+    void displaysWarningWhenPatronCardScanned() {
         state.scanPatron(PATRON_JOE_ID);
 
         assertMessageDisplayed(MSG_COMPLETE_CHECKOUT_FIRST);
@@ -50,7 +50,7 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysWarningWhenInventoryCardScanned() {
+    void displaysWarningWhenInventoryCardScanned() {
         state.scanInventoryCard();
 
         assertMessageDisplayed(MSG_COMPLETE_CHECKOUT_FIRST);
@@ -58,7 +58,7 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysMessageIfNoHoldingExists() {
+    void displaysMessageIfNoHoldingExists() {
         scanner.scanPatronId(PATRON_JOE_ID);
         when(holdingService.find("123:1")).thenReturn(null);
 
@@ -69,7 +69,7 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void checksOutHoldingWhenHoldingIdScanned() {
+    void checksOutHoldingWhenHoldingIdScanned() {
         scanner.scanPatronId(PATRON_JOE_ID);
         when(holdingService.find("123:1")).thenReturn(holdingWithAvailability);
         TimestampSource.queueNextTime(DateUtilTest.NEW_YEARS_DAY);
@@ -82,7 +82,7 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysMessageWhenBookCheckedOutTwice() {
+    void displaysMessageWhenBookCheckedOutTwice() {
         scanner.scanPatronId(PATRON_JOE_ID);
         when(holdingService.find("123:1")).thenReturn(holdingWithAvailability);
         state.scanHolding("123:1");
@@ -96,7 +96,7 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void changesStateToReturnsWhenCompletePressed() {
+    void changesStateToReturnsWhenCompletePressed() {
         scanner.scanPatronId(PATRON_JOE_ID);
 
         state.pressComplete();
@@ -106,7 +106,7 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysWarningWhenBranchIdScanned() {
+    void displaysWarningWhenBranchIdScanned() {
         state.scanBranchId("b123");
 
         assertStateUnchanged();

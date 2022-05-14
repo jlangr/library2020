@@ -1,24 +1,23 @@
 package domain.core;
 
 import com.loc.material.api.Material;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import persistence.HoldingStore;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static util.matchers.HasExactlyItems.hasExactlyItems;
 
 public class CatalogTest {
     private Catalog catalog = new Catalog();
     private HoldingBuilder holdingBuilder = new HoldingBuilder();
 
-    @Before
+    @BeforeEach
     public void initialize() {
         HoldingStore.deleteAll();
     }
@@ -37,34 +36,34 @@ public class CatalogTest {
 
     @Test
     public void answersEmptyForNonexistentMaterial() {
-        assertTrue(catalog.findAll("nonexistentid").isEmpty());
+        assertThat(catalog.findAll("nonexistentid").isEmpty(), equalTo(true));
     }
 
     @Test
     public void findAllReturnsListOfHoldings() {
-        String classification = "123";
-        String barcode = addHoldingWithClassification(classification);
-        String barcode2 = addHoldingWithClassification(classification);
+        var classification = "123";
+        var barcode = addHoldingWithClassification(classification);
+        var barcode2 = addHoldingWithClassification(classification);
 
-        List<Holding> holdings = catalog.findAll(classification);
+        var holdings = catalog.findAll(classification);
 
-        Holding retrieved1 = catalog.find(barcode);
-        Holding retrieved2 = catalog.find(barcode2);
+        var retrieved1 = catalog.find(barcode);
+        var retrieved2 = catalog.find(barcode2);
         assertThat(holdings, equalTo(asList(retrieved1, retrieved2)));
     }
 
     private String addHoldingWithClassification(String classification) {
-        Material material = new Material("", "", "", classification, "");
-        Holding holding = holdingBuilder.with(material).create();
+        var material = new Material("", "", "", classification, "");
+        var holding = holdingBuilder.with(material).create();
         return catalog.add(holding);
     }
 
     @Test
     public void findAllReturnsOnlyHoldingsWithMatchingClassification() {
-        String barcode1 = addHoldingWithClassification("123");
+        var barcode1 = addHoldingWithClassification("123");
         addHoldingWithClassification("456");
 
-        List<Holding> retrieved = catalog.findAll("123");
+        var retrieved = catalog.findAll("123");
 
         assertThat(retrieved.size(), equalTo(1));
         assertThat(retrieved.get(0).getBarcode(), equalTo(barcode1));
@@ -72,21 +71,21 @@ public class CatalogTest {
 
     @Test
     public void retrievesHoldingUsingBarcode() {
-        Holding holding = holdingBuilder.create();
-        String barcode = catalog.add(holding);
+        var holding = holdingBuilder.create();
+        var barcode = catalog.add(holding);
 
-        Holding retrieved = catalog.find(barcode);
+        var retrieved = catalog.find(barcode);
 
         assertThat(retrieved, equalTo(holding));
     }
 
     @Test
     public void incrementsCopyNumberWhenSameClassificationExists() {
-        Holding holding = holdingBuilder.create();
+        var holding = holdingBuilder.create();
         catalog.add(holding);
-        String barcode = catalog.add(holding);
+        var barcode = catalog.add(holding);
 
-        Holding retrieved = catalog.find(barcode);
+        var retrieved = catalog.find(barcode);
 
         assertThat(retrieved.getCopyNumber(), equalTo(2));
     }
@@ -96,8 +95,8 @@ public class CatalogTest {
         String barcode1 = addHoldingWithClassification("1");
         String barcode2 = addHoldingWithClassification("2");
 
-        List<String> results = new ArrayList<>();
-        for (Holding holding : catalog)
+        var results = new ArrayList<>();
+        for (var holding : catalog)
             results.add(holding.getBarcode());
 
         assertThat(results, hasExactlyItems(barcode1, barcode2));

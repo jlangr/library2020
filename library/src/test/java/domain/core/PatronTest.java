@@ -1,18 +1,17 @@
 package domain.core;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import testutil.EqualityTester;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
 public class PatronTest {
     private Patron jane;
 
-    @Before
+    @BeforeEach
     public void initialize() {
         jane = new Patron("Jane");
     }
@@ -29,12 +28,12 @@ public class PatronTest {
 
     @Test
     public void holdingsAreEmptyOnCreation() {
-        assertTrue(jane.holdingMap().isEmpty());
+        assertThat(jane.holdingMap().isEmpty(), equalTo(true));
     }
 
     @Test
     public void returnsHoldingsAdded() {
-        Holding holding = new HoldingBuilder().create();
+        var holding = new HoldingBuilder().create();
 
         jane.add(holding);
 
@@ -43,12 +42,12 @@ public class PatronTest {
 
     @Test
     public void removesHoldingFromPatron() {
-        Holding holding = new HoldingBuilder().create();
+        var holding = new HoldingBuilder().create();
         jane.add(holding);
 
         jane.remove(holding);
 
-        assertTrue(jane.holdingMap().isEmpty());
+        assertThat(jane.holdingMap().isEmpty(), equalTo(true));
     }
 
     @Test
@@ -78,12 +77,12 @@ public class PatronTest {
 
     @Test
     public void supportsEqualityComparison() {
-        Patron patron1 = new Patron("p1", "Joe");
-        Patron patron1Copy1 = new Patron("p1", "");
-        Patron patron1Copy2 = new Patron("p1", "");
-        Patron patron1Subtype = new Patron("p1", "") {
+        var patron1 = new Patron("p1", "Joe");
+        var patron1Copy1 = new Patron("p1", "");
+        var patron1Copy2 = new Patron("p1", "");
+        var patron1Subtype = new Patron("p1", "") {
         };
-        Patron patron2 = new Patron("p2", "");
+        var patron2 = new Patron("p2", "");
 
         new EqualityTester(patron1, patron1Copy1, patron1Copy2, patron2, patron1Subtype).verify();
     }

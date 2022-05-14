@@ -1,17 +1,17 @@
 package api.library;
 
-import domain.core.Patron;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import persistence.PatronStore;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PatronServiceTest {
     PatronService service;
 
-    @Before
+    @BeforeEach
     public void initialize() {
         PatronStore.deleteAll();
         service = new PatronService();
@@ -19,7 +19,7 @@ public class PatronServiceTest {
 
     @Test
     public void answersGeneratedId() {
-        String scanCode = service.add("name");
+        var scanCode = service.add("name");
 
         assertThat(scanCode, startsWith("p"));
     }
@@ -28,20 +28,22 @@ public class PatronServiceTest {
     public void allowsAddingPatronWithId() {
         service.add("p123", "xyz");
 
-        Patron patron = service.find("p123");
+        var patron = service.find("p123");
 
         assertThat(patron.getName(), equalTo("xyz"));
     }
 
-    @Test(expected = InvalidPatronIdException.class)
+    @Test
     public void rejectsPatronIdNotStartingWithP() {
-        service.add("234", "");
+        assertThrows(InvalidPatronIdException.class, () ->
+                service.add("234", ""));
     }
 
-    @Test(expected = DuplicatePatronException.class)
+    @Test
     public void rejectsAddOfDuplicatePatron() {
         service.add("p556", "");
-        service.add("p556", "");
+        assertThrows(DuplicatePatronException.class, () ->
+            service.add("p556", ""));
     }
 
     @Test

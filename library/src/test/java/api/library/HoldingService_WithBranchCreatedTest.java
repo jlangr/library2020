@@ -3,17 +3,16 @@ package api.library;
 import com.loc.material.api.ClassificationApi;
 import com.loc.material.api.Material;
 import domain.core.ClassificationApiFactory;
-import domain.core.Holding;
-import domain.core.HoldingMap;
 import domain.core.HoldingNotFoundException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +21,7 @@ public class HoldingService_WithBranchCreatedTest {
     private ClassificationApi classificationApi = mock(ClassificationApi.class);
     private String branchScanCode;
 
-    @Before
+    @BeforeEach
     public void initialize() {
         LibraryData.deleteAll();
         ClassificationApiFactory.setService(classificationApi);
@@ -30,7 +29,7 @@ public class HoldingService_WithBranchCreatedTest {
     }
 
     private String addHolding() {
-        Material material = new Material("123", "", "", "", "");
+        var material = new Material("123", "", "", "", "");
         when(classificationApi.retrieveMaterial("123")).thenReturn(material);
         return service.add("123", branchScanCode);
     }
@@ -40,14 +39,14 @@ public class HoldingService_WithBranchCreatedTest {
         for (int i = 0; i < 3; i++)
             addHolding();
 
-        HoldingMap holdings = service.allHoldings();
+        var holdings = service.allHoldings();
 
-        assertEquals(3, holdings.size());
+        assertThat(holdings.size(), equalTo(3));
     }
 
     @Test
     public void storesNewHoldingAtBranch() {
-        String barcode = addHolding();
+        var barcode = addHolding();
 
         assertThat(service.find(barcode).getBranch().getScanCode(), equalTo(branchScanCode));
     }
@@ -59,33 +58,36 @@ public class HoldingService_WithBranchCreatedTest {
 
     @Test
     public void updatesBranchOnHoldingTransfer() {
-        String barcode = addHolding();
+        var barcode = addHolding();
 
         service.transfer(barcode, branchScanCode);
 
-        Holding holding = service.find(barcode);
+        var holding = service.find(barcode);
         assertThat(holding.getBranch().getScanCode(), equalTo(branchScanCode));
     }
 
-    @Test(expected = HoldingNotFoundException.class)
+    @Test
     public void throwsOnTransferOfNonexistentHolding() {
-        service.transfer("XXX:1", branchScanCode);
+        assertThrows(HoldingNotFoundException.class, () ->
+                service.transfer("XXX:1", branchScanCode));
     }
 
     @Test
     public void holdingIsAvailableWhenNotCheckedOut() {
-        String barcode = addHolding();
+        var barcode = addHolding();
 
-        assertTrue(service.isAvailable(barcode));
+        assertThat(service.isAvailable(barcode), equalTo(true));
     }
 
-    @Test(expected = HoldingNotFoundException.class)
+    @Test
     public void availabilityCheckThrowsWhenHoldingNotFound() {
-        service.isAvailable("345:1");
+        assertThrows(HoldingNotFoundException.class, () ->
+                service.isAvailable("345:1"));
     }
 
-    @Test(expected = HoldingNotFoundException.class)
+    @Test
     public void checkinThrowsWhenHoldingIdNotFound() {
-        service.checkIn("999:1", new Date(), branchScanCode);
+        assertThrows(HoldingNotFoundException.class, () ->
+                service.checkIn("999:1", new Date(), branchScanCode));
     }
 }

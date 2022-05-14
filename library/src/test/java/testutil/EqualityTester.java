@@ -1,7 +1,7 @@
 package testutil;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class EqualityTester {
     private Object object1;
@@ -20,9 +20,9 @@ public class EqualityTester {
     }
 
     public void verify() {
-        assertTrue(object1.equals(object1Copy1));
-        assertFalse(object1.equals(object2));
-        assertFalse(object1.equals(object1Subtype));
+        assertThat(object1.equals(object1Copy1), equalTo(true));
+        assertThat(object1.equals(object2), equalTo(false));
+        assertThat(object1.equals(object1Subtype), equalTo(false));
 
         assertNullComparison();
         assertConsistency();
@@ -32,25 +32,25 @@ public class EqualityTester {
     }
 
     private void assertNullComparison() {
-        assertFalse(object1.equals(null));
+        assertThat(object1.equals(null), equalTo(false)); // TODO hamcrest
     }
 
     private void assertConsistency() {
-        assertTrue(object1.equals(object1Copy1));
-        assertFalse(object1.equals(object2));
+        assertThat(object1.equals(object1Copy1), equalTo(true));
+        assertThat(object1.equals(object2), equalTo(false));
     }
 
     private void assertTransitivity() {
-        assertTrue(object1Copy1.equals(object1Copy2));
-        assertTrue(object1.equals(object1Copy2));
+        assertThat(object1Copy1.equals(object1Copy2), equalTo(true));
+        assertThat(object1.equals(object1Copy2), equalTo(true));
     }
 
     private void assertSymmetry() {
-        assertTrue(object1.equals(object1Copy1));
-        assertTrue(object1Copy1.equals(object1));
+        assertThat(object1.equals(object1Copy1), equalTo(true));
+        assertThat(object1Copy1.equals(object1), equalTo(true));
     }
 
     private void assertReflexivity() {
-        assertTrue(object1.equals(object1));
+        assertThat(object1.equals(object1), equalTo(true));
     }
 }

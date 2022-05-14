@@ -2,13 +2,13 @@ package api.scanner;
 
 import domain.core.Branch;
 import domain.core.Patron;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
-public class ScanStationTest extends MockedScannerSubsystemFields {
+class ScanStationTest extends MockedScannerSubsystemFields {
     private ScanStationState state;
 
     private void setScannerToMockState() {
@@ -17,12 +17,12 @@ public class ScanStationTest extends MockedScannerSubsystemFields {
     }
 
     @Test
-    public void initializesToWaitingState() {
+    void initializesToWaitingState() {
         assertThat(scanner.getCurrentState(), instanceOf(ScanStationStateWaiting.class));
     }
 
     @Test
-    public void branchIdScannedDelegatesToScanBranchId() {
+    void branchIdScannedDelegatesToScanBranchId() {
         setScannerToMockState();
 
         scanner.scan("b123");
@@ -31,7 +31,7 @@ public class ScanStationTest extends MockedScannerSubsystemFields {
     }
 
     @Test
-    public void holdingBarcodeScannedDelegatesToScanHolding() {
+    void holdingBarcodeScannedDelegatesToScanHolding() {
         setScannerToMockState();
 
         scanner.scan("123:1");
@@ -40,7 +40,7 @@ public class ScanStationTest extends MockedScannerSubsystemFields {
     }
 
     @Test
-    public void patronIdScannedDelegatesToScanPatron() {
+    void patronIdScannedDelegatesToScanPatron() {
         setScannerToMockState();
 
         scanner.scan("p123");
@@ -49,14 +49,14 @@ public class ScanStationTest extends MockedScannerSubsystemFields {
     }
 
     @Test
-    public void displaysErrorWhenInvalidBarcodeScanned() {
+    void displaysErrorWhenInvalidBarcodeScanned() {
         scanner.scan("123");
 
         verify(display).showMessage(ScanStation.MSG_BAR_CODE_NOT_RECOGNIZED);
     }
 
     @Test
-    public void inventoryIdScannedDelegatesToScanInventoryCard() {
+    void inventoryIdScannedDelegatesToScanInventoryCard() {
         setScannerToMockState();
         String validInventoryId = "i" + "whatever";
 
@@ -66,7 +66,7 @@ public class ScanStationTest extends MockedScannerSubsystemFields {
     }
 
     @Test
-    public void pressCompleteDelegatesToState() {
+    void pressCompleteDelegatesToState() {
         setScannerToMockState();
 
         scanner.pressComplete();
@@ -75,14 +75,14 @@ public class ScanStationTest extends MockedScannerSubsystemFields {
     }
 
     @Test
-    public void showMessageDelegatesToListener() {
+    void showMessageDelegatesToListener() {
         scanner.showMessage("Hey");
 
         verify(display).showMessage("Hey");
     }
 
     @Test
-    public void setPatronIdUpdatesPatronIfExists() {
+    void setPatronIdUpdatesPatronIfExists() {
         Patron jane = new Patron("p123", "jane");
         when(patronService.find("p123")).thenReturn(jane);
 
@@ -97,7 +97,7 @@ public class ScanStationTest extends MockedScannerSubsystemFields {
     }
 
     @Test
-    public void setPatronIdDoesNotUpdatePatronIfNotExists() {
+    void setPatronIdDoesNotUpdatePatronIfNotExists() {
         when(patronService.find("p123")).thenReturn(null);
 
         scanner.scanPatronId("p123");
@@ -107,7 +107,7 @@ public class ScanStationTest extends MockedScannerSubsystemFields {
     }
 
     @Test
-    public void setBranchIdUpdatesBranchIfExists() {
+    void setBranchIdUpdatesBranchIfExists() {
         Branch branch = new Branch("b123", "West");
         when(branchService.find("b123")).thenReturn(branch);
 
@@ -118,7 +118,7 @@ public class ScanStationTest extends MockedScannerSubsystemFields {
     }
 
     @Test
-    public void setBranchIdDoesNotUpdateBranchIfNotExists() {
+    void setBranchIdDoesNotUpdateBranchIfNotExists() {
         Branch westBranch = new Branch("b222", "");
         scanner.setBranch(westBranch);
         when(branchService.find("b123")).thenReturn(null);

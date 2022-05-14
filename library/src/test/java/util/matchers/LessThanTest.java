@@ -1,17 +1,14 @@
 package util.matchers;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static util.matchers.LessThan.lessThan;
 
 public class LessThanTest {
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
     @Test
     public void passesWhenLessThan() {
         assertThat(5, lessThan(6));
@@ -34,9 +31,8 @@ public class LessThanTest {
 
     @Test
     public void failureMessageIsUseful() {
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("A number less than 4");
-
-        assertThat(6, lessThan(4));
+        var thrown = assertThrows(AssertionError.class, () ->
+                assertThat(6, lessThan(4)));
+        assertThat(thrown.getMessage(), containsString("A number less than 4"));
     }
 }

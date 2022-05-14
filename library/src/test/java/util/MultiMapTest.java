@@ -1,21 +1,19 @@
 package util;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
-import java.util.List;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
 public class MultiMapTest {
     private MultiMap<Object, Object> map;
 
-    @Before
+    @BeforeEach
     public void initialize() {
-        map = new MultiMap<Object, Object>();
+        map = new MultiMap<>();
     }
 
     @Test
@@ -28,7 +26,7 @@ public class MultiMapTest {
     public void returnsValuesAssociatedWithKeyAsList() {
         map.put("a", "alpha");
 
-        List<Object> values = map.get("a");
+        var values = map.get("a");
 
         assertThat(values, hasExactlyItemsInAnyOrder("alpha"));
     }
@@ -46,7 +44,7 @@ public class MultiMapTest {
         map.put("a", "alpha1");
         map.put("a", "alpha2");
 
-        List<Object> values = map.get("a");
+        var values = map.get("a");
 
         assertThat(values, hasExactlyItemsInAnyOrder("alpha2", "alpha1"));
     }
@@ -65,14 +63,15 @@ public class MultiMapTest {
         map.put("a", "alpha");
         map.put("b", "beta");
 
-        List<Object> values = map.get("b");
+        var values = map.get("b");
 
         assertThat(values, hasExactlyItemsInAnyOrder("beta"));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void throwsOnPutOfNullKey() {
-        map.put(null, "");
+        assertThrows(NullPointerException.class, () ->
+                map.put(null, ""));
     }
 
     @Test
@@ -91,7 +90,7 @@ public class MultiMapTest {
         map.put("a", "alpha");
         map.put("b", "beta");
 
-        Collection<Object> values = map.values();
+        var values = map.values();
 
         assertThat(values, hasExactlyItemsInAnyOrder("alpha", "beta"));
     }

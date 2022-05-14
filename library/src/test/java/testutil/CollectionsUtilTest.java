@@ -1,51 +1,48 @@
 package testutil;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CollectionsUtilTest {
     private Collection<Object> collection;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void initialize() {
-        collection = new ArrayList<Object>();
+        collection = new ArrayList<>();
     }
 
     @Test
     public void soleElementRetrievesFirstAndOnlyElement() {
         collection.add("a");
 
-        Object soleElement = CollectionsUtil.soleElement(collection);
+        var soleElement = CollectionsUtil.soleElement(collection);
 
         assertThat(soleElement, equalTo("a"));
     }
 
+    // TODO think there's a replacement for this in Java now
     @Test
     public void soleElementThrowsWhenNoElementsExist() {
-        exceptionRule.expect(AssertionError.class);
-        exceptionRule.expectMessage(CollectionsUtil.NO_ELEMENTS);
+        var thrown = assertThrows(AssertionError.class, () ->
+                CollectionsUtil.soleElement(collection));
 
-        CollectionsUtil.soleElement(collection);
+        assertThat(thrown.getMessage(), equalTo(CollectionsUtil.NO_ELEMENTS));
     }
 
     @Test
     public void soleElementThrowsWhenMoreThanOneElement() {
-        exceptionRule.expect(AssertionError.class);
-        exceptionRule.expectMessage(CollectionsUtil.MORE_THAN_ONE_ELEMENT);
         collection.add("a");
         collection.add("b");
 
-        CollectionsUtil.soleElement(collection);
+        var thrown = assertThrows(AssertionError.class, () ->
+                CollectionsUtil.soleElement(collection));
+        assertThat(thrown.getMessage(), equalTo(CollectionsUtil.MORE_THAN_ONE_ELEMENT));
     }
 }

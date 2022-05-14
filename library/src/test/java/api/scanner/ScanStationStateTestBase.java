@@ -1,17 +1,18 @@
 package api.scanner;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.verify;
 
 public abstract class ScanStationStateTestBase extends MockedScannerSubsystemFields {
 
-    @Before
+    @BeforeEach
     public void injectStateObject() {
         state = createStateObject();
         scanner.setCurrentState(state);
@@ -28,12 +29,12 @@ public abstract class ScanStationStateTestBase extends MockedScannerSubsystemFie
     }
 
     protected void assertCurrentState(Class<?> expectedState) {
-        assertThat(scanner.getCurrentState(), is(instanceOf(expectedState)));
+        assertThat(scanner.getCurrentState(), instanceOf(expectedState));
     }
 
     @Test
     public void toStringSpecifiesStateName() {
-        String className = state.getClass().getSimpleName();
-        assertThat(state.toString(), is("state: " + className));
+        var className = state.getClass().getSimpleName();
+        assertThat(state.toString(), equalTo("state: " + className));
     }
 }

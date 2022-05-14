@@ -4,7 +4,7 @@ import api.library.BranchService;
 import api.library.HoldingService;
 import api.library.PatronService;
 import com.nssi.devices.model1801c.ScanDisplayListener;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import static org.mockito.Mockito.mock;
 
@@ -17,7 +17,7 @@ public class MockedScannerSubsystemFields {
     protected PatronService patronService;
     protected BranchService branchService;
 
-    @Before
+    @BeforeEach
     public void createScanner() {
         display = mock(ScanDisplayListener.class);
         scanner = new ScanStation(display);

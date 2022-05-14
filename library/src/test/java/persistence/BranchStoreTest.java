@@ -1,21 +1,18 @@
 package persistence;
 
 import domain.core.Branch;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
 public class BranchStoreTest {
     private BranchStore store;
     private static final Branch EAST_BRANCH = new Branch("East");
 
-    @Before
+    @BeforeEach
     public void initialize() {
         BranchStore.deleteAll();
         store = new BranchStore();
@@ -23,7 +20,7 @@ public class BranchStoreTest {
 
     @Test
     public void assignsIdToBranch() {
-        Branch branch = new Branch("name");
+        var branch = new Branch("name");
 
         store.save(branch);
 
@@ -32,9 +29,9 @@ public class BranchStoreTest {
 
     @Test
     public void assignedIdIsUnique() {
-        Branch branchA = new Branch("a");
+        var branchA = new Branch("a");
         store.save(branchA);
-        Branch branchB = new Branch("b");
+        var branchB = new Branch("b");
 
         store.save(branchB);
 
@@ -43,39 +40,39 @@ public class BranchStoreTest {
 
     @Test
     public void doesNotChangeIdIfAlreadyAssigned() {
-        Branch branch = new Branch("b1964", "");
+        var branch = new Branch("b1964", "");
 
         store.save(branch);
 
-        assertThat(branch.getScanCode(), is("b1964"));
+        assertThat(branch.getScanCode(), equalTo("b1964"));
     }
 
     @Test
     public void returnsSavedBranches() {
         store.save(new Branch("name"));
 
-        Branch retrieved = store.findByName("name");
+        var retrieved = store.findByName("name");
 
-        assertEquals("name", retrieved.getName());
+        assertThat(retrieved.getName(), equalTo("name"));
     }
 
     @Test
     public void returnsNewInstanceOfPersistedBranch() {
-        Branch branch = new Branch("name");
+        var branch = new Branch("name");
         store.save(branch);
         store = new BranchStore();
 
-        Branch retrieved = store.findByName("name");
+        var retrieved = store.findByName("name");
 
         assertThat(branch, not(sameInstance(retrieved)));
     }
 
     @Test
     public void returnsListOfAllBranches() {
-        Branch branch = new Branch("b123", "");
+        var branch = new Branch("b123", "");
         store.save(branch);
 
-        Collection<Branch> branches = store.getAll();
+        var branches = store.getAll();
 
         assertThat(branches, hasExactlyItemsInAnyOrder(branch));
     }
@@ -84,7 +81,7 @@ public class BranchStoreTest {
     public void findsBranchByScanCode() {
         store.save(EAST_BRANCH);
 
-        Branch retrieved = store.findByScanCode(EAST_BRANCH.getScanCode());
+        var retrieved = store.findByScanCode(EAST_BRANCH.getScanCode());
 
         assertThat(retrieved, is(EAST_BRANCH));
     }

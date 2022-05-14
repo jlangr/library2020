@@ -2,20 +2,18 @@ package persistence;
 
 import domain.core.Holding;
 import domain.core.HoldingBuilder;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 import static testutil.CollectionsUtil.soleElement;
 
 public class HoldingStoreTest {
     private HoldingStore store;
     private Holding savedHolding;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         HoldingStore.deleteAll();
         store = new HoldingStore();
@@ -25,7 +23,7 @@ public class HoldingStoreTest {
 
     @Test
     public void returnsAddedHoldings() {
-        List<Holding> retrieved = store.findByClassification(classification(savedHolding));
+        var retrieved = store.findByClassification(classification(savedHolding));
 
         assertThat(soleElement(retrieved).getMaterial(), equalTo(savedHolding.getMaterial()));
     }
@@ -38,14 +36,14 @@ public class HoldingStoreTest {
     public void returnsNewInstanceOnRetrieval() {
         store = new HoldingStore();
 
-        List<Holding> retrieved = store.findByClassification(classification(savedHolding));
+        var retrieved = store.findByClassification(classification(savedHolding));
 
         assertThat(soleElement(retrieved), not(sameInstance(savedHolding)));
     }
 
     @Test
     public void findByBarCodeReturnsMatchingHolding() {
-        Holding holding = store.findByBarcode(savedHolding.getBarcode());
+        var holding = store.findByBarcode(savedHolding.getBarcode());
 
         assertThat(holding.getBarcode(), equalTo(savedHolding.getBarcode()));
     }

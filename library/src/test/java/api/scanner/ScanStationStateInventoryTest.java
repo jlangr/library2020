@@ -1,12 +1,12 @@
 package api.scanner;
 
 import domain.core.Branch;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static api.scanner.ScanStationStateInventory.MSG_COMPLETE_INVENTORY_FIRST;
 import static api.scanner.ScanStationStateInventory.MSG_SCANNED_HOLDING;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,7 +41,7 @@ public class ScanStationStateInventoryTest extends ScanStationStateTestBase {
 
     @Test
     public void addsNewHoldingToLibraryWhenSourceIdScanned() {
-        String sourceId = "1234567890123";
+        var sourceId = "1234567890123";
         scanner.setBranch(new Branch("b123", ""));
 
         state.scanHolding(sourceId);

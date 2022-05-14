@@ -4,28 +4,28 @@ import com.loc.material.api.ClassificationApi;
 import com.loc.material.api.Material;
 import com.loc.material.api.MaterialType;
 import domain.core.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import util.DateUtil;
 
 import java.util.Date;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
-public class HoldingService_CheckInCheckOutTest {
-    private HoldingService service = new HoldingService();
-    private PatronService patronService = new PatronService();
-    private ClassificationApi classificationApi = mock(ClassificationApi.class);
-    private String patronId;
-    private String branchScanCode;
-    private String bookHoldingBarcode;
+class HoldingService_CheckInCheckOutTest {
+    HoldingService service = new HoldingService();
+    PatronService patronService = new PatronService();
+    ClassificationApi classificationApi = mock(ClassificationApi.class);
+    String patronId;
+    String branchScanCode;
+    String bookHoldingBarcode;
 
-    @Before
+    @BeforeEach
     public void initialize() {
         LibraryData.deleteAll();
         ClassificationApiFactory.setService(classificationApi);
@@ -35,83 +35,85 @@ public class HoldingService_CheckInCheckOutTest {
     }
 
     private String addBookHolding() {
-        Material material = new Material("123", "", "", "", MaterialType.Book, "");
+        var material = new Material("123", "", "", "", MaterialType.Book, "");
         when(classificationApi.retrieveMaterial("123")).thenReturn(material);
         return service.add("123", branchScanCode);
     }
 
     @Test
-    public void holdingMadeUnavailableOnCheckout() {
+    void holdingMadeUnavailableOnCheckout() {
         service.checkOut(patronId, bookHoldingBarcode, new Date());
 
         assertThat(service.isAvailable(bookHoldingBarcode), equalTo(false));
     }
 
-    @Test(expected = HoldingNotFoundException.class)
-    public void checkoutThrowsWhenHoldingIdNotFound() {
-        service.checkOut(patronId, "999:1", new Date());
-    }
-
-    @Test(expected = HoldingAlreadyCheckedOutException.class)
-    public void checkoutThrowsWhenUnavailable() {
-        service.checkOut(patronId, bookHoldingBarcode, new Date());
-
-        service.checkOut(patronId, bookHoldingBarcode, new Date());
+    @Test
+    void checkoutThrowsWhenHoldingIdNotFound() {
+        assertThrows(HoldingNotFoundException.class, () ->
+                service.checkOut(patronId, "999:1", new Date()));
     }
 
     @Test
-    public void updatesPatronWithHoldingOnCheckout() {
+    void checkoutThrowsWhenUnavailable() {
         service.checkOut(patronId, bookHoldingBarcode, new Date());
 
-        HoldingMap patronHoldings = patronService.find(patronId).holdingMap();
+        assertThrows(HoldingAlreadyCheckedOutException.class, () ->
+                service.checkOut(patronId, bookHoldingBarcode, new Date()));
+    }
+
+    @Test
+    void updatesPatronWithHoldingOnCheckout() {
+        service.checkOut(patronId, bookHoldingBarcode, new Date());
+
+        var patronHoldings = patronService.find(patronId).holdingMap();
         assertThat(patronHoldings.holdings(), hasExactlyItemsInAnyOrder(service.find(bookHoldingBarcode)));
     }
 
     @Test
-    public void returnsHoldingToBranchOnCheckIn() {
+    void returnsHoldingToBranchOnCheckIn() {
         service.checkOut(patronId, bookHoldingBarcode, new Date());
 
         service.checkIn(bookHoldingBarcode, DateUtil.tomorrow(), branchScanCode);
 
-        Holding holding = service.find(bookHoldingBarcode);
-        assertTrue(holding.isAvailable());
+        var holding = service.find(bookHoldingBarcode);
+        assertThat(holding.isAvailable(), equalTo(true));
         assertThat(holding.getBranch().getScanCode(), equalTo(branchScanCode));
     }
 
     @Test
-    public void removesHoldingFromPatronOnCheckIn() {
+    void removesHoldingFromPatronOnCheckIn() {
         service.checkOut(patronId, bookHoldingBarcode, new Date());
 
         service.checkIn(bookHoldingBarcode, DateUtil.tomorrow(), branchScanCode);
 
-        assertTrue(patronService.find(patronId).holdingMap().isEmpty());
+        assertThat(patronService.find(patronId).holdingMap().isEmpty(), equalTo(true)); // TODO hamcrest?
     }
 
     @Test
-    public void answersDueDate() {
+    void answersDueDate() {
         service.checkOut(patronId, bookHoldingBarcode, new Date());
 
-        Date due = service.dateDue(bookHoldingBarcode);
+        var due = service.dateDue(bookHoldingBarcode);
 
         Holding holding = service.find(bookHoldingBarcode);
         assertThat(due, equalTo(holding.dateDue()));
     }
 
     @Test
-    public void checkinReturnsDaysLate() {
+    void checkinReturnsDaysLate() {
         service.checkOut(patronId, bookHoldingBarcode, new Date());
-        Date fiveDaysLate = DateUtil.addDays(service.dateDue(bookHoldingBarcode), 5);
+        var fiveDaysLate = DateUtil.addDays(service.dateDue(bookHoldingBarcode), 5);
 
-        int daysLate = service.checkIn(bookHoldingBarcode, fiveDaysLate, branchScanCode);
+        var daysLate = service.checkIn(bookHoldingBarcode, fiveDaysLate, branchScanCode);
 
         assertThat(daysLate, equalTo(5));
     }
 
     @Test
-    public void updatesFinesOnLateCheckIn() {
+    void updatesFinesOnLateCheckIn() {
         service.checkOut(patronId, bookHoldingBarcode, new Date());
-        Holding holding = service.find(bookHoldingBarcode);
-        Date oneDayLate = DateUtil.addDays(holding.dateDue(), 1);
+        var holding = service.find(bookHoldingBarcode);
+        var oneDayLate = DateUtil.addDays(holding.dateDue(), 1);
 
         service.checkIn(bookHoldingBarcode, oneDayLate, branchScanCode);
 

@@ -1,21 +1,20 @@
 package com.loc.material.api;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.experimental.categories.Category;
 import testutil.Slow;
 
 import java.time.LocalDate;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 
 @Category(Slow.class)
 public abstract class ClassificationApiContract {
     private Material material;
 
-    @Before
+    @BeforeEach
     public void createAndRetrieve() {
         ClassificationApi classificationApiImplementation = createClassificationApiImpl();
         material = classificationApiImplementation.retrieveMaterial(validQueryIsbn());
@@ -40,7 +39,7 @@ public abstract class ClassificationApiContract {
 
     @Test
     public void populatesYearWithReasonableValue() {
-        int currentYear = LocalDate.now().getYear();
+        var currentYear = LocalDate.now().getYear();
         assertThat(Integer.parseInt(material.getYear()),
                 is(both(greaterThan(1440)).and(lessThanOrEqualTo(currentYear))));
     }

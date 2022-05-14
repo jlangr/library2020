@@ -1,21 +1,19 @@
 package api.library;
 
 import domain.core.Branch;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import util.ListUtil;
 
-import java.util.List;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static util.matchers.HasExactlyItems.hasExactlyItems;
 
 public class BranchServiceTest {
     private BranchService service;
 
-    @Before
+    @BeforeEach
     public void initialize() {
         service = new BranchService();
         LibraryData.deleteAll();
@@ -25,34 +23,36 @@ public class BranchServiceTest {
     public void findsByScanCode() {
         service.add("name", "b2");
 
-        Branch branch = service.find("b2");
+        var branch = service.find("b2");
 
         assertThat(branch.getName(), equalTo("name"));
     }
 
-    @Test(expected = DuplicateBranchCodeException.class)
+    @Test
     public void rejectsDuplicateScanCode() {
         service.add("", "b559");
-        service.add("", "b559");
+        assertThrows(DuplicateBranchCodeException.class, () ->
+                service.add("", "b559"));
     }
 
-    @Test(expected = InvalidBranchCodeException.class)
+    @Test
     public void rejectsScanCodeNotStartingWithB() {
-        service.add("", "c2234");
+        assertThrows(InvalidBranchCodeException.class, () ->
+                service.add("", "c2234"));
     }
 
     @Test
     public void answersGeneratedId() {
         String scanCode = service.add("");
 
-        assertTrue(scanCode.startsWith("b"));
+        assertThat(scanCode.startsWith("b"), equalTo(true));
     }
 
     @Test
     public void findsBranchMatchingScanCode() {
-        String scanCode = service.add("a branch");
+        var scanCode = service.add("a branch");
 
-        Branch branch = service.find(scanCode);
+        var branch = service.find(scanCode);
 
         assertThat(branch.getName(), equalTo("a branch"));
         assertThat(branch.getScanCode(), equalTo(scanCode));
@@ -60,12 +60,12 @@ public class BranchServiceTest {
 
     @Test
     public void returnsListOfAllPersistedBranches() {
-        String eastScanCode = service.add("e");
-        String westScanCode = service.add("w");
+        var eastScanCode = service.add("e");
+        var westScanCode = service.add("w");
 
-        List<Branch> all = service.allBranches();
+        var all = service.allBranches();
 
-        List<String> scanCodes = new ListUtil().map(all, "getScanCode", Branch.class, String.class);
+        var scanCodes = new ListUtil().map(all, "getScanCode", Branch.class, String.class);
         assertThat(scanCodes, hasExactlyItems(eastScanCode, westScanCode));
     }
 }

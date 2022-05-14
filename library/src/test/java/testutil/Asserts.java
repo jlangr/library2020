@@ -1,30 +1,30 @@
 package testutil;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
  * scratch class used as the basis for many of the slide examples.
  */
-@RunWith(MockitoJUnitRunner.StrictStubs.class)
+@ExtendWith(MockitoExtension.class) // StrictStubs?
 public class Asserts {
     interface StockLookupSvc {
         int price(String symbol);
     }
 
     @Test
-    public void stuff() {
+    void stuff() {
         boolean condition = false;
         int idleSpeed = 1000;
         String text = "something";
@@ -36,9 +36,8 @@ public class Asserts {
         tokens.add("delta");
         class AutoEngine {
         }
-        ;
-        AutoEngine obj = new AutoEngine();
 
+        AutoEngine obj = new AutoEngine();
 
         assertThat(condition, is(false));
         assertThat(text, is(equalTo("something")));
@@ -60,7 +59,7 @@ public class Asserts {
             this.service = service;
         }
 
-        void purchase(String symbol, int shares) {
+        public void purchase(String symbol, int shares) {
 
         }
 
@@ -70,7 +69,7 @@ public class Asserts {
     }
 
     @Test
-    public void mockTest() {
+    void mockTest() {
         StockLookupSvc service = mock(StockLookupSvc.class);
         org.mockito.Mockito.when(
                 service.price("IBM")).thenReturn(50);
@@ -101,7 +100,7 @@ public class Asserts {
     }
 
     @Test
-    public void recordsAuditEventWhenScanned() {
+    void recordsAuditEventWhenScanned() {
         Auditor auditor = mock(Auditor.class);
         Scanner scanner = new Scanner(auditor);
 
@@ -118,7 +117,7 @@ public class Asserts {
     }
 
     @Test
-    public void recordsAuditEventWhenScannedX() {
+    void recordsAuditEventWhenScannedX() {
         Auditor auditor = mock(Auditor.class);
         Scanner scanner = new Scanner(auditor);
 
@@ -220,7 +219,7 @@ public class Asserts {
     }
 
     @Test
-    public void includesLineItemWithDiscount() {
+    void includesLineItemWithDiscount() {
         Register register = new Register() {
             @Override
             void appendMessage(String m) {
@@ -235,7 +234,7 @@ public class Asserts {
     }
 
     @Test
-    public void completeSaleAnswersItemsTotal() {
+    void completeSaleAnswersItemsTotal() {
         Register register = new Register() {
             @Override
             void appendMessage(String m) {
@@ -251,7 +250,7 @@ public class Asserts {
     static final BigDecimal TOLERANCE = new BigDecimal(0.005);
 
     @Test
-    public void completeSaleIncorporatesDiscounts() {
+    void completeSaleIncorporatesDiscounts() {
         Register register = new Register() {
             @Override
             void appendMessage(String m) {
@@ -267,7 +266,7 @@ public class Asserts {
     }
 
     @Test
-    public void someItemsNotDiscountable() {
+    void someItemsNotDiscountable() {
         Register register = new Register() {
             @Override
             void appendMessage(String m) {
@@ -285,7 +284,7 @@ public class Asserts {
     }
 
     @Test
-    public void answersTotalOfDiscountedItems() {
+    void answersTotalOfDiscountedItems() {
         Register register = new Register() {
             @Override
             void appendMessage(String m) {

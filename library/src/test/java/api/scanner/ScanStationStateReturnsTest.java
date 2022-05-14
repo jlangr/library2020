@@ -2,19 +2,19 @@ package api.scanner;
 
 import domain.core.Branch;
 import domain.core.Patron;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import util.DateUtil;
 import util.TimestampSource;
 
 import java.util.Calendar;
 import java.util.Date;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ScanStationStateReturnsTest extends ScanStationStateTestBase {
+class ScanStationStateReturnsTest extends ScanStationStateTestBase {
     public static final String PATRON_JANE_ID = "p222";
     public static final Patron PATRON_JANE = new Patron(PATRON_JANE_ID, "Jane");
 
@@ -24,7 +24,7 @@ public class ScanStationStateReturnsTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void displaysWarningWhenCompletePressed() {
+    void displaysWarningWhenCompletePressed() {
         state.pressComplete();
 
         assertMessageDisplayed(ScanStationStateReturns.MSG_WAITING_FOR_RETURNS);
@@ -32,7 +32,7 @@ public class ScanStationStateReturnsTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void changesStateToInventoryWhenInventoryCardPressed() {
+    void changesStateToInventoryWhenInventoryCardPressed() {
         state.scanInventoryCard();
 
         assertCurrentState(ScanStationStateInventory.class);
@@ -40,8 +40,8 @@ public class ScanStationStateReturnsTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void changesStateToCheckoutWhenPatronCardPressed() {
-        Patron patron = new Patron("p222", "");
+    void changesStateToCheckoutWhenPatronCardPressed() {
+        var patron = new Patron("p222", "");
         when(patronService.find("p222")).thenReturn(patron);
         state.scanPatron("p222");
 
@@ -50,8 +50,8 @@ public class ScanStationStateReturnsTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void changesBranchWhenBranchIdScanned() {
-        Branch eastBranch = new Branch("b222", "");
+    void changesBranchWhenBranchIdScanned() {
+        var eastBranch = new Branch("b222", "");
         when(branchService.find("b222")).thenReturn(eastBranch);
         scanner.setBranch(new Branch("b9999", ""));
 
@@ -62,10 +62,10 @@ public class ScanStationStateReturnsTest extends ScanStationStateTestBase {
     }
 
     @Test
-    public void checksInBookWhenBarcodeScanned() {
-        Branch branch = new Branch("b123", "East");
+    void checksInBookWhenBarcodeScanned() {
+        var branch = new Branch("b123", "East");
         scanner.setBranch(branch);
-        Date checkinDate = DateUtil.create(2017, Calendar.MARCH, 17);
+        var checkinDate = DateUtil.create(2017, Calendar.MARCH, 17);
         TimestampSource.queueNextTime(checkinDate);
 
         state.scanHolding("123:1");

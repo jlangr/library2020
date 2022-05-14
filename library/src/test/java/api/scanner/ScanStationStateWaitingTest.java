@@ -1,11 +1,11 @@
 package api.scanner;
 
 import domain.core.Branch;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static api.scanner.ScanStationStateWaiting.MSG_SCAN_BRANCH_ID_FIRST;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 public class ScanStationStateWaitingTest extends ScanStationStateTestBase {
@@ -16,7 +16,7 @@ public class ScanStationStateWaitingTest extends ScanStationStateTestBase {
 
     @Test
     public void storesBranchIdWhenBranchCardScanned() {
-        Branch westBranch = new Branch("b123", "west");
+        var westBranch = new Branch("b123", "west");
         when(branchService.find("b123")).thenReturn(westBranch);
         scanner.setBranch(new Branch("b999", "other"));
 

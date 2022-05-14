@@ -1,86 +1,86 @@
 package domain.core;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.sameInstance;
 import static util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
-public class HoldingMapTest {
+class HoldingMapTest {
     private HoldingMap map;
     private Holding holding;
 
-    @Before
-    public void initialize() {
+    @BeforeEach
+    void initialize() {
         map = new HoldingMap();
         holding = new HoldingBuilder().create();
     }
 
     @Test
-    public void isEmptyWhenCreated() {
-        assertTrue(map.isEmpty());
+    void isEmptyWhenCreated() {
+        assertThat(map.isEmpty(), equalTo(true));
     }
 
     @Test
-    public void hasSizeZeroWhenCreated() {
+    void hasSizeZeroWhenCreated() {
         assertThat(map.size(), equalTo(0));
     }
 
     @Test
-    public void containsFailsWhenHoldingNotFound() {
-        assertFalse(map.contains(holding));
+    void containsFailsWhenHoldingNotFound() {
+        assertThat(map.contains(holding), equalTo(false));
     }
 
     @Test
-    public void containsAddedHolding() {
+    void containsAddedHolding() {
         map.add(holding);
 
-        assertTrue(map.contains(holding));
+        assertThat(map.contains(holding), equalTo(true));
     }
 
     @Test
-    public void sizeIncrementedOnAddingHolding() {
+    void sizeIncrementedOnAddingHolding() {
         map.add(holding);
 
         assertThat(map.size(), equalTo(1));
     }
 
     @Test
-    public void retrievesHoldingByBarcode() {
+    void retrievesHoldingByBarcode() {
         map.add(holding);
 
-        Holding retrieved = map.get(holding.getBarcode());
+        var retrieved = map.get(holding.getBarcode());
 
-        assertSame(retrieved, holding);
+        assertThat(retrieved, sameInstance(holding));
     }
 
     @Test
-    public void returnsAllHoldings() {
-        Holding holdingA = new HoldingBuilder().withClassification("a").create();
-        Holding holdingB = new HoldingBuilder().withClassification("b").create();
+    void returnsAllHoldings() {
+        var holdingA = new HoldingBuilder().withClassification("a").create();
+        var holdingB = new HoldingBuilder().withClassification("b").create();
         map.add(holdingA);
         map.add(holdingB);
 
-        Collection<Holding> holdings = map.holdings();
+        var holdings = map.holdings();
 
         assertThat(holdings, hasExactlyItemsInAnyOrder(holdingA, holdingB));
     }
 
     @Test
-    public void removeHolding() {
+    void removeHolding() {
         map.add(holding);
 
         map.remove(holding);
 
-        assertFalse(map.contains(holding));
+        assertThat(map.contains(holding), equalTo(false)); // TODO way to do this with hamcrest?
     }
 
     @Test
-    public void removeHoldingDecrementsSize() {
+    void removeHoldingDecrementsSize() {
         map.add(holding);
 
         map.remove(holding);
@@ -89,14 +89,14 @@ public class HoldingMapTest {
     }
 
     @Test
-    public void supportsIteration() {
-        Holding holdingA = new HoldingBuilder().withClassification("a").create();
-        Holding holdingB = new HoldingBuilder().withClassification("b").create();
+    void supportsIteration() {
+        var holdingA = new HoldingBuilder().withClassification("a").create();
+        var holdingB = new HoldingBuilder().withClassification("b").create();
         map.add(holdingA);
         map.add(holdingB);
 
-        Collection<Holding> retrieved = new ArrayList<Holding>();
-        for (Holding holding : map)
+        var retrieved = new ArrayList<Holding>();
+        for (var holding : map)
             retrieved.add(holding);
 
         assertThat(retrieved, hasExactlyItemsInAnyOrder(holdingA, holdingB));
