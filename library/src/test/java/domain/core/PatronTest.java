@@ -33,7 +33,7 @@ class PatronTest {
 
     @Test
     void returnsHoldingsAdded() {
-        var holding = new HoldingBuilder().create();
+        var holding = new HoldingBuilder().build();
 
         jane.add(holding);
 
@@ -42,7 +42,7 @@ class PatronTest {
 
     @Test
     void removesHoldingFromPatron() {
-        var holding = new HoldingBuilder().create();
+        var holding = new HoldingBuilder().build();
         jane.add(holding);
 
         jane.remove(holding);

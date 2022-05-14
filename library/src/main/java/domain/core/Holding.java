@@ -80,7 +80,7 @@ public class Holding {
     }
 
     public int daysLate() {
-        Date dateDue = dateDue();
+        var dateDue = dateDue();
         if (dateDue == null) return 0;
         return DateUtil.daysAfter(dateDue, dateLastCheckedIn());
     }

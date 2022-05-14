@@ -28,7 +28,7 @@ class CatalogTest {
 
     @Test
     void incrementsSizeWhenMaterialAdded() {
-        catalog.add(holdingBuilder.create());
+        catalog.add(holdingBuilder.build());
 
         assertThat(catalog.size(), equalTo(1));
     }
@@ -53,7 +53,7 @@ class CatalogTest {
 
     private String addHoldingWithClassification(String classification) {
         var material = new Material("", "", "", classification, "");
-        var holding = holdingBuilder.with(material).create();
+        var holding = holdingBuilder.with(material).build();
         return catalog.add(holding);
     }
 
@@ -70,7 +70,7 @@ class CatalogTest {
 
     @Test
     void retrievesHoldingUsingBarcode() {
-        var holding = holdingBuilder.create();
+        var holding = holdingBuilder.build();
         var barcode = catalog.add(holding);
 
         var retrieved = catalog.find(barcode);
@@ -80,7 +80,7 @@ class CatalogTest {
 
     @Test
     void incrementsCopyNumberWhenSameClassificationExists() {
-        var holding = holdingBuilder.create();
+        var holding = holdingBuilder.build();
         catalog.add(holding);
         var barcode = catalog.add(holding);
 

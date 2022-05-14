@@ -70,7 +70,7 @@ class PatronStoreTest {
 
     @Test
     void storesHoldingsAddedToPatron() {
-        var holding = new HoldingBuilder().create();
+        var holding = new HoldingBuilder().build();
         store.add(patronSmith);
         store.addHoldingToPatron(patronSmith, holding);
 
@@ -82,7 +82,7 @@ class PatronStoreTest {
     @Test
     void throwsOnAddingHoldingToNonexistentPatron() {
         assertThrows(PatronNotFoundException.class, () ->
-                store.addHoldingToPatron(patronSmith, new HoldingBuilder().create()));
+                store.addHoldingToPatron(patronSmith, new HoldingBuilder().build()));
     }
 
     @Test

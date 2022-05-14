@@ -1,55 +1,124 @@
 package persistence;
 
+import api.library.DuplicateHoldingException;
+import domain.core.Branch;
 import domain.core.Holding;
 import domain.core.HoldingBuilder;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static testutil.CollectionsUtil.soleElement;
 
 class HoldingStoreTest {
-    private HoldingStore store;
-    private Holding savedHolding;
+    HoldingStore store;
+    Holding savedHolding;
 
     @BeforeEach
     void setUp() {
         HoldingStore.deleteAll();
         store = new HoldingStore();
-        savedHolding = new HoldingBuilder().create();
-        store.save(savedHolding);
     }
 
-    @Test
-    void returnsAddedHoldings() {
-        var retrieved = store.findByClassification(classification(savedHolding));
+    @Nested
+    class Errors {
+        @BeforeEach
+        void saveHolding() {
+            savedHolding = new HoldingBuilder().withClassification("QA123").build();
+            store.save(savedHolding);
+        }
 
-        assertThat(soleElement(retrieved).getMaterial(), equalTo(savedHolding.getMaterial()));
+        @Test
+        public void throwsWhenSavingHoldingWithDuplicateBarcode() {
+            assertThrows(DuplicateHoldingException.class, () -> {
+                        var duplicateHolding = new Holding(savedHolding.getMaterial(), savedHolding.getBranch(), savedHolding.getCopyNumber());
+                        store.save(duplicateHolding);
+                    });
+        }
     }
 
-    private String classification(Holding holding) {
-        return holding.getMaterial().getClassification();
+    @Nested
+    class FindByClassification {
+        @Nested
+        class WithSavedHolding {
+            private List<Holding> retrieved;
+
+            @BeforeEach
+            void findSavedHoldingByClassification() {
+                savedHolding = new HoldingBuilder().build();
+                store.save(savedHolding);
+                retrieved = store.findByClassification(classification(savedHolding));
+            }
+
+            @Test
+            void returnsListContainingSavedHoldings() {
+                assertThat(soleElement(retrieved).getMaterial(), equalTo(savedHolding.getMaterial()));
+            }
+
+            @Test
+            void returnsNewInstance() {
+                assertThat(soleElement(retrieved), not(sameInstance(savedHolding)));
+            }
+        }
+
+        @Test
+        void returnsEmptyListWhenNothingFound() {
+            assertThat(store.findByClassification("nonexistent"), empty());
+        }
+
+        private String classification(Holding holding) {
+            return holding.getMaterial().getClassification();
+        }
     }
 
-    @Test
-    void returnsNewInstanceOnRetrieval() {
-        store = new HoldingStore();
+    @Nested
+    class FindByBarCode {
+        @BeforeEach
+        void saveHolding() {
+            savedHolding = new HoldingBuilder().build();
+            store.save(savedHolding);
+        }
 
-        var retrieved = store.findByClassification(classification(savedHolding));
+        @Test
+        void returnsMatchingHolding() {
+            var holding = store.findByBarcode(savedHolding.getBarcode());
 
-        assertThat(soleElement(retrieved), not(sameInstance(savedHolding)));
+            assertThat(holding.getBarcode(), equalTo(savedHolding.getBarcode()));
+        }
+
+        @Test
+        void returnsNullWhenNotFound() {
+            assertThat(store.findByBarcode("NONEXISTENT:1"), nullValue());
+        }
     }
 
-    @Test
-    void findByBarCodeReturnsMatchingHolding() {
-        var holding = store.findByBarcode(savedHolding.getBarcode());
+    @Nested
+    class FindByBranch {
+        @BeforeEach
+        void saveHolding() {
+            savedHolding = new HoldingBuilder().build();
+            store.save(savedHolding);
+        }
 
-        assertThat(holding.getBarcode(), equalTo(savedHolding.getBarcode()));
-    }
+        @Test
+        void returnsEmptyListWhenNotFound() {
+            assertThat(store.findByBranch("nonexistent scancode"), empty());
+        }
 
-    @Test
-    void findBarCodeNotFound() {
-        assertThat(store.findByBarcode("nonexistent barcode:1"), nullValue());
+        @Test
+        void returnsHoldingsWithMatchingBranchScanCode() {
+            var branch = new Branch("scancode", "");
+            var holding = new HoldingBuilder().branch(branch).copyNumber(2).build();
+            store.save(holding);
+
+            var holdings = store.findByBranch("scancode");
+
+            assertThat(holdings, contains(holding));
+        }
     }
 }
