@@ -1,6 +1,6 @@
 package library;
 
-import controller.MaterialRequest;
+import com.langrsoft.controller.MaterialRequest;
 
 public class MaterialRequestBuilder {
     private String sourceId;

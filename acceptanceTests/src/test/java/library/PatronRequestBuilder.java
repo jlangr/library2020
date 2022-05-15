@@ -1,6 +1,6 @@
 package library;
 
-import controller.PatronRequest;
+import com.langrsoft.controller.PatronRequest;
 
 public class PatronRequestBuilder {
     private String name = "x";

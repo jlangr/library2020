@@ -1,6 +1,6 @@
 package library;
 
-import controller.BranchRequest;
+import com.langrsoft.controller.BranchRequest;
 
 public class BranchRequestBuilder {
     private String name = "x";

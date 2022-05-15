@@ -12,18 +12,18 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ClassificationServiceTest {
-    private static final String THE_ROAD_AUTHOR = "Cormac McCarthy";
-    private static final String THE_ROAD_ISBN = "0-307-26543-9";
-    private static final String THE_ROAD_TITLE = "The Road";
-    private static final String THE_ROAD_YEAR = "2006";
-    private static final String THE_ROAD_CLASSIFICATION = "PS3563.C337 R63 2006";
+    static final String THE_ROAD_AUTHOR = "Cormac McCarthy";
+    static final String THE_ROAD_ISBN = "0-307-26543-9";
+    static final String THE_ROAD_TITLE = "The Road";
+    static final String THE_ROAD_YEAR = "2006";
+    static final String THE_ROAD_CLASSIFICATION = "PS3563.C337 R63 2006";
 
     @InjectMocks
-    private ClassificationService service;
+    ClassificationService service;
     @Mock
-    private OpenLibraryApiClient openLibraryApiClient;
+    OpenLibraryApiClient openLibraryApiClient;
     @Mock
-    private OpenLibraryBookData bookData;
+    OpenLibraryBookData bookData;
 
     @Test
     void retrieveMaterialPopulatesFromOpenLibraryBookData() {

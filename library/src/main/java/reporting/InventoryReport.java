@@ -32,7 +32,7 @@ public class InventoryReport {
     public void allBooks() throws IOException {
         List<Record> records = new ArrayList<Record>();
         for (Holding holding : catalog) {
-            if (holding.getMaterial().getFormat() == MaterialType.Book) {
+            if (holding.getMaterial().getFormat() == MaterialType.BOOK) {
                 records.add(new Record(holding));
             }
         }

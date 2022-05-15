@@ -27,7 +27,7 @@ public class Material {
 
     public Material(String sourceId, String author, String title, String classification,
                     String year) {
-        this(sourceId, author, title, classification, MaterialType.Book, year);
+        this(sourceId, author, title, classification, MaterialType.BOOK, year);
     }
 
     public String getSourceId() {

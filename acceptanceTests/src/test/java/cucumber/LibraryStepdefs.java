@@ -1,9 +1,9 @@
 package cucumber;
 
 import com.loc.material.api.MaterialType;
-import controller.HoldingResponse;
-import controller.MaterialRequest;
-import controller.PatronRequest;
+import com.langrsoft.controller.HoldingResponse;
+import com.langrsoft.controller.MaterialRequest;
+import com.langrsoft.controller.PatronRequest;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

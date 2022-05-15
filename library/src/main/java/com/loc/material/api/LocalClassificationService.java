@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LocalClassificationService implements ClassificationApi {
-    private Map<String, Material> materials = new HashMap<>();
+    private final Map<String, Material> materials = new HashMap<>();
 
     @Override
     public Material retrieveMaterial(String sourceId) {
