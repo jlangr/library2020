@@ -5,7 +5,7 @@ import static java.util.Arrays.asList;
 import java.util.*;
 
 import com.langrsoft.controller.*;
-import com.loc.material.api.MaterialType;
+import com.langrsoft.external.MaterialType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.*;
 import controller.*;

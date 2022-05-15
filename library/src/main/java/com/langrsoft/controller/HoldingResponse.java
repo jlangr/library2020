@@ -1,7 +1,7 @@
 package com.langrsoft.controller;
 
-import com.loc.material.api.Material;
-import domain.core.Holding;
+import com.langrsoft.external.Material;
+import com.langrsoft.domain.Holding;
 
 import java.io.Serializable;
 import java.util.Date;

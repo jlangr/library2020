@@ -1,6 +1,6 @@
 package com.langrsoft.controller;
 
-import domain.core.Patron;
+import com.langrsoft.domain.Patron;
 
 public class PatronRequest {
     private String name;

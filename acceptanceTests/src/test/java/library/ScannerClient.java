@@ -1,7 +1,7 @@
 package library;
 
-import com.langrsoft.api.scanner.ScanStation;
-import com.nssi.devices.model1801c.ScanDisplayListener;
+import com.langrsoft.service.scanner.ScanStation;
+import com.langrsoft.devices.nssi1801c.ScanDisplayListener;
 
 public class ScannerClient implements ScanDisplayListener {
 

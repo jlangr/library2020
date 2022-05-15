@@ -1,9 +1,9 @@
 package com.langrsoft.controller;
 
-import com.langrsoft.api.library.BranchService;
+import com.langrsoft.service.library.BranchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import domain.core.Branch;
+import com.langrsoft.domain.Branch;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

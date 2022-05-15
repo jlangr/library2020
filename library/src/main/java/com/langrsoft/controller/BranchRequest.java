@@ -1,6 +1,6 @@
 package com.langrsoft.controller;
 
-import domain.core.Branch;
+import com.langrsoft.domain.Branch;
 
 import java.util.Objects;
 

@@ -1,8 +1,8 @@
 package com.langrsoft.controller;
 
-import com.langrsoft.api.library.HoldingService;
-import domain.core.Holding;
-import domain.core.HoldingAlreadyCheckedOutException;
+import com.langrsoft.service.library.HoldingService;
+import com.langrsoft.domain.Holding;
+import com.langrsoft.domain.HoldingAlreadyCheckedOutException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;

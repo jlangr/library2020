@@ -1,6 +1,6 @@
 package cucumber;
 
-import com.loc.material.api.MaterialType;
+import com.langrsoft.external.MaterialType;
 import io.cucumber.java.ParameterType;
 
 import java.time.LocalDate;

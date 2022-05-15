@@ -1,6 +1,6 @@
 package cucumber;
 
-import com.loc.material.api.MaterialType;
+import com.langrsoft.external.MaterialType;
 import com.langrsoft.controller.HoldingResponse;
 import com.langrsoft.controller.MaterialRequest;
 import com.langrsoft.controller.PatronRequest;
