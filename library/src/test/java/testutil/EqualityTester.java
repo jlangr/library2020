@@ -25,15 +25,12 @@ public class EqualityTester {
         assertThat(object1.equals(object2), equalTo(false));
         assertThat(object1.equals(object1Subtype), equalTo(false));
 
-//        assertNullComparison();
+        // assert null (object1.equals(null)) is true
+        // as long as object1 isn't null itself (and it never should be)
         assertConsistency();
         assertTransitivity();
         assertReflexivity();
         assertSymmetry();
-    }
-
-    private void assertNullComparison() {
-        assertThat(object1.equals(null), is(false));
     }
 
     private void assertConsistency() {
@@ -51,6 +48,7 @@ public class EqualityTester {
         assertThat(object1Copy1.equals(object1), is(true));
     }
 
+    @SuppressWarnings("all")
     private void assertReflexivity() {
         assertThat(object1.equals(object1), is(true));
     }

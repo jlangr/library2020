@@ -11,7 +11,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class BranchService {
-    final private BranchStore store = new BranchStore();
+    private final BranchStore store = new BranchStore();
 
     public List<Branch> allBranches() {
         return store.getAll();

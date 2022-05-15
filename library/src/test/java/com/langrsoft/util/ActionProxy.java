@@ -6,11 +6,19 @@ import java.util.Map;
 public class ActionProxy {
     private String name;
     private String validationActionName;
-    private HashMap<String, Object> extraContext;
+    private HashMap<String, Map<String, Object>> extraContext;
     private ValidationAware validationAware;
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValidationActionName() {
+        return validationActionName;
     }
 
     public void setValidationActionName(String validationActionName) {
@@ -32,7 +40,12 @@ public class ActionProxy {
         return validationAware;
     }
 
-    public void setExtraContext(HashMap<String, Object> extraContext) {
+    public void setExtraContext(HashMap<String, Map<String, Object>> extraContext) {
         this.extraContext = extraContext;
+    }
+
+    @Override
+    public String toString() {
+        return getName() + ":" + getValidationActionName();
     }
 }

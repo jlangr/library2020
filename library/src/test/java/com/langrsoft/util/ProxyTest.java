@@ -19,7 +19,7 @@ class ProxyTest {
     void testMessageKey() {
         HashMap<String, Object> params = new HashMap<>();
         params.put("foo", "200");
-        HashMap<String, Object> extraContext = new HashMap<>();
+        HashMap<String, Map<String, Object>> extraContext = new HashMap<>();
         extraContext.put(ActionContext.PARAMETERS, params);
         try {
             ActionProxy proxy = actionProxyFactory.createActionProxy("",
