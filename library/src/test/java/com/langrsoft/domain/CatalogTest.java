@@ -53,7 +53,7 @@ class CatalogTest {
 
     private String addHoldingWithClassification(String classification) {
         var material = new Material("", "", "", classification, "");
-        var holding = holdingBuilder.with(material).build();
+        var holding = holdingBuilder.material(material).build();
         return catalog.add(holding);
     }
 

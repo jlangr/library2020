@@ -2,18 +2,26 @@ package com.langrsoft.domain;
 
 import com.langrsoft.external.Material;
 
+import java.util.Date;
+
 public class HoldingBuilder {
     private Material material = new Material("1", "", "1", "", "");
     private Branch branch = Branch.CHECKED_OUT;
     private int copyNumber = 1;
+    private Date checkoutDate = null;
 
-    public HoldingBuilder with(Material material) {
+    public HoldingBuilder material(Material material) {
         this.material = material;
         return this;
     }
 
-    public HoldingBuilder withClassification(String classification) {
-        this.material = new Material(classification, "", classification, "", "");
+    public HoldingBuilder classification(String classification) {
+        this.material.setClassification(classification);
+        return this;
+    }
+
+    public HoldingBuilder checkout(Date checkoutDate) {
+        this.checkoutDate = checkoutDate;
         return this;
     }
 
@@ -28,6 +36,9 @@ public class HoldingBuilder {
     }
 
     public Holding build() {
-        return new Holding(material, branch, copyNumber);
+        var holding = new Holding(material, branch, copyNumber);
+        if (checkoutDate != null)
+            holding.checkOut(checkoutDate);
+        return holding;
     }
 }

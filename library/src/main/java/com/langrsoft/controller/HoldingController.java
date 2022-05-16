@@ -1,18 +1,16 @@
 package com.langrsoft.controller;
 
-import com.langrsoft.service.library.HoldingService;
-import com.langrsoft.domain.Holding;
 import com.langrsoft.domain.HoldingAlreadyCheckedOutException;
+import com.langrsoft.service.library.HoldingService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/holdings")
 public class HoldingController {
-    private HoldingService service = new HoldingService();
+    HoldingService service = new HoldingService();
 
     @PostMapping
     public String addBookHolding(@RequestBody AddHoldingRequest request) {
@@ -35,11 +33,8 @@ public class HoldingController {
 
     @GetMapping
     public List<HoldingResponse> retrieveHoldingsByQuery(
-            @RequestParam(required = true, value = "branchScanCode") String scanCode) {
-        List<Holding> holdings = service.findByBranch(scanCode);
-        return holdings.stream()
-                .map(holding -> new HoldingResponse(holding))
-                .collect(Collectors.toList());
+            @RequestParam(value = "branchScanCode") String scanCode) {
+        return HoldingResponse.create(service.findByBranch(scanCode));
     }
 
     @GetMapping(value = "/{holdingBarcode}")

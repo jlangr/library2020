@@ -29,7 +29,7 @@ class HoldingStoreTest {
     class Errors {
         @BeforeEach
         void saveHolding() {
-            savedHolding = new HoldingBuilder().withClassification("QA123").build();
+            savedHolding = new HoldingBuilder().classification("QA123").build();
             store.save(savedHolding);
         }
 

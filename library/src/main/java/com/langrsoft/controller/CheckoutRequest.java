@@ -10,6 +10,12 @@ public class CheckoutRequest {
     public CheckoutRequest() {
     }
 
+    public CheckoutRequest(String patronId, String holdingBarcode, Date checkoutDate) {
+        this.patronId = patronId;
+        this.holdingBarcode = holdingBarcode;
+        this.checkoutDate = checkoutDate;
+    }
+
     public void setPatronId(String patronId) {
         this.patronId = patronId;
     }

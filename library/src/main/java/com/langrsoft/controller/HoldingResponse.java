@@ -5,6 +5,9 @@ import com.langrsoft.domain.Holding;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class HoldingResponse implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -19,6 +22,12 @@ public class HoldingResponse implements Serializable {
     private Date dateCheckedOut;
     private Date dateLastCheckedIn;
     private boolean isAvailable;
+
+    public static List<HoldingResponse> create(List<Holding> holdings) {
+        return holdings.stream()
+                .map(HoldingResponse::new)
+                .collect(toList());
+    }
 
     public HoldingResponse() {
     }

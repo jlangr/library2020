@@ -60,8 +60,8 @@ class HoldingMapTest {
 
     @Test
     void returnsAllHoldings() {
-        var holdingA = new HoldingBuilder().withClassification("a").build();
-        var holdingB = new HoldingBuilder().withClassification("b").build();
+        var holdingA = new HoldingBuilder().classification("a").build();
+        var holdingB = new HoldingBuilder().classification("b").build();
         map.add(holdingA);
         map.add(holdingB);
 
@@ -90,8 +90,8 @@ class HoldingMapTest {
 
     @Test
     void supportsIteration() {
-        var holdingA = new HoldingBuilder().withClassification("a").build();
-        var holdingB = new HoldingBuilder().withClassification("b").build();
+        var holdingA = new HoldingBuilder().classification("a").build();
+        var holdingB = new HoldingBuilder().classification("b").build();
         map.add(holdingA);
         map.add(holdingB);
 
