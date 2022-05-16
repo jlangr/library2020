@@ -49,12 +49,12 @@ public class HoldingService_WithBranchCreatedTest {
     public void storesNewHoldingAtBranch() {
         String barcode = addHolding();
 
-        assertThat(service.find(barcode).getBranch().getScanCode(), equalTo(branchScanCode));
+        assertThat(service.findHolding(barcode).getBranch().getScanCode(), equalTo(branchScanCode));
     }
 
     @Test
     public void findByBarCodeReturnsNullWhenNotFound() {
-        assertThat(service.find("999:1"), nullValue());
+        assertThat(service.findHolding("999:1"), nullValue());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class HoldingService_WithBranchCreatedTest {
 
         service.transfer(barcode, branchScanCode);
 
-        Holding holding = service.find(barcode);
+        Holding holding = service.findHolding(barcode);
         assertThat(holding.getBranch().getScanCode(), equalTo(branchScanCode));
     }
 

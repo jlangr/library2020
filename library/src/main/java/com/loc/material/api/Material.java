@@ -1,5 +1,7 @@
 package com.loc.material.api;
 
+import domain.core.Holding;
+
 public class Material {
     private String sourceId;
     private String title;
@@ -82,5 +84,9 @@ public class Material {
     public String toString() {
         return getFormat() + ": " + getClassification() + " " + getSourceId() + " " + getTitle() + " (" + getAuthor()
                + ")";
+    }
+
+    public int getFineBasis(Holding holding) {
+        return holding.getMaterial().getFormat().getDailyFine();
     }
 }

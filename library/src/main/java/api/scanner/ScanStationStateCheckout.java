@@ -28,7 +28,7 @@ public class ScanStationStateCheckout extends AbstractScanStationState
     public void scanHolding(String holdingId) {
         Date checkoutTime = TimestampSource.now();
 
-        Holding holding = scanner.getLibrarySystem().find(holdingId);
+        Holding holding = scanner.getLibrarySystem().findHolding(holdingId);
         if (holding == null) {
             scanner.showMessage(String.format(MSG_INVALID_HOLDING_ID, holdingId));
             return;

@@ -64,7 +64,7 @@ public class HoldingService_CheckInCheckOutTest {
         service.checkOut(patronId, bookHoldingBarcode, new Date());
 
         HoldingMap patronHoldings = patronService.find(patronId).holdingMap();
-        assertThat(patronHoldings.holdings(), hasExactlyItemsInAnyOrder(service.find(bookHoldingBarcode)));
+        assertThat(patronHoldings.holdings(), hasExactlyItemsInAnyOrder(service.findHolding(bookHoldingBarcode)));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class HoldingService_CheckInCheckOutTest {
 
         service.checkIn(bookHoldingBarcode, DateUtil.tomorrow(), branchScanCode);
 
-        Holding holding = service.find(bookHoldingBarcode);
+        Holding holding = service.findHolding(bookHoldingBarcode);
         assertTrue(holding.isAvailable());
         assertThat(holding.getBranch().getScanCode(), equalTo(branchScanCode));
     }
@@ -93,7 +93,7 @@ public class HoldingService_CheckInCheckOutTest {
 
         Date due = service.dateDue(bookHoldingBarcode);
 
-        Holding holding = service.find(bookHoldingBarcode);
+        Holding holding = service.findHolding(bookHoldingBarcode);
         assertThat(due, equalTo(holding.dateDue()));
     }
 
@@ -110,7 +110,7 @@ public class HoldingService_CheckInCheckOutTest {
     @Test
     public void updatesFinesOnLateCheckIn() {
         service.checkOut(patronId, bookHoldingBarcode, new Date());
-        Holding holding = service.find(bookHoldingBarcode);
+        Holding holding = service.findHolding(bookHoldingBarcode);
         Date oneDayLate = DateUtil.addDays(holding.dateDue(), 1);
 
         service.checkIn(bookHoldingBarcode, oneDayLate, branchScanCode);

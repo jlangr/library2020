@@ -60,7 +60,7 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     @Test
     public void displaysMessageIfNoHoldingExists() {
         scanner.scanPatronId(PATRON_JOE_ID);
-        when(holdingService.find("123:1")).thenReturn(null);
+        when(holdingService.findHolding("123:1")).thenReturn(null);
 
         state.scanHolding("123:1");
 
@@ -71,7 +71,7 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     @Test
     public void checksOutHoldingWhenHoldingIdScanned() {
         scanner.scanPatronId(PATRON_JOE_ID);
-        when(holdingService.find("123:1")).thenReturn(holdingWithAvailability);
+        when(holdingService.findHolding("123:1")).thenReturn(holdingWithAvailability);
         TimestampSource.queueNextTime(DateUtilTest.NEW_YEARS_DAY);
 
         state.scanHolding("123:1");
@@ -84,9 +84,9 @@ public class ScanStationStateCheckoutTest extends ScanStationStateTestBase {
     @Test
     public void displaysMessageWhenBookCheckedOutTwice() {
         scanner.scanPatronId(PATRON_JOE_ID);
-        when(holdingService.find("123:1")).thenReturn(holdingWithAvailability);
+        when(holdingService.findHolding("123:1")).thenReturn(holdingWithAvailability);
         state.scanHolding("123:1");
-        when(holdingService.find("123:1")).thenReturn(holdingWithUnavailability);
+        when(holdingService.findHolding("123:1")).thenReturn(holdingWithUnavailability);
 
         state.scanHolding("123:1");
 

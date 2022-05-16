@@ -99,4 +99,8 @@ public class DateUtil {
     public static int ageInYears(LocalDate earlierDate, LocalDate laterDate) {
         return Period.between(earlierDate, laterDate).getYears();
     }
+
+    public static boolean isLastDayOfYear(Calendar calendar, int dayOfYear) {
+        return calendar.get(dayOfYear) > calendar.getActualMaximum(dayOfYear);
+    }
 }

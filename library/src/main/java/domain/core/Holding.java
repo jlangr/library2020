@@ -3,6 +3,7 @@ package domain.core;
 import com.loc.material.api.Material;
 import util.DateUtil;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Holding {
@@ -79,10 +80,15 @@ public class Holding {
         return daysLate();
     }
 
+
+    public boolean isLate() {
+        return daysLate() > 0;
+    }
+
     public int daysLate() {
-        Date dateDue = dateDue();
-        if (dateDue == null) return 0;
-        return DateUtil.daysAfter(dateDue, dateLastCheckedIn());
+        return dateDue() == null
+                ? 0
+                : DateUtil.daysAfter(dateDue(), dateLastCheckedIn());
     }
 
     public Date dateLastCheckedIn() {
@@ -107,5 +113,21 @@ public class Holding {
     @Override
     public String toString() {
         return material.toString() + "(" + copyNumber + ") @ " + branch.getName();
+    }
+
+    public int fine() {
+        return calculateFine(material.getFineBasis(this));
+    }
+
+    public int calculateFine(int fineBasis) {
+        switch (getMaterial().getFormat()) {
+            case DVD:
+                return Math.min(1000, 100 + fineBasis * daysLate());
+            case Book:
+            case NewReleaseDVD:
+                return fineBasis * daysLate();
+            default:
+                return 0;
+        }
     }
 }

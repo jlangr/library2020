@@ -171,12 +171,44 @@ public class HoldingTest {
     public void answersDaysLateWhenReturnedAfterDueDate() {
         try {
             checkOutToday(THE_TRIAL, eastBranch);
-            Date date = DateUtil.addDays(holding.dateDue(), 3);
-            int days = holding.checkIn(date, eastBranch);
+            var lateDate = DateUtil.addDays(holding.dateDue(), 3);
+
+            int days = holding.checkIn(lateDate, eastBranch);
+
             assertThat(days, equalTo(3));
         } catch (RuntimeException notReallyExpected) {
             fail();
         }
+    }
+
+    @Test
+    public void isLateWhenCheckedInPastDueDate() {
+        checkOutToday(THE_TRIAL, eastBranch);
+        var lateDate = DateUtil.addDays(holding.dateDue(), 3);
+
+        holding.checkIn(lateDate, eastBranch);
+
+        assertThat(holding.isLate(), equalTo(true));
+    }
+
+    @Test
+    public void isLateAfterDateDueOfYearEnd() {
+        holding = new Holding(THE_TRIAL, eastBranch);
+        holding.checkOut(DateUtil.create(2022, 11, 31));
+        var lateDate = DateUtil.addDays(holding.dateDue(), 3);
+
+        holding.checkIn(lateDate, eastBranch);
+
+        assertThat(holding.isLate(), equalTo(true));
+    }
+
+    @Test
+    public void isNotLateWhenCheckedInUpToDueDate() {
+        checkOutToday(THE_TRIAL, eastBranch);
+
+        holding.checkIn(holding.dateDue(), eastBranch);
+
+        assertThat(holding.isLate(), equalTo(false));
     }
 
     private void checkOutToday(Material material, Branch branch) {

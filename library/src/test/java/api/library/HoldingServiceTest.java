@@ -37,7 +37,7 @@ public class HoldingServiceTest {
         when(classificationApi.retrieveMaterial(isbn)).thenReturn(material);
         String barcode = service.add(isbn, branchScanCode);
 
-        Holding holding = service.find(barcode);
+        Holding holding = service.findHolding(barcode);
 
         assertThat(holding.getMaterial().getSourceId(), equalTo(isbn));
     }
