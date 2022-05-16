@@ -144,34 +144,4 @@ class APortfolio {
         }
     }
 
-    @Nested
-    class Value {
-        private static final int ZEBRA_CURRENT_PRICE = 3;
-
-        @Test
-        void isWorthlessWhenNothingPurchase() {
-            assertThat(portfolio.value(), equalTo(0));
-        }
-
-        @Test
-        void hasValueOneStocksPurchased() {
-            var stockService = new StockLookupService() {
-                @Override
-                public int price(String symbol) {
-                    return ZEBRA_CURRENT_PRICE;
-                }
-            };
-            portfolio.setStockLookupService(stockService);
-
-            portfolio.buy(ZEBRA, 1);
-
-            assertThat(portfolio.value(), equalTo(ZEBRA_CURRENT_PRICE));
-        }
-
-
-        // 3: purchase multiple shares  - ZEBRA * 3 => multiplication
-
-        // 4: purchase multiple symbols => loop & sum
-
-    }
 }

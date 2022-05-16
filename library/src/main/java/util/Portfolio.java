@@ -51,14 +51,4 @@ public class Portfolio {
     public boolean isEmpty() {
         return holdings.isEmpty();
     }
-
-    public int value() {
-        if (holdings.isEmpty()) return 0;
-
-        return stockService.price("");
-    }
-
-    public void setStockLookupService(StockLookupService stockService) {
-        this.stockService = stockService;
-    }
 }
