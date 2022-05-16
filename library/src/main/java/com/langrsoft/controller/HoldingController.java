@@ -2,6 +2,7 @@ package com.langrsoft.controller;
 
 import com.langrsoft.domain.HoldingAlreadyCheckedOutException;
 import com.langrsoft.service.library.HoldingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +23,7 @@ public class HoldingController {
         try {
             service.checkOut(request.getPatronId(), request.getHoldingBarcode(), request.getCheckoutDate());
         } catch (HoldingAlreadyCheckedOutException exception) {
-            response.setStatus(409);
+            response.setStatus(HttpStatus.CONFLICT.value());
         }
     }
 

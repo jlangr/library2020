@@ -61,7 +61,8 @@ class HoldingControllerTest {
                     .when(holdingService).checkOut(anyString(), anyString(), any(Date.class));
 
             mockMvc.perform(postAsJson("/holdings/checkout", checkoutRequest))
-                    .andExpect(status().is(409));
+
+                    .andExpect(status().isConflict());
         }
 
         private MockHttpServletRequestBuilder postAsJson(String url, Object content) throws JsonProcessingException {
