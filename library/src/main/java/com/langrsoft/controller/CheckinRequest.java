@@ -10,6 +10,12 @@ public class CheckinRequest {
     public CheckinRequest() {
     }
 
+    public CheckinRequest(String holdingBarcode, Date checkinDate, String branchScanCode) {
+        this.holdingBarcode = holdingBarcode;
+        this.checkinDate = checkinDate;
+        this.branchScanCode = branchScanCode;
+    }
+
     public void setHoldingBarcode(String holdingBarcode) {
         this.holdingBarcode = holdingBarcode;
     }

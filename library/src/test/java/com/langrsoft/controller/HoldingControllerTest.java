@@ -35,6 +35,8 @@ class HoldingControllerTest {
     @InjectMocks
     HoldingController holdingController;
 
+    static final Date TODAY = new Date();
+
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(holdingController).build();
@@ -55,7 +57,7 @@ class HoldingControllerTest {
         }
 
         @Test
-        void returns409WhenServiceThrowsAlreadyCheckedOut() throws Exception {
+        void returnsConflictWhenServiceThrowsAlreadyCheckedOut() throws Exception {
             var checkoutRequest = new CheckoutRequest("", "", new Date());
             doThrow(HoldingAlreadyCheckedOutException.class)
                     .when(holdingService).checkOut(anyString(), anyString(), any(Date.class));
@@ -64,11 +66,29 @@ class HoldingControllerTest {
 
                     .andExpect(status().isConflict());
         }
+    }
 
-        private MockHttpServletRequestBuilder postAsJson(String url, Object content) throws JsonProcessingException {
+    @Nested
+    class PostCheckin {
+        @Test
+        void checksInToService() throws Exception {
+            var checkinRequest = new CheckinRequest("QA123:1", TODAY, "b1");
+
+            mockMvc.perform(postAsJson("/holdings/checkin", checkinRequest))
+
+                    .andExpect(status().isOk());
+
+            verify(holdingService).checkIn("QA123:1", TODAY, "b1");
+        }
+    }
+
+    private MockHttpServletRequestBuilder postAsJson(String url, Object content) {
+        try {
             return post(url)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(new ObjectMapper().writeValueAsString(content));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 }
