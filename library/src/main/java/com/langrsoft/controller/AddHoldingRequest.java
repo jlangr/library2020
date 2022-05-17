@@ -4,6 +4,14 @@ public class AddHoldingRequest {
     private String sourceId;
     private String branchScanCode;
 
+    public AddHoldingRequest() {
+    }
+
+    public AddHoldingRequest(String sourceId, String branchScanCode) {
+        this.sourceId = sourceId;
+        this.branchScanCode = branchScanCode;
+    }
+
     public String getSourceId() {
         return sourceId;
     }

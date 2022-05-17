@@ -9,6 +9,7 @@ public class HoldingBuilder {
     private Branch branch = Branch.CHECKED_OUT;
     private int copyNumber = 1;
     private Date checkoutDate = null;
+    private String author;
 
     public HoldingBuilder material(Material material) {
         this.material = material;
@@ -35,7 +36,14 @@ public class HoldingBuilder {
         return this;
     }
 
+    public HoldingBuilder author(String author) {
+        this.author = author;
+        return this;
+    }
+
     public Holding build() {
+        if (author != null)
+            material.setAuthor(author);
         var holding = new Holding(material, branch, copyNumber);
         if (checkoutDate != null)
             holding.checkOut(checkoutDate);
