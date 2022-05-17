@@ -11,7 +11,6 @@ public class BranchRequest {
     private String name;
     private String id;
 
-    // TODO test
     public static List<BranchRequest> create(List<Branch> branches) {
         return branches.stream()
                 .map(BranchRequest::new)

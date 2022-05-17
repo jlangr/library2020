@@ -12,6 +12,7 @@ public class BranchRequestTest {
     @Test
     void createFromListOfBranches() {
         var branch1 = new Branch("b1", "branch1");
+
         var branch2 = new Branch("b2", "branch2");
         var branches = List.of(branch1, branch2);
 
