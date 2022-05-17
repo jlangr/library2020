@@ -22,6 +22,6 @@ public class BranchController {
 
     @GetMapping
     public List<BranchRequest> retrieveAll() {
-        return service.retrieveAllBranches();
+        return BranchRequest.create(service.allBranches());
     }
 }

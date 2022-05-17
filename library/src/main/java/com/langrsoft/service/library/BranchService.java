@@ -36,11 +36,4 @@ public class BranchService {
         store.save(branch);
         return branch.getScanCode();
     }
-
-    // TODO test
-    public List<BranchRequest> retrieveAllBranches() {
-        return allBranches().stream()
-                .map(BranchRequest::new)
-                .collect(toList());
-    }
 }
