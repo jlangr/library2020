@@ -1,4 +1,4 @@
-package com.langrsoft.util.matchers;
+package testutil;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;

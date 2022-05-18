@@ -8,7 +8,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
-public class BranchRequestTest {
+class BranchRequestTest {
     @Test
     void createFromListOfBranches() {
         var branch1 = new Branch("b1", "branch1");

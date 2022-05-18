@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static com.langrsoft.util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
+import static testutil.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
 class MultiMapTest {
     private MultiMap<Object, Object> map;

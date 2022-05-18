@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static com.langrsoft.util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
+import static testutil.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
 class BranchStoreTest {
     private BranchStore store;

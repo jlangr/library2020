@@ -8,13 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 public class BranchStore {
-    private static Map<String, Branch> branches = new HashMap<>();
+    private static final Map<String, Branch> branches = new HashMap<>();
     private static int idIndex = 0;
 
     public void save(Branch branch) {
         if (branch.getScanCode().equals(""))
-            branch.setScanCode("b" + (++idIndex));
+            branch.setScanCode("b" + BranchStore.nextId());
         branches.put(branch.getName(), copy(branch));
+    }
+
+    private static int nextId() {
+        return ++idIndex;
     }
 
     public Branch findByName(String name) {

@@ -1,4 +1,4 @@
-package com.langrsoft.util.matchers;
+package testutil;
 
 import org.hamcrest.Description;
 import org.hamcrest.Factory;

@@ -8,7 +8,7 @@ import java.util.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static com.langrsoft.util.matchers.LessThan.lessThan;
+import static testutil.LessThan.lessThan;
 
 class TimestampSourceTest {
     static final Date NEW_YEARS_DAY = DateUtil.create(2011, Calendar.JANUARY, 1);

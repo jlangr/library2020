@@ -10,7 +10,7 @@ public class AuthorNameNormalizer {
 
 
     public String normalize(String string) {
-        throw new RuntimeException("not yet implemented");
+        throw new NotYetImplementedException();
     }
 
     // See http://stackoverflow.com/questions/275944/java-how-do-i-count-the-number-of-occurrences-of-a-char-in-a-string

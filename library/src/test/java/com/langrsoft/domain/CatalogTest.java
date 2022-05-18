@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static com.langrsoft.util.matchers.HasExactlyItems.hasExactlyItems;
+import static testutil.HasExactlyItems.hasExactlyItems;
 
 class CatalogTest {
     Catalog catalog = new Catalog();

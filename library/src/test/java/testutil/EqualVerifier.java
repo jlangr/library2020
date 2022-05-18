@@ -18,39 +18,39 @@ public class EqualVerifier {
 
     // TODO Java 17 record?
     class FieldComparison {
-        Object value1;
-        Object value2;
+        Object expected;
+        Object actual;
         Field field;
 
-        public FieldComparison(Field field, Object obj1, Object obj2) {
+        public FieldComparison(Field field, Object expected, Object actual) {
             this.field = field;
-            value1 = value(field, obj1);
-            value2 = value(field, obj2);
+            this.expected = value(field, expected);
+            this.actual = value(field, actual);
         }
 
         boolean areEqual() {
-            if (value1 == null && value2 == null) return true;
-            if (value1 == null || value2 == null) return false;
-            return value1.equals(value2);
+            if (expected == null && actual == null) return true;
+            if (expected == null || actual == null) return false;
+            return expected.equals(actual);
         }
 
         String message() {
-            return String.format("\tobj1.%s <<%s>> %s obj2.%s <<%s>>",
-                    field.getName(), value1,
-                    areEqual() ? "==" : "!=",
-                    field.getName(), value2);
+            return String.format("\texpected.%s <<%s>> %s actual.%s <<%s>>",
+                    field.getName(), expected,
+                    areEqual() ? "equal" : "not equal",
+                    field.getName(), actual);
         }
     }
 
-    public <T> boolean areAllFieldsEqual(T obj1, T obj2) {
-        this.errorMessages = fieldErrorMessages(obj1, obj2);
+    public <T> boolean areAllFieldsEqual(T expected, T actual) {
+        this.errorMessages = fieldErrorMessages(expected, actual);
         return errorMessages.isEmpty();
     }
 
-    private <T> List<String> fieldErrorMessages(T obj1, T obj2) {
-        return Arrays.stream(obj1.getClass().getDeclaredFields())
+    private <T> List<String> fieldErrorMessages(T expected, T actual) {
+        return Arrays.stream(expected.getClass().getDeclaredFields())
                 .map(this::makeAccessible)
-                .map(field -> new FieldComparison(field, obj1, obj2))
+                .map(field -> new FieldComparison(field, expected, actual))
                 .filter(fieldComparison -> !fieldComparison.areEqual())
                 .map(FieldComparison::message)
                 .collect(Collectors.toList());
@@ -64,15 +64,15 @@ public class EqualVerifier {
         }
     }
 
-    public <T> boolean areAllFieldsEqualInList(List<T> list1, List<T> list2) {
+    public <T> boolean areAllFieldsEqualInList(List<T> expectedList, List<T> actualList) {
         errorMessages = new ArrayList<>();
-        if (list1.size() != list2.size()) {
+        if (expectedList.size() != actualList.size()) {
             errorMessages.add("lists vary in size");
             return false;
         }
 
-        for (var i = 0; i < list1.size(); i++) {
-            var fieldErrorMessages = fieldErrorMessages(list1.get(i), list2.get(i));
+        for (var i = 0; i < expectedList.size(); i++) {
+            var fieldErrorMessages = fieldErrorMessages(expectedList.get(i), actualList.get(i));
             if (!fieldErrorMessages.isEmpty()) {
                 errorMessages.add("mismatch at index " + i);
                 errorMessages.addAll(fieldErrorMessages);

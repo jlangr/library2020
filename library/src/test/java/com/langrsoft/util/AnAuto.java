@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static com.langrsoft.util.matchers.LessThan.lessThan;
+import static testutil.LessThan.lessThan;
 
 class AnAuto {
     @Test

@@ -49,14 +49,14 @@ class AnEqualVerifier {
             void returnsFalseWhenObj1HasNullField() {
                 assertThat(verifier.areAllFieldsEqual(new Alpha(null, 1), new Alpha("a", 1)),
                         is(false));
-                assertThat(verifier.errorMessages(), contains("\tobj1.a <<null>> != obj2.a <<a>>"));
+                assertThat(verifier.errorMessages(), contains("\texpected.a <<null>> not equal actual.a <<a>>"));
             }
 
             @Test
             void returnsFalseWhenObj2HasNullField() {
                 assertThat(verifier.areAllFieldsEqual(new Alpha("a", 1), new Alpha(null, 1)),
                         is(false));
-                assertThat(verifier.errorMessages(), contains("\tobj1.a <<a>> != obj2.a <<null>>"));
+                assertThat(verifier.errorMessages(), contains("\texpected.a <<a>> not equal actual.a <<null>>"));
             }
 
             @Test
@@ -69,14 +69,14 @@ class AnEqualVerifier {
             void returnsFalseWhenStringFieldNotEqual() {
                 assertThat(verifier.areAllFieldsEqual(new Alpha("a", 1), new Alpha("b", 1)),
                         is(false));
-                assertThat(verifier.errorMessages(), contains("\tobj1.a <<a>> != obj2.a <<b>>"));
+                assertThat(verifier.errorMessages(), contains("\texpected.a <<a>> not equal actual.a <<b>>"));
             }
 
             @Test
             void returnsWhenIntFieldNotEqual() {
                 assertThat(verifier.areAllFieldsEqual(new Alpha("a", 1), new Alpha("a", 2)),
                         is(false));
-                assertThat(verifier.errorMessages(), contains("\tobj1.n <<1>> != obj2.n <<2>>"));
+                assertThat(verifier.errorMessages(), contains("\texpected.n <<1>> not equal actual.n <<2>>"));
             }
 
             @Test
@@ -84,8 +84,8 @@ class AnEqualVerifier {
                 assertThat(verifier.areAllFieldsEqual(new Alpha("a", 1), new Alpha("b", 2)),
                         is(false));
                 assertThat(verifier.errorMessages(), containsInAnyOrder(
-                        "\tobj1.a <<a>> != obj2.a <<b>>",
-                        "\tobj1.n <<1>> != obj2.n <<2>>"));
+                        "\texpected.a <<a>> not equal actual.a <<b>>",
+                        "\texpected.n <<1>> not equal actual.n <<2>>"));
             }
         }
 
@@ -102,7 +102,7 @@ class AnEqualVerifier {
                 assertThat(verifier.areAllFieldsEqualInList(List.of(new Alpha("a", 1)), List.of(new Alpha("b", 1))), is(false));
                 assertThat(verifier.errorMessages(), contains(
                         "mismatch at index 0",
-                        "\tobj1.a <<a>> != obj2.a <<b>>"
+                        "\texpected.a <<a>> not equal actual.a <<b>>"
                 ));
             }
 
@@ -113,9 +113,9 @@ class AnEqualVerifier {
                         List.of(new Alpha("b", 1), new Alpha("b", 1)));
                 assertThat(verifier.errorMessages(), contains(
                         "mismatch at index 0",
-                        "\tobj1.a <<a>> != obj2.a <<b>>",
+                        "\texpected.a <<a>> not equal actual.a <<b>>",
                         "mismatch at index 1",
-                        "\tobj1.n <<0>> != obj2.n <<1>>"
+                        "\texpected.n <<0>> not equal actual.n <<1>>"
                 ));
             }
 

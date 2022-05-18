@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.sameInstance;
-import static com.langrsoft.util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
+import static testutil.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
 class HoldingMapTest {
     private HoldingMap map;

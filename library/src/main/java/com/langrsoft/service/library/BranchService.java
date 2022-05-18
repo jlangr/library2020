@@ -1,13 +1,10 @@
 package com.langrsoft.service.library;
 
-import com.langrsoft.controller.BranchRequest;
 import com.langrsoft.domain.Branch;
-import org.springframework.stereotype.Service;
 import com.langrsoft.persistence.BranchStore;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class BranchService {

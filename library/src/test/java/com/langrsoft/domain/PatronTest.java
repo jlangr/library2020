@@ -6,7 +6,7 @@ import testutil.EqualityTester;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static com.langrsoft.util.matchers.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
+import static testutil.HasExactlyItemsInAnyOrder.hasExactlyItemsInAnyOrder;
 
 class PatronTest {
     private Patron jane;

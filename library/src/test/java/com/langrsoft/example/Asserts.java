@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
  * scratch class used as the basis for many of the slide examples.
  */
 @ExtendWith(MockitoExtension.class) // StrictStubs?
-public class Asserts {
+class Asserts {
     interface StockLookupSvc {
         int price(String symbol);
     }

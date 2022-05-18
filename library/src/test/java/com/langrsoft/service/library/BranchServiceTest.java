@@ -8,7 +8,7 @@ import com.langrsoft.util.ListUtil;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static com.langrsoft.util.matchers.HasExactlyItems.hasExactlyItems;
+import static testutil.HasExactlyItems.hasExactlyItems;
 
 class BranchServiceTest {
     private BranchService service;

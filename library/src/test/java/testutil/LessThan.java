@@ -1,4 +1,4 @@
-package com.langrsoft.util.matchers;
+package testutil;
 
 // The full package of Hamcrest includes these
 // comparisons. Implemented here for demo purposes
