@@ -1,4 +1,4 @@
-package cucumber;
+package com.langrsoft.features.cucumber;
 
 import com.langrsoft.cucumber.Calculator;
 

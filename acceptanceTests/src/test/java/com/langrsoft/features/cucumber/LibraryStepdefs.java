@@ -1,4 +1,4 @@
-package cucumber;
+package com.langrsoft.features.cucumber;
 
 import com.langrsoft.controller.HoldingResponse;
 import com.langrsoft.controller.MaterialRequest;
@@ -7,7 +7,7 @@ import com.langrsoft.external.MaterialType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import library.MaterialRequestBuilder;
+import com.langrsoft.features.library.MaterialRequestBuilder;
 
 import java.util.Date;
 import java.util.List;

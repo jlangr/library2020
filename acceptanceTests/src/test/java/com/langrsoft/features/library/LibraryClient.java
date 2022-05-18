@@ -1,4 +1,4 @@
-package library;
+package com.langrsoft.features.library;
 
 import static java.util.Arrays.asList;
 
@@ -8,7 +8,6 @@ import com.langrsoft.controller.*;
 import com.langrsoft.external.MaterialType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.*;
-import controller.*;
 
 public class LibraryClient {
     public static final String SERVER = "http://localhost:3003";

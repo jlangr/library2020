@@ -1,8 +1,8 @@
-package cucumber;
+package com.langrsoft.features.cucumber;
 
 //import io.cucumber.guice.ScenarioScoped;
-import library.LibraryClient;
-import library.ScannerClient;
+import com.langrsoft.features.library.LibraryClient;
+import com.langrsoft.features.library.ScannerClient;
 
 //@ScenarioScoped
 public class World {

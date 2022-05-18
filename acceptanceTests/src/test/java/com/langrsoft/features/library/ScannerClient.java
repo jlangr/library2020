@@ -1,4 +1,4 @@
-package library;
+package com.langrsoft.features.library;
 
 import com.langrsoft.service.scanner.ScanStation;
 import com.langrsoft.devices.nssi1801c.ScanDisplayListener;
