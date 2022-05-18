@@ -6,8 +6,8 @@ Background:
   Given a library system with a branch named "East"
   And a local classification service with:
     | source id | classification | format |
-    | 123 | QA-111 | Book |
-    | 999 | EF-333 | Book |
+    | 123 | QA-111 | BOOK |
+    | 999 | EF-333 | BOOK |
 
 Scenario: Add holdings to the library system generates incremented barcodes
   * a librarian adds a book holding with source id 123 at branch "East"

@@ -1,13 +1,14 @@
 package com.langrsoft.features.library;
 
-import static java.util.Arrays.asList;
-
-import java.util.*;
-
 import com.langrsoft.controller.*;
 import com.langrsoft.external.MaterialType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.*;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.*;
+
+import static java.util.Arrays.asList;
 
 public class LibraryClient {
     public static final String SERVER = "http://localhost:3003";
@@ -181,7 +182,7 @@ public class LibraryClient {
         MaterialRequest material = new MaterialRequest();
         material.setTitle(title);
         material.setSourceId(title);
-        material.setFormat("Book");
+        material.setFormat("BOOK");
         material.setClassification(title);
         return material;
     }
