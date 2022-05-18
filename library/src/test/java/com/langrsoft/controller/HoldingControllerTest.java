@@ -5,7 +5,6 @@ import com.langrsoft.domain.HoldingAlreadyCheckedOutException;
 import com.langrsoft.domain.HoldingBuilder;
 import com.langrsoft.service.library.HoldingService;
 import com.langrsoft.util.DateUtil;
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -132,7 +131,7 @@ class HoldingControllerTest {
 
             var retrieved = resultContent(result, HoldingResponse[].class);
             var authors = Arrays.stream(retrieved)
-                    .map(response -> response.getAuthor()).collect(Collectors.toList());
+                    .map(HoldingResponse::getAuthor).collect(Collectors.toList());
             assertThat(authors, hasItems("Heller", "Kafka"));
         }
     }
