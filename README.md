@@ -41,6 +41,13 @@ Test classes should comply with a naming convention
   change Options: format to ^((A|An|Test|IT)[a-zA-Z0-9_]+|[A-Z][a-zA-Z0-9_]*(Test|Tests|TestCase|IT|ITCase))$
 
 
+Code Coverage customizations
+---
+Add packages to ignore:
+
+com.langrsoft.cucumber
+
+
 Disclaimer
 ---
 

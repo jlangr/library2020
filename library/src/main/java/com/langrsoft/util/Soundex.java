@@ -5,8 +5,6 @@ import java.util.Map;
 
 public class Soundex {
 
-    static final int MAX_CODE_LENGTH = 4;
-
     Map<Character, Character> digits = new HashMap<>();
 
     public Soundex() {
@@ -19,7 +17,7 @@ public class Soundex {
     }
 
     public String encode(String string) {
-        throw new NotYetImplementedException();
+        return string;
     }
 
     private void putAll(String letters, char digit) {

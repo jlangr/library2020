@@ -126,20 +126,4 @@ public class HoldingResponse implements Serializable {
     public boolean getIsAvailable() {
         return isAvailable;
     }
-
-    @Override
-    public String toString() {
-        return "HoldingResponse{" +
-                "author='" + author + '\'' +
-                ", title='" + title + '\'' +
-                ", year='" + year + '\'' +
-                ", format='" + format + '\'' +
-                ", dateDue=" + dateDue +
-                ", barcode='" + barcode + '\'' +
-                ", copyNumber=" + copyNumber +
-                ", dateCheckedOut=" + dateCheckedOut +
-                ", dateLastCheckedIn=" + dateLastCheckedIn +
-                ", isAvailable=" + isAvailable +
-                '}';
-    }
 }

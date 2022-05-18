@@ -123,7 +123,6 @@ public class HoldingService {
                 leapDays = 1;
             }
         }
-        System.out.println("LEAP DAYS: " + leapDays);
 
         if (hld.dateLastCheckedIn().after(c.getTime())) // is it late?
             isLate = true;

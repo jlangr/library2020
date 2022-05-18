@@ -1,4 +1,4 @@
-package com.langrsoft.util;
+package com.langrsoft.cucumber;
 
 public class Calculator {
     private int value;

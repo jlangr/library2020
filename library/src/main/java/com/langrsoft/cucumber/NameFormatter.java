@@ -1,4 +1,4 @@
-package com.langrsoft.util;
+package com.langrsoft.cucumber;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
