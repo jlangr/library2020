@@ -1,5 +1,7 @@
 package com.langrsoft.domain;
 
+import java.util.Objects;
+
 public class Patron {
     private final String name;
     private String id;
@@ -30,6 +32,11 @@ public class Patron {
     @Override
     public String toString() {
         return "[" + getId() + "] " + getName();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

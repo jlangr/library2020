@@ -73,16 +73,8 @@ public class ScanStation implements ScanListener {
         this.patronService = patronService;
     }
 
-    public PatronService getPatronService() {
-        return patronService;
-    }
-
     public void setBranchService(BranchService branchService) {
         this.branchService = branchService;
-    }
-
-    public BranchService getBranchService() {
-        return branchService;
     }
 
     public void showMessage(String text) {

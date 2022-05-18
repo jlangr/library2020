@@ -3,8 +3,6 @@ package cucumber;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class ScannerStepDefinitions {
     private World world = new World();
 
@@ -27,7 +25,6 @@ public class ScannerStepDefinitions {
     @Then("the scanner identifies itself as belonging to the branch {string}")
     public void the_scanner_identifies_itself_as_belonging_to_the_branch(String branchName) {
         String actual = world.scannerClient.branchScanCode();
-        assertThat(actual)
-                .isEqualTo(barcodeForBranch(branchName));
+        assertThat(actual, equalTo(barcodeForBranch(branchName));
     }
 }

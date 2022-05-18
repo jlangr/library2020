@@ -84,6 +84,8 @@ public class HoldingService {
     }
 
     @SuppressWarnings("all") // remove warning suppression once refactored
+    // Note that this method is missing some coverage, which is typical
+    // for a method of this length
     public int checkIn(String barCode, Date date, String branchScanCode) {
         Branch branch = new BranchService().find(branchScanCode);
         Holding hld = find(barCode);
@@ -114,17 +116,22 @@ public class HoldingService {
         c.setTime(hld.dateDue());
         int d = Calendar.DAY_OF_YEAR;
 
-        // check for last day in year
-        if (c.get(d) > c.getActualMaximum(d)) {
-            c.set(d, 1);
-            c.set(Calendar.YEAR, c.get(Calendar.YEAR) + 1);
+        // deal with leap year
+        var leapDays = 0;
+        if (c.getActualMaximum(d) == 366) {
+            if (c.get(d) == 60) { // leap day
+                leapDays = 1;
+            }
         }
+        System.out.println("LEAP DAYS: " + leapDays);
 
         if (hld.dateLastCheckedIn().after(c.getTime())) // is it late?
             isLate = true;
 
         if (isLate) {
             int daysLate = hld.daysLate(); // calculate # of days past due
+            if (daysLate > 0)
+                daysLate = daysLate - leapDays;
             int fineBasis = hld.getMaterial().getFormat().getDailyFine();
             switch (hld.getMaterial().getFormat()) {
                 case BOOK:

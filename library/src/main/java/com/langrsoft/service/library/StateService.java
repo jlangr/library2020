@@ -5,7 +5,7 @@ import com.langrsoft.domain.State;
 import java.util.ArrayList;
 import java.util.List;
 
-// no unit tests--tested directly by fitnesse
+// tested directly by fitnesse
 public class StateService {
     public List<State> findNameStartingWith(String startingWith) {
         var filtered = new ArrayList<State>();

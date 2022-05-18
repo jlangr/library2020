@@ -56,7 +56,7 @@ public class HoldingBarcode {
     private int parseInt(String text) {
         try {
             return Integer.parseInt(text, 10);
-        } catch (Throwable t) {
+        } catch (Exception e) {
             throw new IllegalArgumentException();
         }
     }

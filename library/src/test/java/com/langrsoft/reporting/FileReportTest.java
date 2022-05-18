@@ -31,7 +31,7 @@ class FileReportTest {
     }
 
     private BufferedReader toBufferedReader(String s) {
-        ByteArrayInputStream stream = new ByteArrayInputStream(s.getBytes());
+        var stream = new ByteArrayInputStream(s.getBytes());
         return new BufferedReader(new InputStreamReader(stream));
     }
 

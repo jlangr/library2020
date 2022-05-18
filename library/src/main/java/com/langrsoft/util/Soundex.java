@@ -7,19 +7,19 @@ public class Soundex {
 
     static final int MAX_CODE_LENGTH = 4;
 
-    public String encode(String string) {
-        throw new NotYetImplementedException();
-    }
+    Map<Character, Character> digits = new HashMap<>();
 
-    Map<Character, Character> digits = new HashMap<Character, Character>();
-
-    {
+    public Soundex() {
         putAll("bfpv", '1');
         putAll("cgjkqsxz", '2');
         putAll("dt", '3');
         putAll("l", '4');
         putAll("mn", '5');
         putAll("r", '6');
+    }
+
+    public String encode(String string) {
+        throw new NotYetImplementedException();
     }
 
     private void putAll(String letters, char digit) {

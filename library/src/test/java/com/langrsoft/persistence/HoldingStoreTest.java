@@ -1,6 +1,6 @@
 package com.langrsoft.persistence;
 
-import api.library.DuplicateHoldingException;
+import com.langrsoft.service.library.DuplicateHoldingException;
 import com.langrsoft.domain.Branch;
 import com.langrsoft.domain.Holding;
 import com.langrsoft.domain.HoldingBuilder;
@@ -34,7 +34,7 @@ class HoldingStoreTest {
         }
 
         @Test
-        public void throwsWhenSavingHoldingWithDuplicateBarcode() {
+        void throwsWhenSavingHoldingWithDuplicateBarcode() {
             assertThrows(DuplicateHoldingException.class, () -> {
                         var duplicateHolding = new Holding(savedHolding.getMaterial(), savedHolding.getBranch(), savedHolding.getCopyNumber());
                         store.save(duplicateHolding);

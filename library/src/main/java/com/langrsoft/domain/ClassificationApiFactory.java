@@ -4,14 +4,16 @@ import com.langrsoft.external.ClassificationApi;
 import com.langrsoft.external.ClassificationService;
 
 public class ClassificationApiFactory {
-    private static final ClassificationApi DefaultService = new ClassificationService();
-    private static ClassificationApi Service = DefaultService;
+    private static final ClassificationApi defaultService = new ClassificationService();
+    private static ClassificationApi service = defaultService;
+
+    private ClassificationApiFactory() {}
 
     public static void setService(ClassificationApi service) {
-        Service = service;
+        ClassificationApiFactory.service = service;
     }
 
     public static ClassificationApi getService() {
-        return Service;
+        return service;
     }
 }

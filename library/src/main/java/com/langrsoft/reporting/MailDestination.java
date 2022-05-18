@@ -13,7 +13,8 @@ public class MailDestination {
     }
 
     private static Endpoint createEndpoint(String address) {
-        throw new RuntimeException("unable to connect to LDAP server");
+        throw new MailDestinationException(
+                String.format("unable to connect to LDAP server for address %s", address));
     }
 
     public String getAddress() {

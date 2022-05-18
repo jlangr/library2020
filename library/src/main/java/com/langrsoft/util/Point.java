@@ -36,8 +36,8 @@ public class Point {
 
     public Point move(double distance, double degrees) {
         var radians = toRadians(degrees);
-        var x = distance * cos(radians) + this.x;
-        var y = distance * sin(radians) + this.y;
-        return new Point(x, y);
+        var newX = distance * cos(radians) + this.x;
+        var newY = distance * sin(radians) + this.y;
+        return new Point(newX, newY);
     }
 }

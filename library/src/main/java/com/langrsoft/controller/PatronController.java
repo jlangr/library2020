@@ -20,7 +20,7 @@ public class PatronController {
     @GetMapping
     public List<PatronRequest> retrieveAll() {
         return service.allPatrons().stream()
-                .map(patron -> new PatronRequest(patron))
+                .map(PatronRequest::new)
                 .collect(toList());
     }
 

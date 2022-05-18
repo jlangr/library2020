@@ -1,4 +1,4 @@
 package com.langrsoft.util;
 
-public class InvalidSaleException extends Throwable {
+public class InvalidSaleException extends Exception {
 }

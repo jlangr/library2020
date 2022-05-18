@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class TimestampSource {
-    private static LinkedList<Date> storedTimes = new LinkedList<Date>();
+    private TimestampSource() {}
+
+    private static final LinkedList<Date> storedTimes = new LinkedList<>();
 
     public static void queueNextTime(Date date) {
         storedTimes.add(date);

@@ -38,6 +38,12 @@ class HoldingServiceTest {
     }
 
     @Test
+    void addThrowsWhenSourceIdNotFound() {
+        assertThrows(InvalidSourceIdException.class, () ->
+            service.add("nonexistent", branchScanCode));
+    }
+
+    @Test
     void throwsExceptionWhenBranchNotFound() {
         var thrown = assertThrows(BranchNotFoundException.class, () ->
                     service.add("", "badBranchId"));

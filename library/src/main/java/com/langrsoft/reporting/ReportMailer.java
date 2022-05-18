@@ -1,25 +1,23 @@
 package com.langrsoft.reporting;
 
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class ReportMailer {
-    private MailDestination[] destinations;
+    private final MailDestination[] destinations;
     static final String FROM = "reports@langrsoft.com";
 
     public ReportMailer(MailDestination[] destinations) {
         this.destinations = destinations;
         if (destinations.length == 0)
-            throw new RuntimeException("dests required");
+            throw new ReportMailerException("dests required");
         for (int i = 0; i < destinations.length; i++)
             if (MailDestination.getEndpoint(destinations[i]) == null)
-                throw new RuntimeException("invalid endpoint");
+                throw new ReportMailerException("invalid endpoint");
     }
 
-    public void mailReport(Report report) throws AddressException,
-            MessagingException {
+    public void mailReport(Report report) throws MessagingException {
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -37,14 +35,12 @@ public class ReportMailer {
     }
 
     Message constructMailMessage(String toAddress, Report report, Session session)
-            throws AddressException, MessagingException {
-        String content = report.getText();
-        String subject = report.getName();
+            throws MessagingException {
+        var content = report.getText();
+        var subject = report.getName();
 
-        Message message = new MimeMessage(session);
-
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(
-                toAddress));
+        var message = new MimeMessage(session);
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
         message.setText(content);
         message.setFrom(new InternetAddress(FROM));
         message.setSubject(subject);
@@ -67,8 +63,8 @@ public class ReportMailer {
         set("mail.smtp.from", address);
         set("mail.smtp.auth", "true");
         // this needs to be set via command line e.g. -Dmail.smtp.password=somepassword
-        //set("mail.smtp.password", "???");
-        //set("mail.debug", "true");
+        // you will need to set "mail.smtp.password"
+        // you might want to set "mail.debug" to "true"
     }
 
     private static void set(String key, String value) {

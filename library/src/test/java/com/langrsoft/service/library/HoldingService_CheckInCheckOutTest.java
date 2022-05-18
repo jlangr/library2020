@@ -7,6 +7,7 @@ import com.langrsoft.domain.ClassificationApiFactory;
 import com.langrsoft.domain.HoldingAlreadyCheckedOutException;
 import com.langrsoft.domain.HoldingNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import com.langrsoft.util.DateUtil;
 
@@ -94,14 +95,23 @@ class HoldingService_CheckInCheckOutTest {
         assertThat(patronService.find(patronId).holdingMap().isEmpty(), is(true));
     }
 
-    @Test
-    void answersDueDate() {
-        service.checkOut(patronId, bookHoldingBarcode, new Date());
+    @Nested
+    class DateDue {
+        @Test
+        void returnsDateDueFromService() {
+            service.checkOut(patronId, bookHoldingBarcode, new Date());
 
-        var due = service.dateDue(bookHoldingBarcode);
+            var due = service.dateDue(bookHoldingBarcode);
 
-        var holding = service.find(bookHoldingBarcode);
-        assertThat(due, equalTo(holding.dateDue()));
+            var holding = service.find(bookHoldingBarcode);
+            assertThat(due, equalTo(holding.dateDue()));
+        }
+
+        @Test
+        void throwsWhenHoldingNotFound() {
+            assertThrows(HoldingNotFoundException.class, () ->
+                    service.dateDue("NONEXISTENT:1"));
+        }
     }
 
     @Test
@@ -112,6 +122,19 @@ class HoldingService_CheckInCheckOutTest {
         var daysLate = service.checkIn(bookHoldingBarcode, fiveDaysLate, branchScanCode);
 
         assertThat(daysLate, equalTo(5));
+    }
+
+    @Test
+    void libraryInexplicablyIgnoresLeapDayWhenConsideringLateDays() {
+        var dateDue = DateUtil.create(2024, 1, 29);
+        var checkoutDate = DateUtil.addDays(dateDue, -1 * MaterialType.BOOK.getCheckoutPeriod());
+        service.checkOut(patronId, bookHoldingBarcode, checkoutDate);
+        var holding = service.find(bookHoldingBarcode);
+        var oneDayLate = DateUtil.addDays(holding.dateDue(), 1);
+
+        var daysLate = service.checkIn(bookHoldingBarcode, oneDayLate, branchScanCode);
+
+        assertThat(daysLate, equalTo(0));
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.langrsoft.persistence;
 
-import api.library.DuplicateHoldingException;
+import com.langrsoft.service.library.DuplicateHoldingException;
 import com.langrsoft.domain.Holding;
 import com.langrsoft.util.MultiMap;
 

@@ -10,7 +10,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-class SomeJUnitBasics {
+class SomeBasicJUnitTests {
     @Disabled("uncomment when ready")
     @Test
     void supportsBasicMath() {

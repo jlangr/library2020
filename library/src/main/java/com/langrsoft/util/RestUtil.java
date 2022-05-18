@@ -4,16 +4,16 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 public class RestUtil {
-    public static RestTemplate createRestTemplate() {
-        RestTemplate template = new RestTemplate();
+    private RestUtil() {}
 
-        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
+    public static RestTemplate createRestTemplate() {
+        var template = new RestTemplate();
+
+        var messageConverter = new MappingJackson2HttpMessageConverter();
         messageConverter.setPrettyPrint(false);
         template.getMessageConverters()
-                .removeIf(m -> m.getClass().getName().equals(MappingJackson2HttpMessageConverter.class.getName()));
-
+                .removeIf(m -> m.getClass().isAssignableFrom(MappingJackson2HttpMessageConverter.class));
         template.getMessageConverters().add(messageConverter);
-
         return template;
     }
 }

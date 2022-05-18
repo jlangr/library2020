@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class PatronStore {
-    private static Collection<Patron> patrons = new ArrayList<Patron>();
+    private static final Collection<Patron> patrons = new ArrayList<>();
     private static int idIndex = 0;
 
     public static void deleteAll() {
@@ -15,13 +15,17 @@ public class PatronStore {
     }
 
     public void add(Patron patron) {
-        if (patron.getId() == "")
-            patron.setId("p" + (++idIndex));
+        if (patron.getId().equals(""))
+            patron.setId("p" + PatronStore.nextId());
         patrons.add(copy(patron));
     }
 
+    private static int nextId() {
+        return ++idIndex;
+    }
+
     private Patron copy(Patron patron) {
-        Patron newPatron = new Patron(patron.getName());
+        var newPatron = new Patron(patron.getName());
         newPatron.setId(patron.getId());
         return newPatron;
     }
