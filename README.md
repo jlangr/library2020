@@ -30,6 +30,17 @@ Running the Unit Tests: IntelliJ IDEA Instructions (TDD class only)
 * You should see at least 200 green unit tests, and they should run in a second or so at most.
 
 
+SonarLint customizations
+---
+Not sure where changes to SonarLint plugin rules are kept (this project is not hooked to a SonarQube server).
+
+These rules should either be customized or turned off:
+
+Minor java:S3577
+Test classes should comply with a naming convention
+  change Options: format to ^((A|An|Test|IT)[a-zA-Z0-9_]+|[A-Z][a-zA-Z0-9_]*(Test|Tests|TestCase|IT|ITCase))$
+
+
 Disclaimer
 ---
 

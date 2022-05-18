@@ -10,9 +10,6 @@ import java.util.Date;
 import static java.util.Calendar.*;
 
 public class DateUtil {
-    private static Calendar calendar = Calendar.getInstance();
-    private static Calendar calendar2 = Calendar.getInstance();
-
     private static final Clock DEFAULT_CLOCK = Clock.systemDefaultZone();
     private static Clock clock = DEFAULT_CLOCK;
 
@@ -43,12 +40,14 @@ public class DateUtil {
     }
 
     public static Date create(int year, int month, int dayOfMonth) {
+        var calendar = Calendar.getInstance();
         calendar.set(year, month, dayOfMonth, 0, 0, 0);
         calendar.set(MILLISECOND, 0);
         return calendar.getTime();
     }
 
     public static Date addDays(Date date, int days) {
+        var calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_YEAR, days);
         return calendar.getTime();
@@ -60,6 +59,7 @@ public class DateUtil {
 
     // this stinks
     public static int daysFrom(Date start, Date stop) {
+        var calendar = Calendar.getInstance();
         calendar.setTime(start);
         Calendar stopCalendar = Calendar.getInstance();
         stopCalendar.setTime(stop);
@@ -84,9 +84,11 @@ public class DateUtil {
         if (!second.after(first))
             return 0;
 
+        var calendar = Calendar.getInstance();
         calendar.setTime(first);
         int dayOfYear1 = calendar.get(DAY_OF_YEAR);
 
+        var calendar2 = Calendar.getInstance();
         calendar2.setTime(second);
         int dayOfYear2 = calendar2.get(DAY_OF_YEAR);
 

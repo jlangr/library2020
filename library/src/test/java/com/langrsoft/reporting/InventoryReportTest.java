@@ -8,5 +8,6 @@ import static org.hamcrest.core.IsNull.notNullValue;
 class InventoryReportTest {
     @Test
     void something() {
+        assertThat(new InventoryReport(null), notNullValue());
     }
 }

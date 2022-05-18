@@ -35,10 +35,8 @@ class HoldingStoreTest {
 
         @Test
         void throwsWhenSavingHoldingWithDuplicateBarcode() {
-            assertThrows(DuplicateHoldingException.class, () -> {
-                        var duplicateHolding = new Holding(savedHolding.getMaterial(), savedHolding.getBranch(), savedHolding.getCopyNumber());
-                        store.save(duplicateHolding);
-                    });
+            var duplicateHolding = new Holding(savedHolding.getMaterial(), savedHolding.getBranch(), savedHolding.getCopyNumber());
+            assertThrows(DuplicateHoldingException.class, () -> store.save(duplicateHolding));
         }
     }
 

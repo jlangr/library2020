@@ -20,20 +20,17 @@ class HoldingBarcodeTest {
 
     @Test
     void barcode_causesThrowWhenNoColonExists() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new HoldingBarcode("abc"));
+        assertThrows(IllegalArgumentException.class, () -> new HoldingBarcode("abc"));
     }
 
     @Test
     void barcode_causesThrowWhenCopyNumberNotPositive() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new HoldingBarcode("abc:-124"));
+        assertThrows(IllegalArgumentException.class, () -> new HoldingBarcode("abc:-124"));
     }
 
     @Test
     void barcode_causesThrowWhenCopyNumberNotPositiveInt() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new HoldingBarcode("abc:xyz"));
+        assertThrows(IllegalArgumentException.class, () -> new HoldingBarcode("abc:xyz"));
     }
 
 
@@ -53,8 +50,6 @@ class HoldingBarcodeTest {
         void equality() {
             assertThat(barcode.equals(barcode1copy), is(true));
             assertThat(barcode.equals(barcode2), is(false));
-            assertThat(barcode.equals(null), is(false));
-            assertThat(barcode.equals(""), is(false));
         }
     }
 

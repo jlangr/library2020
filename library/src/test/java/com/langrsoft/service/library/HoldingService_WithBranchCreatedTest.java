@@ -87,7 +87,8 @@ class HoldingService_WithBranchCreatedTest {
 
     @Test
     void checkinThrowsWhenHoldingIdNotFound() {
+        var date = new Date();
         assertThrows(HoldingNotFoundException.class, () ->
-                service.checkIn("999:1", new Date(), branchScanCode));
+                service.checkIn("999:1", date, branchScanCode));
     }
 }

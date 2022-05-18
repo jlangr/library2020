@@ -35,7 +35,7 @@ public class NameFormatter {
 
         return " " + stream(parts)
                 .skip(1)
-                .limit(parts.length - 2)
+                .limit(parts.length - 2l)
                 .map(this::initial)
                 .collect(joining(" "));
     }

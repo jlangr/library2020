@@ -31,8 +31,9 @@ class LessThanTest {
 
     @Test
     void failureMessageIsUseful() {
+        var matcher = LessThan.lessThan(4);
         var thrown = assertThrows(AssertionError.class, () ->
-                MatcherAssert.assertThat(6, LessThan.lessThan(4)));
+                MatcherAssert.assertThat(6, matcher));
         assertThat(thrown.getMessage(), containsString("A number less than 4"));
     }
 }
