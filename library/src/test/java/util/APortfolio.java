@@ -1,19 +1,87 @@
 package util;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import testutil.Asserts;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
+//@RunWith(MockitoJUnitRunner.class) JUnit 4
+@ExtendWith(MockitoExtension.class) // JUnit 5
 class APortfolio {
     public static final String ZEBRA = "ZBRA";
     public static final String APPLE = "AAPL";
-    private Portfolio portfolio = new Portfolio();
+    @InjectMocks
+    private Portfolio portfolio;
+    @Mock
+    private StockLookupService stockService;
 
+    @Mock
+    private PortfolioAuditor auditor;
+
+    @Test
+    void auditsSell() {
+        portfolio.buy(ZEBRA, 10);
+
+        portfolio.sell(ZEBRA, 5);
+
+        verify(auditor).audit("bought ZBRA");
+    }
+
+    @Nested
+    class Value {
+        private static final int ZEBRA_CURRENT_PRICE = 3;
+        private static final int APPLE_CURRENT_PRICE = 2_000_000;
+
+        @Test
+        void isWorthlessWhenNothingPurchase() {
+            assertThat(portfolio.value(), equalTo(0));
+        }
+
+        @Test
+        void multiplesPriceBySharesForSymbol() {
+            when(stockService.price(ZEBRA)).thenReturn(ZEBRA_CURRENT_PRICE);
+
+            portfolio.buy(ZEBRA, 10);
+
+            assertThat(portfolio.value(), equalTo(ZEBRA_CURRENT_PRICE * 10));
+        }
+
+        @Test
+        void addsValueForAllSymbols() {
+            when(stockService.price(ZEBRA)).thenReturn(ZEBRA_CURRENT_PRICE);
+            when(stockService.price(APPLE)).thenReturn(APPLE_CURRENT_PRICE);
+
+            portfolio.buy(ZEBRA, 10);
+            portfolio.buy(APPLE, 20);
+
+            assertThat(portfolio.value(), equalTo(
+                    ZEBRA_CURRENT_PRICE * 10 +
+                            APPLE_CURRENT_PRICE * 20));
+        }
+
+        @Test
+        void assumesPriceIsZeroWhenServiceBarfs() {
+            when(stockService.price(ZEBRA)).thenReturn(ZEBRA_CURRENT_PRICE);
+            when(stockService.price(APPLE)).thenThrow(new RuntimeException());
+
+            portfolio.buy(ZEBRA, 10);
+            portfolio.buy(APPLE, 20);
+
+            assertThat(portfolio.value(), equalTo(ZEBRA_CURRENT_PRICE * 10 + APPLE_CURRENT_PRICE * 0));
+        }
+    }
     @Nested
     class ErrorsArise {
         @ParameterizedTest

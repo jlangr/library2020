@@ -9,6 +9,8 @@ public class Portfolio {
     private Map<String,Integer> holdings = new HashMap<>();
     private StockLookupService stockService = new NasdaqStockLookupService();
 
+    private PortfolioAuditor auditor;
+
     public int uniqueSymbolCount() {
         return holdings.size();
     }
@@ -19,6 +21,7 @@ public class Portfolio {
     }
 
     public void sell(String symbol, int shares) {
+        auditor.audit(String.format("bought %s", symbol));
         throwOnOversell(symbol, shares);
         throwOnInvalidShares(shares);
         transact(symbol, -shares);
@@ -50,5 +53,22 @@ public class Portfolio {
 
     public boolean isEmpty() {
         return holdings.isEmpty();
+    }
+
+    public int value() {
+        return holdings.keySet().stream()
+                .map(symbol -> {
+                    try {
+                        return stockService.price(symbol) * shares(symbol);
+                    }
+                    catch (RuntimeException e) {
+                        return 0;
+                    }
+                })
+                .reduce(0, (tot, valueForSymbol) -> tot + valueForSymbol);
+    }
+
+    public void setStockLookupService(StockLookupService stockService) {
+        this.stockService = stockService;
     }
 }
