@@ -13,6 +13,17 @@ add to build.gradle:
    }
 
 
+also:
+
+sourceSets {
+    test {
+        resources { srcDirs = ['src/resources'] }
+        java { srcDirs = ['src/test/java'] }
+    }
+}
+
+
+
 By class:
 
 - remote all org.junit imports
