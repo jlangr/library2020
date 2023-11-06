@@ -1,7 +1,6 @@
 Feature:
   calculate
 
-@ignore
 Scenario: add numbers
   Given entry of the number ?
   When add is pressed with a value ?
